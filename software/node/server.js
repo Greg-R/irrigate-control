@@ -15,7 +15,7 @@ let server = http.createServer(function(req, res) {
     res.setHeader('Content-type', 'text/html');
     //  Create and pipe a readable stream:
     //let file = fs.createReadStream(pathname);
-    file.on('open', function() {
+/*    file.on('open', function() {
         // 200 status found, no errors.
         res.statusCode = 200;
     //    file.pipe(res);
@@ -24,7 +24,7 @@ let server = http.createServer(function(req, res) {
         res.writeHead(403);
         res.write('file missing, or permission problem');
         console.log(err);
-    });
+    });*/
     
 }).listen(8080);
 
