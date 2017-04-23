@@ -8,17 +8,17 @@ let base = './../html';
  let wsServer = require('./websocketserver');
 
 let server = http.createServer(function(req, res) {
-    let pathname = base + req.url;
-    console.log(`The url from the request is ${pathname}.`);
+    //let pathname = base + req.url;
+    //console.log(`The url from the request is ${pathname}.`);
     
     //  Respond to the request:
     res.setHeader('Content-type', 'text/html');
     //  Create and pipe a readable stream:
-    let file = fs.createReadStream(pathname);
+    //let file = fs.createReadStream(pathname);
     file.on('open', function() {
         // 200 status found, no errors.
         res.statusCode = 200;
-        file.pipe(res);
+    //    file.pipe(res);
     });
     file.on('error', function(err) {
         res.writeHead(403);
