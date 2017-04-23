@@ -20,8 +20,8 @@ exports.listen = function (server) {
         ws.on('message', function (data, flags) { //#D subscribe to event.
             console.log(`Received data from client: ${data}.`);
             let controlObject = JSON.parse(data);
-            //  Modify the ledHash object.  This will actuate the LEDs!
-            Object.assign(ledObject.ledHash, controlObject);
+            //  Modify the ledHash Proxy.  This will actuate the LEDs!
+            Object.assign(ledObject.ledHashProxy, controlObject);
         });
     });
 

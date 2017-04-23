@@ -1,42 +1,105 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Main Irrigation Controller</title>
 </head>
 
 <body>
-<div>
-    
- <H1>MAIN IRRIGATION CONTROLLER</H1>   
+    <div>
+
+        <H1>MAIN IRRIGATION CONTROLLER</H1>
     </div>
 
-<div>
-    <button id="pumpmotorbutton">
-    PUMP MOTOR
-    </button>
-    </div>
-<div>
-    <button>
-    ZONE 1
-    </button>
+    <div>
+        <button id="pumpmotoron">
+            PUMP MOTOR ON
+        </button>
+        <button id="pumpmotoroff">
+            PUMP MOTOR OFF
+        </button>
     </div>
     <div>
-        <button>
-        ZONE 2
+        <button id="zone1on">
+            ZONE 1 ON
         </button>
-    
+        <button id="zone1off">
+            ZONE 1 OFF
+        </button>
+
     </div>
-<script>
-    //  Open a WebSocket to the server.
-    let ws = new WebSocket('ws://localhost:8080');
-    
-    let pumpbutton = document.getElementById('pumpmotorbutton')
-    
-    if(ws.readyState === ws.OPEN) {
-        pumpbutton.onclick(ws.send('pumpmotorbutton'));
-    } else {
-        console.log('Websocket is not open.  Message aborted.');
-    }
+    <div>
+        <button id="zone2on">
+            ZONE 2 ON
+        </button>
+        <button id="zone2off">
+            ZONE 2 OFF
+        </button>
+    </div>
+    <script>
+        //  Open a WebSocket to the server.
+        let ws = new WebSocket('ws://192.168.1.8:8089');
+
+        ws.onopen = function() {
+            console.log('Web browser opened a WebSocket.');
+        }
+
+        let pumpbuttonon = document.getElementById('pumpmotoron');
+        let pumpbuttonoff = document.getElementById('pumpmotoroff');
+        let zone1buttonon = document.getElementById('zone1on');
+        let zone1buttonoff = document.getElementById('zone1off');
+        let zone2buttonon = document.getElementById('zone2on');
+        let zone2buttonoff = document.getElementById('zone2off');
+
+        pumpbuttonon.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({'pumpmotor': 'on'}));
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+        
+        pumpbuttonoff.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({'pumpmotor': 'off'}));
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+
+        zone1buttonon.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({'zone1': 'on'}));
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+        
+        zone1buttonoff.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({'zone1': 'off'}));
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+
+        zone2buttonon.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({'zone2': 'on'}));
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+        
+        zone2buttonoff.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({'zone2': 'off'}));
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+
     </script>
 </body>
+
 </html>
