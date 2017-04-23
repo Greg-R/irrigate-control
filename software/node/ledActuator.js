@@ -10,9 +10,9 @@ module.exports = class ledActuator extends EventEmitter {
     constructor() {
         super();
         this.ledHash = {
-            pumpmotor: "off",
-            zone1: "off",
-            zone2: "off"
+            'pumpmotor': "off",
+            'zone1': "off",
+            'zone2': "off"
         };
         this.ledHashProxy = new Proxy(this.ledHash, this.ledObserver);
         //  Using pins 8.7 (gpio66), 8.8 (gpio67), and 8.10 (gpio68).
@@ -32,6 +32,7 @@ module.exports = class ledActuator extends EventEmitter {
 
     //  This method does system calls on /sys to control the LEDs.
     ledControl(ledgpio, command) {
+        console.log('ledControl method was called!');
         const exec = require('child_process').exec;
         exec(`echo ${command} > ${this.ledGpioMap[ledgpio]}`, (error, stdout, stderr) => {
             if (error) {
