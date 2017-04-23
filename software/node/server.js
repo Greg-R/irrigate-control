@@ -3,7 +3,7 @@
 //  Main server for irrigate-control
 
 let http = require('http');
-let fs = require('fs');
+//let fs = require('fs');
 let base = './../html';
  // let wsServer = require('./websocketserver');
 
