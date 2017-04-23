@@ -12,7 +12,7 @@ let server = http.createServer(function(req, res) {
     //console.log(`The url from the request is ${pathname}.`);
     
     //  Respond to the request:
-    res.setHeader('Content-type', 'text/html');
+//    res.setHeader('Content-type', 'text/html');
     //  Create and pipe a readable stream:
     //let file = fs.createReadStream(pathname);
 /*    file.on('open', function() {
