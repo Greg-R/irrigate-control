@@ -26,9 +26,9 @@ let server = http.createServer(function(req, res) {
         console.log(err);
     });*/
     
-}).listen(8080);
+}).listen(8089);
 
 // Websockets server
 //  wsServer.listen(server);
 
-console.log('Server is running at port 8080.');
+console.log('Server is running at port 8089.');
