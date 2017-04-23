@@ -5,7 +5,7 @@
 let http = require('http');
 let fs = require('fs');
 let base = './../html';
- let wsServer = require('./websocketserver');
+ // let wsServer = require('./websocketserver');
 
 let server = http.createServer(function(req, res) {
     //let pathname = base + req.url;
