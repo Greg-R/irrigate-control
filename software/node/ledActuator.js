@@ -36,6 +36,7 @@ module.exports = class ledActuator extends EventEmitter {
     ledControl(ledgpio, command) {
         console.log('ledControl method was called!');
         const exec = require('child_process').exec;
+        console.log(`echoing this command: echo ${command} > ${this.ledGpioMap[ledgpio]}`);
         exec(`echo ${command} > ${this.ledGpioMap[ledgpio]}`, (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
