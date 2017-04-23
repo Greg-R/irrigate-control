@@ -21,7 +21,8 @@ exports.listen = function (server) {
             console.log(`Received data from client: ${data}.`);
             let controlObject = JSON.parse(data);
             //  Modify the ledHash Proxy.  This will actuate the LEDs!
-            Object.assign(ledObject.ledHashProxy, controlObject);
+            ledObject.ledHashProxy['pumpmotor'] = 0;
+ //           Object.assign(ledObject.ledHashProxy, controlObject);
         });
     });
 

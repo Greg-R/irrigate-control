@@ -10,9 +10,9 @@ module.exports = class ledActuator extends EventEmitter {
     constructor() {
         super();
         this.ledHash = {
-            'pumpmotor': "off",
-            'zone1': "off",
-            'zone2': "off"
+            'pumpmotor': 0,
+            'zone1': 0,
+            'zone2': 0
         };
         this.ledHashProxy = new Proxy(this.ledHash, this.ledObserver);
         //  Using pins 8.7 (gpio66), 8.8 (gpio67), and 8.10 (gpio68).
