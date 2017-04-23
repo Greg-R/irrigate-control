@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Main Irrigation Controller</title>
+</head>
+
+<body>
+<div>
+    
+ <H1>MAIN IRRIGATION CONTROLLER</H1>   
+    </div>
+
+<div>
+    <button id="pumpmotorbutton">
+    PUMP MOTOR
+    </button>
+    </div>
+<div>
+    <button>
+    ZONE 1
+    </button>
+    </div>
+    <div>
+        <button>
+        ZONE 2
+        </button>
+    
+    </div>
+<script>
+    //  Open a WebSocket to the server.
+    let ws = new WebSocket('ws://localhost:8080');
+    
+    let pumpbutton = document.getElementById('pumpmotorbutton')
+    
+    if(ws.readyState === ws.OPEN) {
+        pumpbutton.onclick(ws.send('pumpmotorbutton'));
+    } else {
+        console.log('Websocket is not open.  Message aborted.');
+    }
+    </script>
+</body>
+</html>
