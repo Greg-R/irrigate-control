@@ -18,7 +18,7 @@ module.exports = class ledActuator extends EventEmitter {
         //  Using pins 8.7 (gpio66), 8.8 (gpio67), and 8.10 (gpio68).
         this.ledGpioMap = new Map([['pumpmotor', '/sys/class/gpio/gpio66/value'],
                                    ['zone1', '/sys/class/gpio/gpio67/value'],
-                                   ['zone2', '/sys/class/gpio/gpio66/value']]);
+                                   ['zone2', '/sys/class/gpio/gpio68/value']]);
     }
 
     ledObserver() {
@@ -37,7 +37,7 @@ module.exports = class ledActuator extends EventEmitter {
         console.log('ledControl method was called!');
         const exec = require('child_process').exec;
         console.log(`ledgpio = ${ledgpio} and this.ledGpioMap[ledgpio] = ${this.ledGpioMap.get(ledgpio)}`);
-        console.log(`echoing this command: echo ${command} > ${this.ledGpioMap[ledgpio]}`);
+        console.log(`echoing this command: echo ${command} > ${this.ledGpioMap.get(ledgpio)}`);
         exec(`echo ${command} > ${this.ledGpioMap.get(ledgpio)}`, (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
