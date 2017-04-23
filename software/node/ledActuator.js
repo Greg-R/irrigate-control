@@ -6,7 +6,9 @@ let EventEmitter = require('events').EventEmitter;
 const exec = require('child_process').exec;
 
 module.exports = class ledActuator extends EventEmitter {
+    
     constructor() {
+        super();
         this.ledHash = {
             pumpmotor: "off",
             zone1: "off",
