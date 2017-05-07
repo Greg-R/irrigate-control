@@ -16,9 +16,11 @@ module.exports = class ledActuator extends EventEmitter {
         };
         this.ledHashProxy = new Proxy(this.ledHash, this.ledObserver());
         //  Using pins 8.7 (gpio66), 8.8 (gpio67), and 8.10 (gpio68).
-        this.ledGpioMap = new Map([['pumpmotor', '/sys/class/gpio/gpio66/value'],
-                                   ['zone1', '/sys/class/gpio/gpio67/value'],
-                                   ['zone2', '/sys/class/gpio/gpio68/value']]);
+        //  Revised to pins 9.11 (gpio30), 9.12 (gpio60), 9.13 (gpio31).
+        //  This moves to more convenient physical location for permanent wiring.
+        this.ledGpioMap = new Map([['pumpmotor', '/sys/class/gpio/gpio30/value'],
+                                   ['zone1', '/sys/class/gpio/gpio60/value'],
+                                   ['zone2', '/sys/class/gpio/gpio31/value']]);
     }
 
     ledObserver() {
