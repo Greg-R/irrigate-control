@@ -1,4 +1,4 @@
 
-config-pin P8.7 gpio
-config-pin P8.8 gpio
-config-pin P8.10 gpio
+config-pin P9.11 gpio
+config-pin P9.12 gpio
+config-pin P9.13 gpio
