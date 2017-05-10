@@ -1,3 +1,4 @@
+#!/bin/bash
 #  The solid-state relays are active low,
 #  so set the GPIOs to high upon start-up.
 
