@@ -26,9 +26,10 @@ module.exports = class ledActuator extends EventEmitter {
     ledObserver() {
         return {
             set: (target, property, value, receiver) => {
-                console.log(`Setting the LED value to ${value}.`);
-                this.ledControl(property, value);
-                target[property] = value;
+                //  Value is inverted due to wacky low activate relays.
+                console.log(`Setting the LED value to ${!value}.`);
+                this.ledControl(property, !value);
+                target[property] = !value;
                 return true;
             }
         };
