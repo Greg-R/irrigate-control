@@ -53,7 +53,7 @@
 
         pumpbuttonon.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'pumpmotor': '0.'}));
+                ws.send(JSON.stringify({'pumpmotor': 0}));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -61,7 +61,7 @@
         
         pumpbuttonoff.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'pumpmotor': '1.'}));
+                ws.send(JSON.stringify({'pumpmotor': 1}));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -69,7 +69,7 @@
 
         zone1buttonon.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'zone1': '0.'}));
+                ws.send(JSON.stringify({'zone1': 0}));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -77,7 +77,7 @@
         
         zone1buttonoff.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'zone1': '1.'}));
+                ws.send(JSON.stringify({'zone1': 1}));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -85,7 +85,7 @@
 
         zone2buttonon.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'zone2': '0.'}));
+                ws.send(JSON.stringify({'zone2': 0}));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -93,7 +93,7 @@
         
         zone2buttonoff.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'zone2': '1.'}));
+                ws.send(JSON.stringify({'zone2': 1}));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
