@@ -9,7 +9,7 @@ let base = './../html';
 let wsServer = require('./websocketserver');
 
 let server = http.createServer(function (req, res) {
-    let pathname = __dirname + base + req.url;
+    let pathname = __dirname + "/" + base + req.url;
     console.log(`The url from the request is ${pathname}.`);
 
     //  Respond to the request:
