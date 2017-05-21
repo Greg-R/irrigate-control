@@ -4,12 +4,12 @@
 
 let http = require('http');
 let fs = require('fs');
-// let base = './../html';
-let base = '/home/debian/irrigate-control/software/html';
+let base = './../html';
+//let base = '/home/debian/irrigate-control/software/html';
 let wsServer = require('./websocketserver');
 
 let server = http.createServer(function (req, res) {
-    let pathname = base + req.url;
+    let pathname = __dirname + base + req.url;
     console.log(`The url from the request is ${pathname}.`);
 
     //  Respond to the request:
