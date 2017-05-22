@@ -25,8 +25,9 @@ exports.listen = function (server) {
             Object.assign(ledObject.ledHashProxy, controlObject);
         });
         //  Send messages to the web page indicating control status.
-        ledObject.on('statusmessage', function(message) {
+        ledObject.on('statusmessage', function (message) {
             console.log(`Status message received by websocketserver and is: ${message}`);
+            ws.send(message);
         });
     });
 

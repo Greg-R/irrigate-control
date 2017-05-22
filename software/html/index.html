@@ -74,6 +74,7 @@
         //  Get messages from irrigation server and update status.
         ws.onmessage = function(message) {
             let controlObject = JSON.parse(data);
+            console.log(message);
         }
 
         pumpbuttonon.onclick = function() {
