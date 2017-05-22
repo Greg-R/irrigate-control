@@ -42,9 +42,14 @@ module.exports = class ledActuator extends EventEmitter {
  //       console.log(`ledgpio = ${ledgpio} and this.ledGpioMap[ledgpio] = ${this.ledGpioMap.get(ledgpio)}`);
  //       console.log(`echoing this command: echo ${command} > ${this.ledGpioMap.get(ledgpio)}`);
         exec(`echo ${command} > ${this.ledGpioMap.get(ledgpio)}`, (error, stdout, stderr) => {
+            // If error, do not update the status of the controls.
             if (error) {
                 console.error(`exec error: ${error}`);
                 return;
+            }
+            else {
+                console.log(`Status message emitted from ledActuator: ${ledgpio} is set to ${command}.`);
+                this.emit('statusmessage', `{${ledgpio}:${command}}`);
             }
        //     console.log(`stdout: ${stdout}`);
        //     console.log(`stderr: ${stderr}`);

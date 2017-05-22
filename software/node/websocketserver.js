@@ -21,8 +21,12 @@ exports.listen = function (server) {
             console.log(`Received data from client: ${data}.`);
             let controlObject = JSON.parse(data);
             //  Modify the ledHash Proxy.  This will actuate the LEDs!
-//            ledObject.ledHashProxy['pumpmotor'] = 0;
+            //  Object.assign updates the ledHash in the ledActuator.
             Object.assign(ledObject.ledHashProxy, controlObject);
+        });
+        //  Send messages to the web page indicating control status.
+        ledObject.on('statusmessage', function(message) {
+            console.log(`Status message received by websocketserver and is: ${message}`);
         });
     });
 

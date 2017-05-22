@@ -7,8 +7,8 @@
 
 <body>
     <div>
-
         <H1>MAIN IRRIGATION CONTROLLER</H1>
+        <p id="connectstatus">WebSocket is NOT connected!</p>
     </div>
 
     <div>
@@ -36,32 +36,65 @@
             ZONE 2 OFF
         </button>
     </div>
+    <div id="status">
+    <h3>Irrigation Server Status Messages</h3>
+    <p id="pumpstatus">No report from pump.</p>
+        <p id="zone1status">No report from zone 1.</p>
+        <p id="zone2status">No report from zone 2.</p>
+    
+    </div>
     <script>
         //  Open a WebSocket to the server.
         let ws = new WebSocket('ws://192.168.1.8:8089');
-
-        ws.onopen = function() {
-            console.log('Web browser opened a WebSocket.');
-        }
-
+// Get buttons.
         let pumpbuttonon = document.getElementById('pumpmotoron');
         let pumpbuttonoff = document.getElementById('pumpmotoroff');
         let zone1buttonon = document.getElementById('zone1on');
         let zone1buttonoff = document.getElementById('zone1off');
         let zone2buttonon = document.getElementById('zone2on');
         let zone2buttonoff = document.getElementById('zone2off');
+// Get status indicator texts.
+        let connectstatus = document.getElementById('connectstatus');
+        let pumpstatus = document.getElementById('pumpstatus');
+        let zone1status = document.getElementById('zone1status');
+        let zone2status = document.getElementById('zone2status');
+        
+        ws.onopen = function() {
+            console.log('Web browser opened a WebSocket.');
+            //  Update the connection status in the browser.
+            connectstatus.textContent = "WebSocket Connected";
+        }
+
+        ws.onclose = function() {
+            console.log('Web browser WebSocket just closed.');
+            //  Update the connection status in the browser.
+            connectstatus.textContent = "WebSocket is disconnected";
+        }
+        
+        //  Get messages from irrigation server and update status.
+        ws.onmessage = function(message) {
+            let controlObject = JSON.parse(data);
+        }
 
         pumpbuttonon.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'pumpmotor': 1}));
+                ws.send(JSON.stringify({
+                    'pumpmotor': 1
+                }));
+                pumpbuttonon.style.color = "green";
+                pumpbuttonoff.style.color = "black";
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
         };
-        
+
         pumpbuttonoff.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'pumpmotor': 0}));
+                ws.send(JSON.stringify({
+                    'pumpmotor': 0
+                }));
+                pumpbuttonon.style.color = "black";
+                pumpbuttonoff.style.color = "red";
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -69,15 +102,19 @@
 
         zone1buttonon.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'zone1': 1}));
+                ws.send(JSON.stringify({
+                    'zone1': 1
+                }));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
         };
-        
+
         zone1buttonoff.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'zone1': 0}));
+                ws.send(JSON.stringify({
+                    'zone1': 0
+                }));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -85,15 +122,19 @@
 
         zone2buttonon.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'zone2': 1}));
+                ws.send(JSON.stringify({
+                    'zone2': 1
+                }));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
         };
-        
+
         zone2buttonoff.onclick = function() {
             if (ws.readyState === ws.OPEN) {
-                ws.send(JSON.stringify({'zone2': 0}));
+                ws.send(JSON.stringify({
+                    'zone2': 0
+                }));
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
