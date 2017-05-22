@@ -37,28 +37,28 @@
         </button>
     </div>
     <div id="status">
-    <h3>Irrigation Server Status Messages</h3>
-    <p id="pumpstatus">No report from pump.</p>
+        <h3>Irrigation Server Status Messages</h3>
+        <p id="pumpstatus">No report from pump.</p>
         <p id="zone1status">No report from zone 1.</p>
         <p id="zone2status">No report from zone 2.</p>
-    
+
     </div>
     <script>
         //  Open a WebSocket to the server.
         let ws = new WebSocket('ws://192.168.1.8:8089');
-// Get buttons.
+        // Get buttons.
         let pumpbuttonon = document.getElementById('pumpmotoron');
         let pumpbuttonoff = document.getElementById('pumpmotoroff');
         let zone1buttonon = document.getElementById('zone1on');
         let zone1buttonoff = document.getElementById('zone1off');
         let zone2buttonon = document.getElementById('zone2on');
         let zone2buttonoff = document.getElementById('zone2off');
-// Get status indicator texts.
+        // Get status indicator texts.
         let connectstatus = document.getElementById('connectstatus');
         let pumpstatus = document.getElementById('pumpstatus');
         let zone1status = document.getElementById('zone1status');
         let zone2status = document.getElementById('zone2status');
-        
+
         ws.onopen = function() {
             console.log('Web browser opened a WebSocket.');
             //  Update the connection status in the browser.
@@ -70,11 +70,23 @@
             //  Update the connection status in the browser.
             connectstatus.textContent = "WebSocket is disconnected";
         }
-        
+
         //  Get messages from irrigation server and update status.
         ws.onmessage = function(message) {
-            let controlObject = JSON.parse(data);
-            console.log(message);
+            //    let controlObject = JSON.parse(message);
+            console.log(message.data);
+            switch (message.data[0].key) {
+                case 'pumpmotor':
+                    pumpstatus = 'Pump status:' + message.data[0].value;
+                    break;
+                case 'zone1':
+                    break;
+zone1status = 'Zone 1 status:' + message.data[0].value;
+                    break;
+                case 'zone2':
+zone2status = 'Zone2 status:' + message.data[0].value;
+                    break;
+            }
         }
 
         pumpbuttonon.onclick = function() {

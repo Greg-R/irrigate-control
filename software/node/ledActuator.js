@@ -49,7 +49,8 @@ module.exports = class ledActuator extends EventEmitter {
             }
             else {
                 console.log(`Status message emitted from ledActuator: ${ledgpio} is set to ${command}.`);
-                this.emit('statusmessage', `{${ledgpio}:${command}}`);
+                //  Send a JSON object with the value being an array.
+                this.emit('statusmessage', `{"statusmessage":[${ledgpio},${command}]}`);
             }
        //     console.log(`stdout: ${stdout}`);
        //     console.log(`stderr: ${stderr}`);
