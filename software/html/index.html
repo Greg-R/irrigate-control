@@ -73,18 +73,18 @@
 
         //  Get messages from irrigation server and update status.
         ws.onmessage = function(message) {
-            //    let controlObject = JSON.parse(message);
+                let statusmessage = JSON.parse(message.data);
             console.log(message.data);
-            switch (message.data[0].key) {
+            switch (statusmessage["statusmessage"][0]) {
                 case 'pumpmotor':
                     pumpstatus = 'Pump status:' + message.data[0].value;
                     break;
                 case 'zone1':
                     break;
-zone1status = 'Zone 1 status:' + message.data[0].value;
+                    zone1status = 'Zone 1 status:' + message.data[0].value;
                     break;
                 case 'zone2':
-zone2status = 'Zone2 status:' + message.data[0].value;
+                    zone2status = 'Zone2 status:' + message.data[0].value;
                     break;
             }
         }
