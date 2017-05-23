@@ -4,38 +4,41 @@
 <head>
     <title>Main Irrigation Controller</title>
 </head>
+<link rel="stylesheet" href="style.css" />
 
 <body>
     <div>
-        <H1>MAIN IRRIGATION CONTROLLER</H1>
+        <H2>MAIN IRRIGATION CONTROLLER</H2>
         <p id="connectstatus">WebSocket is NOT connected!</p>
     </div>
+    <div id="buttons">
+        <div id="pumpbuttons">
+            <button id="pumpmotoron">
+                PUMP MOTOR ON
+            </button>
+            <button id="pumpmotoroff">
+                PUMP MOTOR OFF
+            </button>
+        </div>
+        <div id="zone1buttons">
+            <button id="zone1on">
+                ZONE 1 ON
+            </button>
+            <button id="zone1off">
+                ZONE 1 OFF
+            </button>
 
-    <div>
-        <button id="pumpmotoron">
-            PUMP MOTOR ON
-        </button>
-        <button id="pumpmotoroff">
-            PUMP MOTOR OFF
-        </button>
+        </div>
+        <div id="zone2buttons">
+            <button id="zone2on">
+                ZONE 2 ON
+            </button>
+            <button id="zone2off">
+                ZONE 2 OFF
+            </button>
+        </div>
     </div>
-    <div>
-        <button id="zone1on">
-            ZONE 1 ON
-        </button>
-        <button id="zone1off">
-            ZONE 1 OFF
-        </button>
 
-    </div>
-    <div>
-        <button id="zone2on">
-            ZONE 2 ON
-        </button>
-        <button id="zone2off">
-            ZONE 2 OFF
-        </button>
-    </div>
     <div id="status">
         <h3>Irrigation Server Status Messages</h3>
         <p id="pumpstatus">No report from pump.</p>
@@ -74,18 +77,17 @@
         //  Get messages from irrigation server and update status.
         ws.onmessage = function(message) {
             console.log(message.data);
-                let statusmessage = JSON.parse(message.data);
-            
-            switch (statusmessage["statusmessage"][0]) {
+            let statusmessage = JSON.parse(message.data);
+
+            switch (statusmessage[0]) {
                 case 'pumpmotor':
-                    pumpstatus = 'Pump status:' + message.data[0].value;
+                    pumpstatus.textContent = 'Pump status: ' + statusmessage[1];
                     break;
                 case 'zone1':
-                    break;
-                    zone1status = 'Zone 1 status:' + message.data[0].value;
+                    zone1status.textContent = 'Zone 1 status: ' + statusmessage[1];
                     break;
                 case 'zone2':
-                    zone2status = 'Zone2 status:' + message.data[0].value;
+                    zone2status.textContent = 'Zone2 status: ' + statusmessage[1];
                     break;
             }
         }
@@ -119,6 +121,8 @@
                 ws.send(JSON.stringify({
                     'zone1': 1
                 }));
+                zone1buttonon.style.color = "green";
+                zone1buttonoff.style.color = "black";
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -129,6 +133,8 @@
                 ws.send(JSON.stringify({
                     'zone1': 0
                 }));
+                zone1buttonon.style.color = "black";
+                zone1buttonoff.style.color = "red";
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -139,6 +145,8 @@
                 ws.send(JSON.stringify({
                     'zone2': 1
                 }));
+                zone2buttonon.style.color = "green";
+                zone2buttonoff.style.color = "black";
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
@@ -149,6 +157,8 @@
                 ws.send(JSON.stringify({
                     'zone2': 0
                 }));
+                zone2buttonon.style.color = "black";
+                zone2buttonoff.style.color = "red";
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }

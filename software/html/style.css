@@ -1,0 +1,31 @@
+body {
+    width: 500px;
+    margin: 10 auto;
+}
+div#buttons {
+    margin: 20px;
+}
+#pumpbuttons {
+    width: 350px;
+    height: 40px;
+}
+#pumpmotoroff {
+    float: right;
+}
+#zone1buttons {
+    width: 350px;
+    height: 40px;
+}
+#zone2buttons {
+    width: 350px;
+    height: 40px;
+}
+
+#zone1off {
+    float:right
+}
+
+#zone2off {
+    float:right
+}
+
