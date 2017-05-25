@@ -1,0 +1,75 @@
+%    Documentation for PRU ADC Project
+%    Copyright (C) 2016  Gregory Raven
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\documentclass[oneside,letterpaper,12pt]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[top=0.8874in,bottom=0.8874in,left=0.7874in,right=0.7874in]{geometry}
+\usepackage{charter}
+\usepackage{color}
+\usepackage{array,ragged2e}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, linkcolor=red]{hyperref}
+\usepackage{amsmath}
+\usepackage{titling,lipsum}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{parskip}
+
+
+\title{This is title of my document}
+
+\begin{document}
+\include{cover/cover}
+
+%\setcounter{page}{1}
+
+%\author{Gregory Raven}
+%\title{Using the Beaglebone Black Programmable Real-Time Unit with the RemoteProc and Remote Messaging Framework to Capture and Play Data from an ADC}
+%\date{October 2016}
+
+%
+\frontmatter
+Beaglebone Green PRU PID Motor Speed Control Project
+
+Copyright 2016 by Gregory Raven
+
+Some content is based on material published by Texas Instruments.
+Please see the TI license agreement included in the Github repository.
+%\maketitle
+\tableofcontents
+\listoftables
+\listoffigures
+%\maketitle
+
+\mainmatter
+\include{./TeX_files/introduction}
+\include{./TeX_files/system-diagram}
+\include{./TeX_files/es6}
+\include{./TeX_files/gpio-sysfs}
+\include{./TeX_files/html-controller.tex}
+\include{./TeX_files/solid-relays}
+\include{./TeX_files/shell_scripts}
+\include{./TeX_files/bbgw-config}
+\include{./TeX_files/universal-io}
+\include{./TeX_files/running}
+\include{./TeX_files/resources}
+
+\backmatter
+% bibliography, glossary and index would go here.
+
+\end{document}

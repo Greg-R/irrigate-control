@@ -1,0 +1,35 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Project Goals}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Limitations}{chapter.1}% 3
+\BOOKMARK [0][-]{chapter.2}{System Diagrams}{}% 4
+\BOOKMARK [1][-]{section.2.1}{Programmable Real-time Units \(PRU\)}{chapter.2}% 5
+\BOOKMARK [1][-]{section.2.2}{PRU Shared Memory}{chapter.2}% 6
+\BOOKMARK [1][-]{section.2.3}{GNU/Linux Operating System on Host ARM Processor}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.4}{Motor System Hardware Diagram}{chapter.2}% 8
+\BOOKMARK [0][-]{chapter.3}{Ecmascript 6}{}% 9
+\BOOKMARK [1][-]{section.3.1}{Activate RemoteProc PRU and Kernel Modules}{chapter.3}% 10
+\BOOKMARK [1][-]{section.3.2}{Activate Remoteproc: Step-by-step Process}{chapter.3}% 11
+\BOOKMARK [1][-]{section.3.3}{PRU Compiler Setup Process}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.4}{Additional Configuration Required to Compile the PRU Remoteproc Project}{chapter.3}% 13
+\BOOKMARK [0][-]{chapter.4}{GPIO Control with sysfs Virtual File System}{}% 14
+\BOOKMARK [1][-]{section.4.1}{PID Firmware in PRU0: Digital Feedback Loop \(PRU\137PID\1370.c\)}{chapter.4}% 15
+\BOOKMARK [1][-]{section.4.2}{The Firmware in PRU1: PID Control \(PRU\137IO\1371.c\)}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.3}{Quadrature Decoder Tuning}{chapter.4}% 17
+\BOOKMARK [2][-]{subsection.4.3.1}{Original Quadrature Decoder/Encoder Parameters}{section.4.3}% 18
+\BOOKMARK [2][-]{subsection.4.3.2}{Modified Quadrature Decoder/Encoder Parameters}{section.4.3}% 19
+\BOOKMARK [0][-]{chapter.5}{Solid State AC Relays}{}% 20
+\BOOKMARK [0][-]{chapter.6}{Configuration the Beagle Bone Green Wireless}{}% 21
+\BOOKMARK [1][-]{section.6.1}{The Remoteproc and RPMsg Kernel Modules}{chapter.6}% 22
+\BOOKMARK [1][-]{section.6.2}{Files Associated with RemoteProc in the Compilation Process}{chapter.6}% 23
+\BOOKMARK [0][-]{chapter.7}{Device Tree Requirements}{}% 24
+\BOOKMARK [0][-]{chapter.8}{Running the Project}{}% 25
+\BOOKMARK [1][-]{section.8.1}{User-space Program prumsg Command Listing}{chapter.8}% 26
+\BOOKMARK [1][-]{section.8.2}{Server and GUI Interface from TI Project}{chapter.8}% 27
+\BOOKMARK [0][-]{chapter.9}{Resources}{}% 28
+\BOOKMARK [1][-]{section.9.1}{Github repository for this project}{chapter.9}% 29
+\BOOKMARK [1][-]{section.9.2}{The Texas Instruments PRU PID Motor Demonstration Project}{chapter.9}% 30
+\BOOKMARK [1][-]{section.9.3}{Texas Instruments PRU Code Generation tools}{chapter.9}% 31
+\BOOKMARK [1][-]{section.9.4}{Beagle Bone Green}{chapter.9}% 32
+\BOOKMARK [1][-]{section.9.5}{The Remoteproc Framework and Remote Messaging}{chapter.9}% 33
+\BOOKMARK [1][-]{section.9.6}{The PRU GPIO Spreadsheet}{chapter.9}% 34
+\BOOKMARK [1][-]{section.9.7}{The BeagleScope project}{chapter.9}% 35
