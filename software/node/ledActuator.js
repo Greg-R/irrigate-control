@@ -21,7 +21,17 @@ module.exports = class ledActuator extends EventEmitter {
         this.ledGpioMap = new Map([['pumpmotor', '/sys/class/gpio/gpio50/value'],
                                    ['zone1', '/sys/class/gpio/gpio48/value'],  // working
                                    ['zone2', '/sys/class/gpio/gpio51/value']]);
+        //  Set the appropriate header pins to GPIO mode:
+        this.setGpio('P9.14');
+        this.setGpio('P9.15');
+        this.setGpio('P9.16');
     }
+    
+    //  This function sets the header pin to GPIO mode, state=low and with pull-down.
+    setGpio(headerPin) {
+    const exec = require('child_process').exec;    
+    exec(`config-pin ${headerPin} low_pd`);   
+}
 
     ledObserver() {
         return {
