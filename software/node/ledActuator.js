@@ -29,7 +29,8 @@ module.exports = class ledActuator extends EventEmitter {
     
     //  This function sets the header pin to GPIO mode, state=low and with pull-down.
     setGpio(headerPin) {
-    const exec = require('child_process').exec;    
+    const exec = require('child_process').exec;
+        console.log(`Setting header pin ${headerPin} to GPIO mode.`);
     exec(`config-pin ${headerPin} low_pd`);   
 }
 
