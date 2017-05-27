@@ -4,7 +4,7 @@
 
 let http = require('http');
 let fs = require('fs');
-let base = './../html';
+let base = '../html';
 //let base = '/home/debian/irrigate-control/software/html';
 let wsServer = require('./websocketserver');
 
