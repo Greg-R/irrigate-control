@@ -14,7 +14,7 @@ let server = http.createServer(function (req, res) {
 
     //  Respond to the request.  Need to detect request for css
     //  and respond appropriately.
-    console.log(req.headers);
+    console.log(req.headers.accept);
     res.setHeader('Content-type', 'text/html');
     //  Create and pipe a readable stream:
     let file = fs.createReadStream(pathname);
