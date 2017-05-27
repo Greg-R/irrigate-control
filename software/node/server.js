@@ -12,7 +12,9 @@ let server = http.createServer(function (req, res) {
     let pathname = __dirname + "/" + base + req.url;
     console.log(`The url from the request is ${pathname}.`);
 
-    //  Respond to the request:
+    //  Respond to the request.  Need to detect request for css
+    //  and respond appropriately.
+    console.log(req);
     res.setHeader('Content-type', 'text/html');
     //  Create and pipe a readable stream:
     let file = fs.createReadStream(pathname);
