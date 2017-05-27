@@ -4,6 +4,8 @@
 
 let http = require('http');
 let fs = require('fs');
+let mime =require('mime');
+
 let base = '../html';
 //let base = '/home/debian/irrigate-control/software/html';
 let wsServer = require('./websocketserver');
@@ -14,8 +16,9 @@ let server = http.createServer(function (req, res) {
 
     //  Respond to the request.  Need to detect request for css
     //  and respond appropriately.
-    console.log(req.headers.accept);
-    res.setHeader('Content-type', 'text/html');
+    let type = mime.lookup(req.url);
+    console.log(`The type of the request is ${type}.`);
+    res.setHeader('Content-type', type);
     //  Create and pipe a readable stream:
     let file = fs.createReadStream(pathname);
     file.on('open', function () {
