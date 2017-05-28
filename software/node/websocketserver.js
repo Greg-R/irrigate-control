@@ -60,6 +60,10 @@ exports.listen = function (server) {
                 // Kill unready the WebSocket.
                 console.log("Killing a defective websocket.");
                 ws.terminate();
+                //  Also, remove the Event Listener.
+                ledObject.removeListener('statusmessage', () => {
+                    console.log("statusmessage event removed from ledObject.");
+                });
             }
         });
 
