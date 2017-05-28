@@ -17,7 +17,7 @@ exports.listen = function (server) {
         var url = ws.upgradeReq.url;
         console.info(url);
         console.log(`The connection is open and request is from ${url}.`);
-        ws.on('message', function (data, flags) { //#D subscribe to event.
+        ws.on('message', function (data, flags) {
             console.log(`Received data from client: ${data}.`);
             let controlObject = JSON.parse(data);
             //  Modify the ledHash Proxy.  This will actuate the LEDs!
@@ -29,8 +29,8 @@ exports.listen = function (server) {
             console.log(`Status message received by websocketserver and is: ${message}`);
             if(ws.readyState === 1) ws.send(message);
             else {(console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
-                  // Close the server.
-                  wss.close();
+                  // Close the WebSocket.
+                  ws.close();
                  }
         });
     });
