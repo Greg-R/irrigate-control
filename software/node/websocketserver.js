@@ -29,7 +29,8 @@ exports.listen = function (server) {
             console.log(`Status message received by websocketserver and is: ${message}`);
             if(ws.readyState === 1) ws.send(message);
             else {(console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
-                  ws.close();
+                  // Close the server.
+                  wss.close();
                  }
         });
     });
