@@ -21,12 +21,14 @@ exports.listen = function (server) {
 
         //  Scan the connected sockets and write to the console.
         //  The clients property is a set.
-        wss.clients.forEach(function each(client) {
-            console.log("Printing set of WebSocket clients.");
-        console.log(client);
-        });
+//        wss.clients.forEach(function each(client) {
+ //           console.log("Printing size of set of WebSocket clients.");
+  //      console.log(client);
+ //       });
         
-        console.log(`The WebSocket clients are ${wss.clients}.`);
+        console.log(`The number of clients is ${wss.clients.size}`);
+        
+        //console.log(`The WebSocket clients are ${wss.clients}.`);
 
         //  Handle message sent from Web Browser controller page.
         ws.on('message', function (data, flags) {
