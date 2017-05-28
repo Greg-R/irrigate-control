@@ -7,7 +7,7 @@ const WebSocketServer = require('ws').Server;
 let ledActuator = require('./ledActuator');
 
 //  Create an ledActuator Object.
-let ledObject = new ledActuator();
+//let ledObject = new ledActuator();
 
 exports.listen = function (server) {
     const wss = new WebSocketServer({
@@ -23,6 +23,8 @@ exports.listen = function (server) {
         ws.isAlive = true;
         ws.on('pong', heartbeat);
 
+        let ledObject = new ledActuator();
+        
         let url = ws.upgradeReq.url;
         console.info(url);
         console.log(`The connection is open and request is from ${url}.`);
