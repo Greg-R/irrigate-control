@@ -52,6 +52,7 @@ exports.listen = function (server) {
             } else {
                 (console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
                 // Kill unready the WebSocket.
+                console.log("Killing a defective websocket.");
                          ws.terminate();
             }
         });
