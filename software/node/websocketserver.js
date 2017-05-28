@@ -22,6 +22,7 @@ exports.listen = function (server) {
         //  Scan the connected sockets and write to the console.
         //  The clients property is a set.
         wss.clients.forEach(function each(client) {
+            console.log("Printing set of WebSocket clients.");
         console.log(client);
         });
 
