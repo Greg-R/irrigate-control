@@ -51,8 +51,8 @@ exports.listen = function (server) {
                 console.log("Sending status message to web page.");
             } else {
                 (console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
-                // Close the WebSocket.
-                //         ws.close();
+                // Kill unready the WebSocket.
+                         ws.terminate();
             }
         });
     });
