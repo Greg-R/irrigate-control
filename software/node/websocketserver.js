@@ -14,20 +14,23 @@ exports.listen = function (server) {
         server: server
     }); //#B
     console.info('WebSocket server started...');
-    wss.on('connection', function (ws) { //#C
+    wss.on('connection', function (ws) {
+        ws.isAlive = true;
+        ws.on('pong', heartbeat);
+
         let url = ws.upgradeReq.url;
         console.info(url);
         console.log(`The connection is open and request is from ${url}.`);
 
         //  Scan the connected sockets and write to the console.
         //  The clients property is a set.
-//        wss.clients.forEach(function each(client) {
- //           console.log("Printing size of set of WebSocket clients.");
-  //      console.log(client);
- //       });
-        
+        //        wss.clients.forEach(function each(client) {
+        //           console.log("Printing size of set of WebSocket clients.");
+        //      console.log(client);
+        //       });
+
         console.log(`The number of clients is ${wss.clients.size}`);
-        
+
         //console.log(`The WebSocket clients are ${wss.clients}.`);
 
         //  Handle message sent from Web Browser controller page.
@@ -54,15 +57,15 @@ exports.listen = function (server) {
                 (console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
                 // Kill unready the WebSocket.
                 console.log("Killing a defective websocket.");
-                         ws.terminate();
+                ws.terminate();
             }
         });
-        
+
         //  Close the server if the WebSocket closes.
-    //    ws.on('close', () => {
-    //        console.log("Closing the WebSocket server.")
-    //        wss.close();
-     //   });
+        //    ws.on('close', () => {
+        //        console.log("Closing the WebSocket server.")
+        //        wss.close();
+        //   });
     });
 
     //  Close the server if the 'close' event is sent.
@@ -71,5 +74,19 @@ exports.listen = function (server) {
             console.log("Closing WebSocketServer.");
         });
     });
+
+    function heartbeat() {
+        this.isAlive = true;
+    }
+    
+    const interval = setInterval(function ping() {
+  wss.clients.forEach(function each(ws) {
+    if (ws.isAlive === false) return ws.terminate();
+
+    ws.isAlive = false;
+    ws.ping('', false, true);
+  });
+}, 30000);
+
 
 };
