@@ -28,7 +28,9 @@ exports.listen = function (server) {
         ledObject.on('statusmessage', function (message) {
             console.log(`Status message received by websocketserver and is: ${message}`);
             if(ws.readyState === 1) ws.send(message);
-            else(console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
+            else {(console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
+                  ws.close();
+                 }
         });
     });
     
