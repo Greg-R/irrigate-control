@@ -12,7 +12,12 @@ let ledObject = new ledActuator();
 exports.listen = function (server) {
     const wss = new WebSocketServer({
         server: server
-    }); //#B
+    });
+    
+    function heartbeat() {
+        this.isAlive = true;
+    }
+    
     console.info('WebSocket server started...');
     wss.on('connection', function (ws) {
         ws.isAlive = true;
@@ -46,9 +51,6 @@ exports.listen = function (server) {
             console.log(`Status message received by websocketserver and is: ${message}`);
 
             //  Ping sockets and kill the dead ones.
-
-
-
             if (ws.readyState === 1) {
                 console.log("WebSocket is ready and sending status to Web Page.");
                 ws.send(message);
@@ -75,18 +77,13 @@ exports.listen = function (server) {
         });
     });
 
-    function heartbeat() {
-        this.isAlive = true;
-    }
-    
     const interval = setInterval(function ping() {
-  wss.clients.forEach(function each(ws) {
-    if (ws.isAlive === false) return ws.terminate();
+        wss.clients.forEach(function each(ws) {
+            if (ws.isAlive === false) return ws.terminate();
 
-    ws.isAlive = false;
-    ws.ping('', false, true);
-  });
-}, 30000);
-
+            ws.isAlive = false;
+            ws.ping('', false, true);
+        });
+    }, 1000);
 
 };
