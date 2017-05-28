@@ -134,6 +134,7 @@
 
         zone1buttonoff.onclick = function() {
             if (ws.readyState === ws.OPEN) {
+                console.log("Sending to server.");
                 ws.send(JSON.stringify({
                     'zone1': 0
                 }));
