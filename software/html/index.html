@@ -67,9 +67,6 @@
             console.log('Web browser opened a WebSocket.');
             //  Update the connection status in the browser.
             connectstatus.textContent = "WebSocket Connected";
-            
-            //  Terminate dead WebSockets.
-            console.log(`The number of WebSockets is ${ws.size}`)    
         }
 
         ws.onclose = function() {
