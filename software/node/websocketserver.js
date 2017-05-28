@@ -47,6 +47,7 @@ exports.listen = function (server) {
 
 
             if (ws.readyState === 1) {
+                console.log("WebSocket is ready and sending status to Web Page.");
                 ws.send(message);
                 console.log("Sending status message to web page.");
             } else {
