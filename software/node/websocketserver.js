@@ -25,6 +25,8 @@ exports.listen = function (server) {
             console.log("Printing set of WebSocket clients.");
         console.log(client);
         });
+        
+        console.log(`The WebSocket clients are ${wss.clients}.`);
 
         //  Handle message sent from Web Browser controller page.
         ws.on('message', function (data, flags) {
