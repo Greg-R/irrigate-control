@@ -59,10 +59,10 @@ exports.listen = function (server) {
         });
         
         //  Close the server if the WebSocket closes.
-        ws.on('close', () => {
-            console.log("Closing the WebSocket server.")
-            wss.close();
-        });
+    //    ws.on('close', () => {
+    //        console.log("Closing the WebSocket server.")
+    //        wss.close();
+     //   });
     });
 
     //  Close the server if the 'close' event is sent.
