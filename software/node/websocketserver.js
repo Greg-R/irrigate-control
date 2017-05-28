@@ -27,7 +27,7 @@ exports.listen = function (server) {
         //  Send messages to the web page indicating control status.
         ledObject.on('statusmessage', function (message) {
             console.log(`Status message received by websocketserver and is: ${message}`);
-            if(ws.readyState) ws.send(message);
+            if(ws.readyState === 1) ws.send(message);
             else(console.log("Websocket was not ready."));
         });
     });
