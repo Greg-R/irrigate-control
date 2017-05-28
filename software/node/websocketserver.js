@@ -31,5 +31,10 @@ exports.listen = function (server) {
             else(console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
         });
     });
+    
+    //  Close the server if the 'close' event is sent.
+    wss.on('close', function () {
+        wss.close(() => {console.log("Closing WebSocketServer.");});
+    });
 
 };
