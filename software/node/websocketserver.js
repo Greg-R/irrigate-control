@@ -3,20 +3,29 @@
 //  This is the WebSockets server for the Irrigation control.
 
 //  Get the class:
-let WebSocketServer = require('ws').Server;
+const WebSocketServer = require('ws').Server;
 let ledActuator = require('./ledActuator');
 
+//  Create an ledActuator Object.
 let ledObject = new ledActuator();
 
 exports.listen = function (server) {
-    var wss = new WebSocketServer({
+    const wss = new WebSocketServer({
         server: server
     }); //#B
     console.info('WebSocket server started...');
     wss.on('connection', function (ws) { //#C
-        var url = ws.upgradeReq.url;
+        let url = ws.upgradeReq.url;
         console.info(url);
         console.log(`The connection is open and request is from ${url}.`);
+
+        //  Scan the connected sockets and write to the console.
+        //  The clients property is a set.
+        wss.clients.forEach(function each(client) {
+        console.log(client);
+        });
+
+        //  Handle message sent from Web Browser controller page.
         ws.on('message', function (data, flags) {
             console.log(`Received data from client: ${data}.`);
             let controlObject = JSON.parse(data);
@@ -27,19 +36,27 @@ exports.listen = function (server) {
         //  Send messages to the web page indicating control status.
         ledObject.on('statusmessage', function (message) {
             console.log(`Status message received by websocketserver and is: ${message}`);
-            if(ws.readyState === 1) { ws.send(message);
-                                     console.log("Sending status message to web page.");
-                                    }
-            else {(console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
-                  // Close the WebSocket.
-         //         ws.close();
-                 }
+
+            //  Ping sockets and kill the dead ones.
+
+
+
+            if (ws.readyState === 1) {
+                ws.send(message);
+                console.log("Sending status message to web page.");
+            } else {
+                (console.log(`Websocket was not ready and readyState is ${ws.readyState}.`));
+                // Close the WebSocket.
+                //         ws.close();
+            }
         });
     });
-    
+
     //  Close the server if the 'close' event is sent.
     wss.on('close', function () {
-        wss.close(() => {console.log("Closing WebSocketServer.");});
+        wss.close(() => {
+            console.log("Closing WebSocketServer.");
+        });
     });
 
 };
