@@ -20,8 +20,8 @@ exports.listen = function (server) {
     
     console.info('WebSocket server started...');
     wss.on('connection', function (ws) {
-        ws.isAlive = true;
-        ws.on('pong', heartbeat);
+   //     ws.isAlive = true;
+   //     ws.on('pong', heartbeat);
 
         let ledObject = new ledActuator();
         
@@ -68,12 +68,6 @@ exports.listen = function (server) {
                 });
             }
         });
-
-        //  Close the server if the WebSocket closes.
-        //    ws.on('close', () => {
-        //        console.log("Closing the WebSocket server.")
-        //        wss.close();
-        //   });
     });
 
     //  Close the server if the 'close' event is sent.
@@ -83,13 +77,12 @@ exports.listen = function (server) {
         });
     });
 
-    const interval = setInterval(function ping() {
-        wss.clients.forEach(function each(ws) {
-            if (ws.isAlive === false) return ws.terminate();
-
-            ws.isAlive = false;
-            ws.ping('', false, true);
-        });
-    }, 1000);
+//    const interval = setInterval(function ping() {
+//        wss.clients.forEach(function each(ws) {
+//            if (ws.isAlive === false) return ws.terminate();
+//            ws.isAlive = false;
+ //           ws.ping('', false, true);
+ //       });
+//    }, 1000);
 
 };
