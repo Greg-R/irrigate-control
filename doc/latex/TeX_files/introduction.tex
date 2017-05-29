@@ -16,48 +16,92 @@
 
 \chapter{Introduction}
 
-This is the documentation for an embedded GNU/Linux project utilizing the RemoteProc and RPMsg framework in the Beaglebone Green (BBG) development board.  The project repository is located here:
+This is the documentation for an embedded GNU/Linux project using the 
+Beaglebone Green Wireless (BBGW) development board.  The project repository is 
+located here:
 
-\url{https://github.com/Greg-R/pru-pid-motor}
+\url{https://github.com/Greg-R/irrigate-control}
 
-The inspiration for this project came from an example project published by Texas Instruments.  The Texas Instruments project is based on "Code Composer Studio", which is an "Integrated Development Environment" (IDE):
-
-\url{http://processors.wiki.ti.com/index.php/PRU_Training:_PRU_PID_Motor_Demo}
-
-There is also a PDF file which describes the project in detail:
-
-\url{http://www.ti.com/lit/ug/tidubj6/tidubj6.pdf}
-
-The TI project requires a relatively complex cross-compiler installation.  This project is designed to be done via SSH terminal connection, and all software compilation was done on the Beaglebone Green target device using the PRU C compiler (clpru).  The VIM text editor was used to edit files, however, any text editor available in the Debian distribution can be used.
-
-The Debian-based GNU/Linux distribution used on the BBG can be downloaded from this page:
+The Debian-based GNU/Linux distribution used on the BBGW can be downloaded from 
+this page:
 
 \url{http://beagleboard.org/latest-images}
 
 The ``IOT'' (non-GUI) image was chosen, as this provides the shortest path to get the project up and running.
 
-Recent developments in the Texas Instruments PRU support include the RemoteProc and Remote Messaging frameworks, as well as an extensively documented C compiler and much additional supporting documentation.  This project utilizes these frameworks and is entirely dependent upon C code in both the PRU and GNU/Linux user space.  For further information, refer to the detailed examples provided by TI in the ``PRU Support Package'':
-
-\url{https://git.ti.com/pru-software-support-package}
-
 A listing of additional resources is found in the Resources chapter.
-
-The motor recommended by TI was purchased and tested.  However, a better motor with an integrated quadrature encoder was found on eBay and is recommended.  A chapter is included which describes this motor-encoder and how to obtain one.
 
 \section{Project Goals}
 
-This project demonstrates an electronic speed control for a DC motor which is implemented with the PRUs included with the Beaglebone Green.  Beyond its usefulness as a demonstration project, it could be used in a robotics project such as a ``mobile robot''.
+I've published two other projects on Hackster.io.  These other projects are 
+interesting, and good learning tools, but they do not do anything useful in the 
+real world.  After a couple of years of "going up the learning curve" on 
+embedded device development, it was time to create something practical!
 
-The basic principle of the speed controller is "Proportional Integral Derivative" (PID) feedback control, which is a common feedback controller used in digital systems.
+This project performs the simple home automation task of controlling a lawn 
+irrigation system.  For many years, I had been controlling the irrigation 
+system manually by flipping a circuit breaker to turn the pump motor on and 
+off.  The old timing unit had failed years ago, and I had never replaced it.  
+So now I wanted to be able to control the system via a web browser without 
+having to leave my home office desk.
 
-Here is an excellent reference article on PID controllers:
+Although in principle the automation is simple, the underlying technology is 
+complex!  There was a significant investment in time learning the technology 
+required to implement the project.
 
-\url{http://www.wescottdesign.com/articles/pid/pidWithoutAPhd.pdf}
+\section{Technologies}
 
-\section{Limitations}
+The development board chosen is the Beagle Bone Green Wireless (BBGW).  I have 
+significant experience with the regular Beagle Bone Green, and the WIFI 
+capability is required for this project. The board will be mounted remotely 
+with access to power only (no wired ethernet is possible).
 
-All of the development was done as root user via ssh on the BeagleBone Green.  This is generally not a good practice, however, considering this as an embedded and experimental project it was not considered to be a serious drawback.
+The Debian-based GNU/Linux distribution used on the BBGW can be downloaded from 
+this page:
 
-No attempt was made to optimize the response of the PID controller.  The default values for the PID controller create a stable loop with the recommended DC motor-encoder.  Optimization will depend on the particular motor-encoder chosen and this task is left to the interested experimenter.
+\url{http://beagleboard.org/latest-images}
+
+The ``IOT'' (non-GUI) image was chosen, as this provides the shortest path to 
+get the project up and running.
+
+Node.js version v7.9.0 was used.  This is a much later version than what is 
+included in the image.  A section on ungrading is included.
+
+The project's Javascript code uses several "Ecmascript 6" constructs.  In my 
+opinion this release of Javascript is a significant improvement in the 
+language.  Some of the strange quirks of Javascript are eliminated!
+
+Two-way communication between the web browser and the BBGW was done with 
+``WebSockets``.  The client side WebSocket is built into the browser.  Using 
+the latest updates in Ubuntu 16.04, both Firefox and Chromium browsers include 
+this capability.  The Chrome browser of an Android phone was also found to work.
+
+Here is a good reference on the client (browser) side WebSockets:
+
+\url{https://developer.mozilla.org/en-US/docs/Web/API/WebSocket}
+
+The server side uses a Node.js package called ``ws'':
+
+\url{https://github.com/websockets/ws}
+
+Since this is a ``real world'' project, there has to be an interface with real 
+actuators.  This small ``solid-state-relay'' board proved to be ideal for 
+taking the GPIO outputs of the BBGW and doing something real:
+
+\url{https://www.amazon.com/gp/product/B00ZZVQR5Q/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1}
+
+This board has four individual relays.  This project uses only three.
+
+Note that this type of relay can switch AC power only.  This was ideal for this 
+project, as the irrigation system is powered by 24VAC.
+
+The other common components of the irrigation system are listed in the 
+reference section at the end of this document.
+
+``Universal IO'' was used to set the pin multiplexer to GPIO mode:
+
+\url{https://github.com/cdsteinkuehler/beaglebone-universal-io}
+
+
 
 
