@@ -1,14 +1,12 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces PRU PID System on BeagleBone Green AM335X ``System On Chip''}}{3}{figure.2.1}
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Motor System Hardware Diagram}}{4}{figure.2.2}
-\contentsline {figure}{\numberline {2.3}{\ignorespaces Photo of the Beaglebone Green and DRV8833 Break-out Boards. Note the LED/Resistor in series from P8-39 to P8-45.}}{5}{figure.2.3}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Beagle Bone Green Wireless Irrigation Control System}}{3}{figure.2.1}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces DRV8833 Break-out board (2 boards showing with view of top and bottom sides)}}{16}{figure.5.1}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces DRV8833 Break-out board (2 boards showing with view of top and bottom sides)}}{15}{figure.5.1}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Data Pathways on the AM335X SOC}}{17}{figure.6.1}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Data Pathways on the AM335X SOC}}{16}{figure.6.1}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
