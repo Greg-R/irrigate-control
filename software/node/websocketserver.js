@@ -3,7 +3,7 @@
 
 //  Get the WebSocket class:
 const WebSocketServer = require('ws').Server;
-let ledActuator = require('./ledActuator');
+let pumpActuator = require('./pumpActuator');
 
 exports.listen = function (server) {
     const wss = new WebSocketServer({
@@ -13,7 +13,7 @@ exports.listen = function (server) {
     console.info('WebSocket server started...');
     wss.on('connection', function (ws) {
         //  Note the use of let for ledObject; the Object will be destroyed if the wss is destroyed.
-        let ledObject = new ledActuator();
+        let pumpObject = new pumpActuator();
 
         let url = ws.upgradeReq.url;
         console.info(url);
@@ -25,10 +25,10 @@ exports.listen = function (server) {
             let controlObject = JSON.parse(data);
             //  Modify the ledHash Proxy.  This will actuate the LEDs!
             //  Object.assign updates the ledHash in the ledActuator.
-            Object.assign(ledObject.ledHashProxy, controlObject);
+            Object.assign(pumpObject.pumpHashProxy, controlObject);
         });
         //  Send messages to the web page indicating control status.
-        ledObject.on('statusmessage', function (message) {
+        pumpObject.on('statusmessage', function (message) {
             console.log(`Status message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {

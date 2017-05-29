@@ -4,29 +4,28 @@
 \contentsline {chapter}{\numberline {2}System Diagrams}{3}{chapter.2}
 \contentsline {section}{\numberline {2.1}GNU/Linux Operating System on Host ARM Processor}{4}{section.2.1}
 \contentsline {chapter}{\numberline {3}Ecmascript 6}{5}{chapter.3}
-\contentsline {section}{\numberline {3.1}Activate RemoteProc PRU and Kernel Modules}{5}{section.3.1}
-\contentsline {section}{\numberline {3.2}Activate Remoteproc: Step-by-step Process}{6}{section.3.2}
-\contentsline {section}{\numberline {3.3}PRU Compiler Setup Process}{8}{section.3.3}
-\contentsline {section}{\numberline {3.4}Additional Configuration Required to Compile the PRU Remoteproc Project}{10}{section.3.4}
-\contentsline {chapter}{\numberline {4}GPIO Control with sysfs Virtual File System}{11}{chapter.4}
-\contentsline {section}{\numberline {4.1}PID Firmware in PRU0: Digital Feedback Loop (PRU\_PID\_0.c)}{11}{section.4.1}
-\contentsline {section}{\numberline {4.2}The Firmware in PRU1: PID Control (PRU\_IO\_1.c)}{12}{section.4.2}
-\contentsline {section}{\numberline {4.3}Quadrature Decoder Tuning}{13}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Original Quadrature Decoder/Encoder Parameters}{13}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Modified Quadrature Decoder/Encoder Parameters}{14}{subsection.4.3.2}
-\contentsline {chapter}{\numberline {5}Solid State AC Relays}{15}{chapter.5}
-\contentsline {chapter}{\numberline {6}Configuration the Beagle Bone Green Wireless}{16}{chapter.6}
-\contentsline {section}{\numberline {6.1}The Remoteproc and RPMsg Kernel Modules}{16}{section.6.1}
-\contentsline {section}{\numberline {6.2}Files Associated with RemoteProc in the Compilation Process}{17}{section.6.2}
-\contentsline {chapter}{\numberline {7}Device Tree Requirements}{19}{chapter.7}
-\contentsline {chapter}{\numberline {8}Running the Project}{20}{chapter.8}
-\contentsline {section}{\numberline {8.1}User-space Program prumsg Command Listing}{21}{section.8.1}
-\contentsline {section}{\numberline {8.2}Server and GUI Interface from TI Project}{21}{section.8.2}
-\contentsline {chapter}{\numberline {9}Resources}{23}{chapter.9}
-\contentsline {section}{\numberline {9.1}Github repository for this project}{23}{section.9.1}
-\contentsline {section}{\numberline {9.2}The Texas Instruments PRU PID Motor Demonstration Project}{23}{section.9.2}
-\contentsline {section}{\numberline {9.3}Texas Instruments PRU Code Generation tools}{23}{section.9.3}
-\contentsline {section}{\numberline {9.4}Beagle Bone Green}{23}{section.9.4}
-\contentsline {section}{\numberline {9.5}The Remoteproc Framework and Remote Messaging}{23}{section.9.5}
-\contentsline {section}{\numberline {9.6}The PRU GPIO Spreadsheet}{24}{section.9.6}
-\contentsline {section}{\numberline {9.7}The BeagleScope project}{24}{section.9.7}
+\contentsline {subsection}{\numberline {3.0.1}class}{5}{subsection.3.0.1}
+\contentsline {subsection}{\numberline {3.0.2}Map}{5}{subsection.3.0.2}
+\contentsline {subsection}{\numberline {3.0.3}Proxy}{6}{subsection.3.0.3}
+\contentsline {chapter}{\numberline {4}GPIO Control with sysfs Virtual File System}{7}{chapter.4}
+\contentsline {section}{\numberline {4.1}PID Firmware in PRU0: Digital Feedback Loop (PRU\_PID\_0.c)}{7}{section.4.1}
+\contentsline {section}{\numberline {4.2}The Firmware in PRU1: PID Control (PRU\_IO\_1.c)}{8}{section.4.2}
+\contentsline {section}{\numberline {4.3}Quadrature Decoder Tuning}{9}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Original Quadrature Decoder/Encoder Parameters}{9}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Modified Quadrature Decoder/Encoder Parameters}{10}{subsection.4.3.2}
+\contentsline {chapter}{\numberline {5}Solid State AC Relays}{11}{chapter.5}
+\contentsline {chapter}{\numberline {6}Configuration the Beagle Bone Green Wireless}{12}{chapter.6}
+\contentsline {section}{\numberline {6.1}The Remoteproc and RPMsg Kernel Modules}{12}{section.6.1}
+\contentsline {section}{\numberline {6.2}Files Associated with RemoteProc in the Compilation Process}{13}{section.6.2}
+\contentsline {chapter}{\numberline {7}Device Tree Requirements}{15}{chapter.7}
+\contentsline {chapter}{\numberline {8}Running the Project}{16}{chapter.8}
+\contentsline {section}{\numberline {8.1}User-space Program prumsg Command Listing}{17}{section.8.1}
+\contentsline {section}{\numberline {8.2}Server and GUI Interface from TI Project}{17}{section.8.2}
+\contentsline {chapter}{\numberline {9}Resources}{19}{chapter.9}
+\contentsline {section}{\numberline {9.1}Github repository for this project}{19}{section.9.1}
+\contentsline {section}{\numberline {9.2}The Texas Instruments PRU PID Motor Demonstration Project}{19}{section.9.2}
+\contentsline {section}{\numberline {9.3}Texas Instruments PRU Code Generation tools}{19}{section.9.3}
+\contentsline {section}{\numberline {9.4}Beagle Bone Green}{19}{section.9.4}
+\contentsline {section}{\numberline {9.5}The Remoteproc Framework and Remote Messaging}{19}{section.9.5}
+\contentsline {section}{\numberline {9.6}The PRU GPIO Spreadsheet}{20}{section.9.6}
+\contentsline {section}{\numberline {9.7}The BeagleScope project}{20}{section.9.7}

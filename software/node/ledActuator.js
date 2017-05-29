@@ -1,11 +1,11 @@
 /*jshint esversion: 6 */
 
-//  Led Control Actuator Object
+//  Pump Control Actuator Object
 
 let EventEmitter = require('events').EventEmitter;
 const exec = require('child_process').exec;
 
-module.exports = class ledActuator extends EventEmitter {
+module.exports = class pumpActuator extends EventEmitter {
 
     constructor() {
         super();
@@ -15,16 +15,16 @@ module.exports = class ledActuator extends EventEmitter {
             'zone2': 0
         };*/
         
-        this.ledMap = new Map([['pumpmotor', 0],
+        this.pumpMap = new Map([['pumpmotor', 0],
                               ['zone1', 0],
                               ['zone2', 0]]);
         
       //  this.ledHashProxy = new Proxy(this.ledHash, this.ledObserver());
-        this.ledHashProxy = new Proxy(this.ledMap, this.ledObserver());
+        this.pumpHashProxy = new Proxy(this.pumpMap, this.pumpObserver());
         //  Using pins 8.7 (gpio66), 8.8 (gpio67), and 8.10 (gpio68).
         //  Revised to pins 9.14 (gpio50), 9.15 (gpio48), 9.16 (gpio51).
         //  This moves to more convenient physical location for permanent wiring.
-        this.ledGpioMap = new Map([['pumpmotor', '/sys/class/gpio/gpio50/value'],
+        this.pumpGpioMap = new Map([['pumpmotor', '/sys/class/gpio/gpio50/value'],
                                    ['zone1', '/sys/class/gpio/gpio48/value'],
                                    ['zone2', '/sys/class/gpio/gpio51/value']]);
         //  Set the appropriate header pins to GPIO mode:
@@ -40,11 +40,11 @@ module.exports = class ledActuator extends EventEmitter {
         exec(`config-pin ${headerPin} low_pd`);
     }
 
-    ledObserver() {
+    pumpObserver() {
         return {
             set: (target, property, value, receiver) => {
                 console.log(`Setting ${property} to ${value}.`);
-                this.ledControl(property, value);
+                this.pumpControl(property, value);
                 target[property] = value;
                 return true;
             }
@@ -52,20 +52,20 @@ module.exports = class ledActuator extends EventEmitter {
     }
 
     //  This method does system calls on /sys to control the LEDs.
-    ledControl(ledgpio, command) {
+    pumpControl(pumpgpio, command) {
         //       console.log('ledControl method was called!');
         const exec = require('child_process').exec;
         //       console.log(`ledgpio = ${ledgpio} and this.ledGpioMap[ledgpio] = ${this.ledGpioMap.get(ledgpio)}`);
         //       console.log(`echoing this command: echo ${command} > ${this.ledGpioMap.get(ledgpio)}`);
-        exec(`echo ${command} > ${this.ledGpioMap.get(ledgpio)}`, (error, stdout, stderr) => {
+        exec(`echo ${command} > ${this.pumpGpioMap.get(pumpgpio)}`, (error, stdout, stderr) => {
             // If error, do not update the status of the controls.
             if (error) {
                 console.error(`exec error: ${error}`);
                 return;
             } else {
-                console.log(`Status message emitted from ledActuator: ${ledgpio} is set to ${command}.`);
+                console.log(`Status message emitted from ledActuator: ${pumpgpio} is set to ${command}.`);
                 //  Send a JSON object with the value being an array.
-                this.emit('statusmessage', `["${ledgpio}",${command}]`);
+                this.emit('statusmessage', `["${pumpgpio}",${command}]`);
             }
             //     console.log(`stdout: ${stdout}`);
             //     console.log(`stderr: ${stderr}`);

@@ -28,13 +28,31 @@ Some of the ES6 constructs used in this project:
 \item class
 \item Map
 \item Proxy
-\item let
-\item const
+\item const and let
 \end{itemize}
 
 A good reference for ES6 is at the Mozilla Developer Network:
 
 \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}
+
+A quick summary of the ES6 constructs follows.
+
+\subsection{class}
+
+The new ``class'' keyword does not provide new functionality.  What is does is 
+allow a Javascript class object to be written in a more traditional 
+object-oriented style.  This does make things easier for a person used to other 
+language's syntax for defining classes.
+
+\subsection{Map}
+
+The ``Map'' is a new data structure object which is similar to what is called a 
+``hash'', dictionary, or associative array.  Prior to ES6, the Javascript 
+object was used functionally as a Map, however, this was kind of a hack.
+
+In this project, the Map object is used in the pumpActuator object.
+
+\subsection{Proxy}
 
 Of the above ES6 constructs, the only one requiring detailed explanation is the 
 ``Proxy''.  The construct is used to implement the so-call ``Observer'' pattern.
