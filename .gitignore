@@ -40,3 +40,9 @@ jspm_packages
 *.lot
 *.lof
 *.synctex.gz
+*.log
+*.out
+*.toc
+doc/latex/photos/extras/
+software/node/websocketserver_mitigation_functions.js
+
