@@ -6,26 +6,22 @@
 \contentsline {chapter}{\numberline {3}Ecmascript 6}{5}{chapter.3}
 \contentsline {subsection}{\numberline {3.0.1}class}{5}{subsection.3.0.1}
 \contentsline {subsection}{\numberline {3.0.2}Map}{5}{subsection.3.0.2}
-\contentsline {subsection}{\numberline {3.0.3}Proxy}{6}{subsection.3.0.3}
-\contentsline {chapter}{\numberline {4}GPIO Control with sysfs Virtual File System}{7}{chapter.4}
-\contentsline {section}{\numberline {4.1}PID Firmware in PRU0: Digital Feedback Loop (PRU\_PID\_0.c)}{7}{section.4.1}
-\contentsline {section}{\numberline {4.2}The Firmware in PRU1: PID Control (PRU\_IO\_1.c)}{8}{section.4.2}
-\contentsline {section}{\numberline {4.3}Quadrature Decoder Tuning}{9}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Original Quadrature Decoder/Encoder Parameters}{9}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Modified Quadrature Decoder/Encoder Parameters}{10}{subsection.4.3.2}
-\contentsline {chapter}{\numberline {5}Solid State AC Relays}{11}{chapter.5}
-\contentsline {chapter}{\numberline {6}Configuration the Beagle Bone Green Wireless}{12}{chapter.6}
-\contentsline {section}{\numberline {6.1}The Remoteproc and RPMsg Kernel Modules}{12}{section.6.1}
-\contentsline {section}{\numberline {6.2}Files Associated with RemoteProc in the Compilation Process}{13}{section.6.2}
-\contentsline {chapter}{\numberline {7}Device Tree Requirements}{15}{chapter.7}
-\contentsline {chapter}{\numberline {8}Running the Project}{16}{chapter.8}
-\contentsline {section}{\numberline {8.1}User-space Program prumsg Command Listing}{17}{section.8.1}
-\contentsline {section}{\numberline {8.2}Server and GUI Interface from TI Project}{17}{section.8.2}
-\contentsline {chapter}{\numberline {9}Resources}{19}{chapter.9}
-\contentsline {section}{\numberline {9.1}Github repository for this project}{19}{section.9.1}
-\contentsline {section}{\numberline {9.2}The Texas Instruments PRU PID Motor Demonstration Project}{19}{section.9.2}
-\contentsline {section}{\numberline {9.3}Texas Instruments PRU Code Generation tools}{19}{section.9.3}
-\contentsline {section}{\numberline {9.4}Beagle Bone Green}{19}{section.9.4}
-\contentsline {section}{\numberline {9.5}The Remoteproc Framework and Remote Messaging}{19}{section.9.5}
-\contentsline {section}{\numberline {9.6}The PRU GPIO Spreadsheet}{20}{section.9.6}
-\contentsline {section}{\numberline {9.7}The BeagleScope project}{20}{section.9.7}
+\contentsline {subsection}{\numberline {3.0.3}Arrow Function}{6}{subsection.3.0.3}
+\contentsline {subsection}{\numberline {3.0.4}Proxy}{6}{subsection.3.0.4}
+\contentsline {subsection}{\numberline {3.0.5}const and let}{7}{subsection.3.0.5}
+\contentsline {chapter}{\numberline {4}GPIO Control with sysfs Virtual File System}{8}{chapter.4}
+\contentsline {section}{\numberline {4.1}PID Firmware in PRU0: Digital Feedback Loop (PRU\_PID\_0.c)}{8}{section.4.1}
+\contentsline {section}{\numberline {4.2}The Firmware in PRU1: PID Control (PRU\_IO\_1.c)}{9}{section.4.2}
+\contentsline {section}{\numberline {4.3}Quadrature Decoder Tuning}{10}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Original Quadrature Decoder/Encoder Parameters}{10}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Modified Quadrature Decoder/Encoder Parameters}{11}{subsection.4.3.2}
+\contentsline {chapter}{\numberline {5}Solid State AC Relays}{12}{chapter.5}
+\contentsline {chapter}{\numberline {6}Configuration of the Beagle Bone Green Wireless}{13}{chapter.6}
+\contentsline {chapter}{\numberline {7}Device Tree Requirements}{16}{chapter.7}
+\contentsline {chapter}{\numberline {8}Running the Project}{17}{chapter.8}
+\contentsline {section}{\numberline {8.1}User-space Program prumsg Command Listing}{18}{section.8.1}
+\contentsline {section}{\numberline {8.2}Server and GUI Interface from TI Project}{18}{section.8.2}
+\contentsline {chapter}{\numberline {9}Resources}{20}{chapter.9}
+\contentsline {section}{\numberline {9.1}Github repository for this project}{20}{section.9.1}
+\contentsline {section}{\numberline {9.2}Beagle Bone Green Wireless}{20}{section.9.2}
+\contentsline {section}{\numberline {9.3}The PRU GPIO Spreadsheet}{20}{section.9.3}

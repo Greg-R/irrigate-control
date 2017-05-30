@@ -16,11 +16,9 @@
 
 \chapter{Device Tree Requirements}
 
-This project requires a custom ``Device Tree Include''.  This is a device tree fragment which is inserted into the top device tree file.  The dtsi directory located in the software directory contains the file and and a README file which explains how to edit the device tree source file.
-
-The same file, which in this case is ``am335x-bonegreen.dts'', must be modified in order to active the RemoteProc framework kernel drivers.  It is recommended to add the include statement at the same time the RemoteProc is activated.  This step is included in the RemoteProc and PRU Compiler step-by-step process in Chapter 9.
-
-There is one PRU GPIO output enabled on header P9 and this is used to monitor Quadrature Decoder under/overflow.  This configuration is done in the same file ``pru\_gpio\_config'' which is sourced by .bashrc as discussed in Chapter 6.
+This project requires only three GPIOs.  Rather than editing device tree files, 
+and having to deal with potential bugs caused by this, the great config-pin 
+utility was used.  This utility is provided by the Universal IO project.
 
 The Universal IO project is located at this Github repository:
 

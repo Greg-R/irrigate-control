@@ -8,19 +8,11 @@ const exec = require('child_process').exec;
 module.exports = class pumpActuator extends EventEmitter {
 
     constructor() {
-        super();
-/*        this.ledHash = {
-            'pumpmotor': 0,
-            'zone1': 0,
-            'zone2': 0
-        };*/
-        
+        super();       
         this.pumpMap = new Map([['pumpmotor', 0],
                               ['zone1', 0],
                               ['zone2', 0]]);
-        
-      //  this.ledHashProxy = new Proxy(this.ledHash, this.ledObserver());
-        this.pumpHashProxy = new Proxy(this.pumpMap, this.pumpObserver());
+        this.pumpMapProxy = new Proxy(this.pumpMap, this.pumpObserver());
         //  Using pins 8.7 (gpio66), 8.8 (gpio67), and 8.10 (gpio68).
         //  Revised to pins 9.14 (gpio50), 9.15 (gpio48), 9.16 (gpio51).
         //  This moves to more convenient physical location for permanent wiring.
@@ -53,10 +45,7 @@ module.exports = class pumpActuator extends EventEmitter {
 
     //  This method does system calls on /sys to control the LEDs.
     pumpControl(pumpgpio, command) {
-        //       console.log('ledControl method was called!');
         const exec = require('child_process').exec;
-        //       console.log(`ledgpio = ${ledgpio} and this.ledGpioMap[ledgpio] = ${this.ledGpioMap.get(ledgpio)}`);
-        //       console.log(`echoing this command: echo ${command} > ${this.ledGpioMap.get(ledgpio)}`);
         exec(`echo ${command} > ${this.pumpGpioMap.get(pumpgpio)}`, (error, stdout, stderr) => {
             // If error, do not update the status of the controls.
             if (error) {
@@ -67,8 +56,6 @@ module.exports = class pumpActuator extends EventEmitter {
                 //  Send a JSON object with the value being an array.
                 this.emit('statusmessage', `["${pumpgpio}",${command}]`);
             }
-            //     console.log(`stdout: ${stdout}`);
-            //     console.log(`stderr: ${stderr}`);
         });
     }
 };

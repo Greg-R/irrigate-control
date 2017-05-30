@@ -14,105 +14,154 @@
 %    You should have received a copy of the GNU General Public License
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-\chapter{Configuration the Beagle Bone Green Wireless}
+\chapter{Configuration of the Beagle Bone Green Wireless}
 
-\begin{figure}[h]
-	\centering
-%    \includegraphics[width=0.7\textwidth]{diagrams/soc_system}
-	\centering\bfseries
-	\caption{Data Pathways on the AM335X SOC}
-\end{figure}
+The default configuration of the Beagle Bone Green Wireless is as a ``access 
+point'' (a wireless router).  This is not a desired configuration for a 
+dedicated embedded device as used in this project.
 
-TI has provided example code and kernel drivers for the ``RemoteProc and RemoteProc Messaging Framework''.  A detailed explanation of this framework is available here:
+The following process re-configures the BBGW to a non-access point mode.
 
-\url{http://processors.wiki.ti.com/index.php/PRU-ICSS_Remoteproc_and_RPMsg}
+The goal is to have a working wireless substitute for the ethernet connector 
+which does not exist on the BeagleBone Green Wireless.
+This is as a typical "headless" embedded project with the primary access using 
+a terminal and ssh.
 
-This framework provides a means of controlling and communicating with the PRUs from user-space, and this project is totally dependent on these functions.
+Download and expand the IOT bone image per this link and flash to micro-sd.  I 
+used this one:
 
-The Remoteproc framework automatically does the job of loading the PRU firmwares from user-space into the PRUs.  Via a sysfs entry, the PRUs can be started and halted from the command line.  These functions are described in the chapter "Shell Scripts".
+\url{https://debian.beagleboard.org/images/bone-debian-8.7-iot-armhf-2017-03-19-4gb.img.xz}
 
-The examples provided in the PRU Software Support Package show how to use provided functions to send and receive data from PRU to ARM or ARM to PRU.  This is done via character devices which appear in the usual /dev directory.  The standard POSIX functions read/write/open/close work with these character devices.  This allows for typical systems programming technique to be applied when working with the PRUs.
-
-This project uses two character devices assigned to PRU1.  These character devices are used to assign and read back PID parameters to the control system via the user-space executable prumsg.
-
-This project did not require modifications to the loadable kernel modules in the RemoteProc framework.  The modules provided with the IOT Debian-based distribution were used as-is.
-
-\section{The Remoteproc and RPMsg Kernel Modules}
-
-``Loadable Kernel Modules'' (LKMs) must be active for this project to function.
-At the shell command line, execute this command:
+Write the image to the micro-sd (I put the micro-sd in a USB adapter plugged 
+into my Ubuntu workstation):
 
 \begin{verbatim}
-lsmod
+sudo dd if=bone-debian-8.7-iot-armhf-2017-01-15-4gb.img of=/def/sdb bs=8M
 \end{verbatim}
 
-This will list the LKMs currently loaded.  The modules associated with Remoteproc are:
+Eject the micro-sd from workstation and insert in the BBGW micro-sd slot.
+Connect a USB 3.3V serial device to the "debug serial header".  The USB network 
+connection could be substituted, however, my experience
+with this is that using the serial device is solid and will work consistently.
+Also, since the BBGW doesn't have a dedicated power connector.  It uses the 
+micro-USB.
+It is my preference to use a high-current dedicated USB power supply and ignore 
+this as a possible network connection.
 
-\begin{itemize}
-\item pruss
-\item pru\_rproc
-\item pruss\_intc
-\end{itemize}
-
-There are two modules associated with RPMsg, and these will appear in the list only after the firmwares are loaded into the PRUs:
+Power-up the BBGW and wait for the boot process to complete.
+Open a (bash) terminal and use the screen utility to connect via the serial USB 
+device.
 
 \begin{verbatim}
-virtio_rpmsg_bus
-rpmsg_pru
+screen /dev/ttyUSB0 115200
 \end{verbatim}
 
-The Remoteproc kernel modules may not be loaded at boot (depending on boot configuration).  However, they can be loaded (or unloaded) anytime after boot with the following commands:
+I had to hit enter after the above command to get to the login prompt.
+The login user is debian and the password is temppwd.
+
+You may have to install screen:
 
 \begin{verbatim}
-modprobe pru_rproc
-rmmod pru_rproc
+sudo apt-get install screen
 \end{verbatim}
 
-``modprobe'' is the load command; ``rmmod'' is the remove command.
+After logging in, a good thing to do first is to run this shell script:
 
-Perhaps a better method of controlling the Remoteproc framework is via the sys virtual file system.  A set of shell scripts is included in the repository which includes these commands in the ``prumodout'' and ``prumodin'' scripts.
+\begin{verbatim}
+cd /opt/scripts/tools
+sudo ./grow_partition.sh
+\end{verbatim}
 
-\section{Files Associated with RemoteProc in the Compilation Process}
+Next:
 
-There are some interesting files in the root directory of the github repository for this project:
+\begin{verbatim}
+ifconfig
+\end{verbatim}
 
-\begin{itemize}
-\item resource\_table\_0.h
-\item resource\_table\_1.h
-\item AM335x\_PRU.cmd
-\end{itemize}
+You should see 4 different network resources (not showing the full output here):
 
-These files were copied verbatim from the PRU Support Package.
+\begin{verbatim}
+SoftAp0
+lo
+usb0
+wlan0
+\end{verbatim}
 
-Jason Reeder of Texas Instruments has provided an explanation of the files required to compile firmwares for the PRUs:
+The network resource SoftAp0 represents an "access point".
+The BBGW is configured as a wireless router!
+That is not the desired configuration, and fortunately this is easily removed.
+Edit the file:
 
-\begin{quotation}
-There are four files needed in order to build a C project for the PRU using TI's C compiler. Each of the examples and labs in the pru-software-support-package include these files:
-\begin{enumerate}
+\begin{verbatim}
+/etc/default/bb-wl18xx
+\end{verbatim}
 
-\item  yourProgramFile.c
+Change the line:
 
-This is your C program that you are writing for the PRU.
+\begin{verbatim}
+TETHER_ENABLED=yes
+\end{verbatim}
 
-\item   AM335x\_PRU.cmd
+to
 
-This is a command linker file. This is the way that we describe the physical memory map, the constant table entries, and the placement of our code and data sections (into the physical memory described at the top of the file) to the PRU linker. There are some neat things that can be done as far as placing code and data in exact memory locations using this file, but for the majority of projects, this file can remain unchanged.
+\begin{verbatim}
+TETHER_ENABLED=no
+\end{verbatim}
 
-\item   resource\_table\_*.h
+Save and exit, and reboot, and login.
 
-This file will create a header in the elf binary (generated .out file) that is needed by the RemoteProc Linux driver while loading the code into the PRUs. For the examples in the pru-software-support-package, there are two types of resources that the PRU can request using the resource\_table\_*.h file:
+ifconfig should now show only 3:  lo, usb0, and wlan0.
 
-interrupts - letting RemoteProc configure the PRU INTC interrupts saves code space on the PRUs.
+Now to configure WIFI!  It is assumed you have a home wireless router and you 
+know the SSID and passphrase.
+The router should be configured for DHCP (automatic assignment of IP addresses).
+From a terminal:
 
-vrings - requesting vrings in the resource\_table file is necessary if rpmsg communication is desired (since the ARM/Linux needs to create the vrings in DDR and then notify the PRU where the vrings were placed)
-even if no resources are needed, the RemoteProc Linux driver expects the header to exist. Because of this, many examples in the package contain an empty resource\_table header file (resource\_table\_empty.h)
+\begin{verbatim}
+sudo connmanctl
+connmanctl> scan wifi
+Scan completed for wifi
+connmanctl> services
+    (your router broadcast)         (router info)
+connmanctl> agent on
+Agent registered
+connmanctl> connect (copy router info here)
+Agent RequestInput (router info)
+  Passphrase = [ Type=psk, Requirement=mandatory, Alternates=[ WPS ] ]
+  WPS = [ Type=wpspin, Requirement=alternate ]
+Passphrase? (your passphrase)
+Connected (router info)
+connmanctl> quit
+\end{verbatim}
 
-\item   Makefile
+The above configuration is permanent and will survive reboot.
+An outstanding page with good info on connman:
 
-Makefile to build your PRU C program either on the target, on your Linux machine, or even on a Windows machine. The comment at the top of the Makefile tries to explain the environment variable needed for a successful build and how to set it on each of the three supported build development environments.  (Note that this is in reference to the Makefiles provided with the PRU Support Package.  The custom Makefile provided with this project does not have this feature.)
+\url{https://wiki.archlinux.org/index.php/Connman}
 
-\end{enumerate}
-\end{quotation}
+Another very good thing is to login to your router and use this to determine if 
+your BBGW is successfully connected.
+And remember the router may have security settings which may block it from 
+connecting.
+Also, rather than attempting to force a fixed IP address on the BBGW, I used 
+the "address reservation" feature
+so that the IP address assigned by the router will be the same each time it 
+connects.  This is done using the MAC address of the BBGW.
+
+After the above configuration is done, shutdown and remove the USB serial 
+device.
+Power up the BBGW and wait for it to boot, and then using a terminal and ssh 
+you should be able to connect to the BBGW as if an ethernet cable was connected:
+
+ssh debian@(the assigned IP address)
+
+After logging in you should have internet connectivity, so don't forget to:
+
+sudo apt-get update
+
+Here is an example USB serial device.  This should be on your tool kit list:
+
+\url{https://www.amazon.com/gp/product/B01AFQ00G2/ref=oh_aui_search_detailpage?ie=UTF8&psc=1}
 
 
 

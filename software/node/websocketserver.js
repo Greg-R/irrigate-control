@@ -25,7 +25,7 @@ exports.listen = function (server) {
             let controlObject = JSON.parse(data);
             //  Modify the ledHash Proxy.  This will actuate the LEDs!
             //  Object.assign updates the ledHash in the ledActuator.
-            Object.assign(pumpObject.pumpHashProxy, controlObject);
+            Object.assign(pumpObject.pumpMapProxy, controlObject);
         });
         //  Send messages to the web page indicating control status.
         pumpObject.on('statusmessage', function (message) {
