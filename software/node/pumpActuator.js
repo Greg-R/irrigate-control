@@ -3,19 +3,16 @@
 //  Pump Control Actuator Object
 
 let EventEmitter = require('events').EventEmitter;
-const exec = require('child_process').exec;
 
 module.exports = class pumpActuator extends EventEmitter {
 
     constructor() {
-        super();       
+        super();
         this.pumpMap = new Map([['pumpmotor', 0],
                               ['zone1', 0],
                               ['zone2', 0]]);
         this.pumpMapProxy = new Proxy(this.pumpMap, this.pumpObserver());
-        //  Using pins 8.7 (gpio66), 8.8 (gpio67), and 8.10 (gpio68).
-        //  Revised to pins 9.14 (gpio50), 9.15 (gpio48), 9.16 (gpio51).
-        //  This moves to more convenient physical location for permanent wiring.
+        //  Using header pins 9.14 (gpio50), 9.15 (gpio48), 9.16 (gpio51).
         this.pumpGpioMap = new Map([['pumpmotor', '/sys/class/gpio/gpio50/value'],
                                    ['zone1', '/sys/class/gpio/gpio48/value'],
                                    ['zone2', '/sys/class/gpio/gpio51/value']]);

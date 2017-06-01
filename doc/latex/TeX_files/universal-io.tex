@@ -17,7 +17,7 @@
 \chapter{Device Tree Requirements}
 
 This project requires only three GPIOs.  Rather than editing device tree files, 
-and having to deal with potential bugs caused by this, the great config-pin 
+and having to deal with potential bugs caused by this, the excellent config-pin 
 utility was used.  This utility is provided by the Universal IO project.
 
 The Universal IO project is located at this Github repository:
@@ -25,6 +25,34 @@ The Universal IO project is located at this Github repository:
 \url{https://github.com/cdsteinkuehler/beaglebone-universal-io}
 
 Universal IO is included with the most recent Debian-based IOT images.
+
+The setting of the three GPIOs is done by the pumpActuator class.  This is most 
+appropriate, as the class uses these GPIOs to control the irrigation devices.  
+The GPIO configuration is done by the class constructor:
+
+\begin{verbatim}
+    setGpio(headerPin) {
+        const exec = require('child_process').exec;
+        console.log(`Setting header pin ${headerPin} to GPIO mode.`);
+        exec(`config-pin ${headerPin} low_pd`);
+    }
+\end{verbatim}
+
+Note the use of the Node.js ``child\_process'' as described in the chapter on 
+GPIO control with sysfs.
+
+The three pins are set to GPIO low state and pull-down mode via these three 
+lines in the class constructor using the above method:
+
+\begin{verbatim}
+        this.setGpio('P9.14');
+        this.setGpio('P9.15');
+        this.setGpio('P9.16');
+\end{verbatim}
+
+This partitioning of the GPIO mode set functioning into the pumpActuator class 
+is appropriate and eliminated the requirement for an auxiliary shell script for 
+control of header pin modes.
 
 
 

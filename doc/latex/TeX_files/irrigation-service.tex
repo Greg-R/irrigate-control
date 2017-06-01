@@ -1,0 +1,75 @@
+\chapter{Setting up a systemd Irrigation Service}
+
+systemd is responsible for booting up the user space in Debian (and other) 
+GNU/Linux distributions including the BBGW.
+
+This system can be used to start the Node.js server as an ``irrigation'' 
+service.
+
+This is easy to accomplish and can be done by creating a single text file:
+
+\begin{verbatim}
+/etc/systemd/system/irrigation.service
+\end{verbatim}
+
+Here is the contents of the file irrigation.service:
+
+\begin{verbatim}
+[Unit]
+Description=Irrigation Control Server
+
+[Service]
+ExecStart=/usr/bin/node /home/debian/irrigate-control/software/node/server.js
+
+[Install]
+WantedBy=graphical.target
+\end{verbatim}
+
+The [Unit] section provides a short description of the service which is printed 
+out when the service is interrogated.
+
+The [Service] section is the complete path to the node command followed by the 
+path to the server.js file.  This is the ``service'' which will be 
+``daemonized'' at boot.
+
+The [Install] section indicates the default state in which the service should 
+be started.  The default state can be found by using this command:
+
+systemctl get-default
+
+In the case of the IOT distribution used by this project, the response is:
+
+\begin{verbatim}
+graphical.target
+\end{verbatim}
+
+Once the service unit file is in place, enable the service like this:
+
+\begin{verbatim}
+systemctl enable irrigation
+\end{verbatim}
+
+The irrigation service will now start at boot time!  Set a bookmark in your 
+browser, and simply click to go straight to the irrigation control page.
+
+To permanently disable the service:
+
+\begin{verbatim}
+systemctl disable irrigation
+\end{verbatim}
+
+When debugging, it may be necessary to temporarily stop the service.  Use this 
+command:
+
+\begin{verbatim}
+systemctl stop irrigation
+\end{verbatim}
+
+To start the service again:
+
+\begin{verbatim}
+systemctl start irrigation
+\end{verbatim}
+
+
+

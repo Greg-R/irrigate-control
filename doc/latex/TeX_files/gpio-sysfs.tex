@@ -1,5 +1,5 @@
-%    Documentation for PRU ADC Project
-%    Copyright (C) 2016  Gregory Raven
+%    Documentation for Irrigation Control Project
+%    Copyright (C) 2017  Gregory Raven
 %
 %    This program is free software: you can redistribute it and/or modify
 %    it under the terms of the GNU General Public License as published by
@@ -15,6 +15,80 @@
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 \chapter{GPIO Control with sysfs Virtual File System}
+
+This ``sysfs'' virtual file system the core functionality which allows the 
+GPIOs to be controlled from user space.
+
+Note that the BBGW must be correctly configured for GPIO output mode on the 
+three control pins used to control the irrigation devices.  This document will 
+not cover this subject in detail, as this has been well-covered in numerous web 
+articles and books.
+
+A highly recommended resource is ``Exploring Beaglebone'' by Derek Molloy.
+(add footnote here)
+
+The method of configuring the header pins to GPIO is covered in the chapter 
+``Universal IO''.  GPIO configuration must be complete before any of the 
+commands shown below will function properly.
+
+``POSIX'' type operating systems, which includes Linux, are ``file based''.  
+That means the interface to everything is via writing to or reading from a 
+file.  In this case, the GPIO's state is changed by writing a 0 or 1 to the 
+appropriate file.  Here is an example:
+
+\begin{verbatim}
+echo 1 > /sys/class/gpio/gpio50/value
+\end{verbatim}
+
+The above changes the state of header pin P9.14 to ``high'' or an output of 3.3 
+volts.  Echoing 0 changes the output to 0.0 volts.  It's that simple!
+
+\subsection{Controlling the GPIOs using Javascript}
+
+The command shown above is typed and executed in a bash shell.  How is this 
+done from Javascript?  A module from Node.js is used to accomplish this:
+
+\url{https://nodejs.org/api/child_process.html}
+
+For example, the bash command shown above would be executed as follows in 
+Javascript:
+
+\begin{verbatim}
+const exec = require('child_process').exec;
+exec('echo 1 > /sys/class/gpio/gpio50/value');
+\end{verbatim}
+
+This is the simplest possible usage; an optional callback function as a second 
+option is possible.  The callback option is used in the in the ``pumpActuator'' 
+class, and the callback is used to emit an event from the pumpActuator Object.  
+This event is subscribed to by the WebSocket server, and when the event fires 
+it sends a message to the web page controller to indicate that the control 
+function has changed state.  The web page is updated to indicate the new state.
+
+The class method looks like this:
+
+\begin{verbatim}
+    pumpControl(pumpgpio, command) {
+        const exec = require('child_process').exec;
+        exec(`echo ${command} > ${this.pumpGpioMap.get(pumpgpio)}`, (error, 
+        stdout, stderr) => {
+            // If error, do not update the status of the controls.
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            } else {
+                console.log(`Status message emitted from ledActuator: 
+                ${pumpgpio} is set to ${command}.`);
+                //  Send a JSON object with the value being an array.
+                this.emit('statusmessage', `["${pumpgpio}",${command}]`);
+            }
+        });
+    }
+\end{verbatim}
+
+
+
+
 
 
 
