@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Main Irrigation Controller</title>
+</head>
+
+
+<body>
+    <div>
+        <H2>MAIN IRRIGATION CONTROLLER</H2>
+        <p id="connectstatus">WebSocket is NOT connected!</p>
+    </div>
+    <div id="buttons">
+        <div id="pumpbuttons">
+            <button id="pumpmotoron">
+                PUMP MOTOR ON
+            </button>
+            <button id="pumpmotoroff">
+                PUMP MOTOR OFF
+            </button>
+        </div>
+        <div id="zone1buttons">
+            <button id="zone1on">
+                ZONE 1 ON
+            </button>
+            <button id="zone1off">
+                ZONE 1 OFF
+            </button>
+
+        </div>
+        <div id="zone2buttons">
+            <button id="zone2on">
+                ZONE 2 ON
+            </button>
+            <button id="zone2off">
+                ZONE 2 OFF
+            </button>
+        </div>
+    </div>
+
+    <div id="status">
+        <h3>Irrigation Server Status Messages</h3>
+        <p id="pumpstatus">No report from pump.</p>
+        <p id="zone1status">No report from zone 1.</p>
+        <p id="zone2status">No report from zone 2.</p>
+    </div>
+
+    <div id="timer">
+        <h3>Timer Setting</h3>
+        <p>
+            <label for="starttime">Start Irrigation Date:</label>
+            <input id="starttime" type="date">
+        </p>
+        <p>
+            <label for="starttime">Stop Irrigation Time:</label>
+            <input id="starttime" type="time" value="07:00:00">
+        </p>
+        <p>
+        <label for="starttime">Stop Irrigation Time:</label>
+        <input id="starttime" type="time" value="06:00:00">
+        </p>
+    </div>
+    <script>
+        //  Open a WebSocket to the server.
+        let ws = new WebSocket('ws://192.168.1.8:8089');
+        // Get buttons.
+        let pumpbuttonon = document.getElementById('pumpmotoron');
+        let pumpbuttonoff = document.getElementById('pumpmotoroff');
+        let zone1buttonon = document.getElementById('zone1on');
+        let zone1buttonoff = document.getElementById('zone1off');
+        let zone2buttonon = document.getElementById('zone2on');
+        let zone2buttonoff = document.getElementById('zone2off');
+        // Get status indicator texts.
+        let connectstatus = document.getElementById('connectstatus');
+        let pumpstatus = document.getElementById('pumpstatus');
+        let zone1status = document.getElementById('zone1status');
+        let zone2status = document.getElementById('zone2status');
+
+        ws.onopen = function() {
+            console.log('Web browser opened a WebSocket.');
+            //  Update the connection status in the browser.
+            connectstatus.textContent = "WebSocket Connected";
+        }
+
+        ws.onclose = function() {
+            console.log('Web browser WebSocket just closed.');
+            //  Update the connection status in the browser.
+            connectstatus.textContent = "WebSocket is disconnected";
+        }
+
+        //  Get messages from irrigation server and update status.
+        ws.onmessage = function(message) {
+            console.log(message.data);
+            let statusmessage = JSON.parse(message.data);
+
+            switch (statusmessage[0]) {
+                case 'pumpmotor':
+                    pumpstatus.textContent = 'Pump status: ' + statusmessage[1];
+                    break;
+                case 'zone1':
+                    zone1status.textContent = 'Zone 1 status: ' + statusmessage[1];
+                    break;
+                case 'zone2':
+                    zone2status.textContent = 'Zone2 status: ' + statusmessage[1];
+                    break;
+            }
+        }
+
+        pumpbuttonon.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({
+                    'pumpmotor': 1
+                }));
+                pumpbuttonon.style.color = "green";
+                pumpbuttonoff.style.color = "black";
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+
+        pumpbuttonoff.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({
+                    'pumpmotor': 0
+                }));
+                pumpbuttonon.style.color = "black";
+                pumpbuttonoff.style.color = "red";
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+
+        zone1buttonon.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({
+                    'zone1': 1
+                }));
+                zone1buttonon.style.color = "green";
+                zone1buttonoff.style.color = "black";
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+
+        zone1buttonoff.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                console.log("Sending to server.");
+                ws.send(JSON.stringify({
+                    'zone1': 0
+                }));
+                zone1buttonon.style.color = "black";
+                zone1buttonoff.style.color = "red";
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+
+        zone2buttonon.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({
+                    'zone2': 1
+                }));
+                zone2buttonon.style.color = "green";
+                zone2buttonoff.style.color = "black";
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+
+        zone2buttonoff.onclick = function() {
+            if (ws.readyState === ws.OPEN) {
+                ws.send(JSON.stringify({
+                    'zone2': 0
+                }));
+                zone2buttonon.style.color = "black";
+                zone2buttonoff.style.color = "red";
+            } else {
+                console.log('Websocket is not open.  Message aborted.');
+            }
+        };
+
+        document.getElementById('starttime').valueAsDate = new Date();
+
+    </script>
+</body>
+
+</html>
