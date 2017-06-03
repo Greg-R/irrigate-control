@@ -123,7 +123,7 @@
         buttonevent = (device, state, buttonon, buttonoff) => {
             if (ws.readyState === ws.OPEN) {
                 console.log(`Sending ${state} to device ${device}`);
-                ws.send(`{"messageType":"pumpControl", "control":{${device}":${state}}}`);
+                ws.send(`{"messageType":"pumpControl", "control":{"${device}":${state}}}`);
                 if (state === 1) {
                     buttonon.style.color = "green";
                     buttonoff.style.color = "black";
