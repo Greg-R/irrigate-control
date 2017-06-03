@@ -27,11 +27,10 @@ exports.listen = function (server) {
             //  either the actuator or scheduling object.
             //  Modify the ledHash Proxy.  This will actuate the LEDs!
             //  Object.assign updates the ledHash in the ledActuator.
-            if(controlObject["messageType"] === "pumpControl") {
-            Object.assign(pumpObject.pumpMapProxy, controlObject);
-        } else if(controlObject["messageType"] === "schedule") {
+            if(controlObject.messageType === "pumpControl") {
+            Object.assign(pumpObject.pumpMapProxy, controlObject.control);
+        } else if(controlObject.messageType === "schedule") {
             console.log("Schedule message received");
-        }
         }
         });
         //  Send messages to the web page indicating control status.
