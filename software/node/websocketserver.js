@@ -55,7 +55,7 @@ exports.listen = function (server) {
         });
 
         //  Send messages to the web page indicating control status.
-        pumpObject.on('statusmessage', function (message) {
+        pumpObject.on('pumpStatusMessage', (message) => {
             console.log(`Status message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {

@@ -50,7 +50,12 @@ module.exports = class Scheduler extends EventEmitter {
         let halfTimeClone = this.halfTime.clone();
         this.halfTimePlus = halfTimeClone.add(10, 's').format('s m H D M d'); //  Add 10 seconds to half time.
         //  Send the Web Page the computed schedule.
-        this.emit('schedule', JSON.stringify({"messageType":"schedule", "scheduleDate":start.format("dddd, MMMM Do YYYY"), "scheduleStart":start.format("h:mm:ss A"), "scheduleStop":stop.format("h:mm:ss A")}));
+        this.emit('schedule', JSON.stringify({
+            "messageType": "schedule",
+            "scheduleDate": start.format("dddd, MMMM Do YYYY"),
+            "scheduleStart": start.format("h:mm:ss A"),
+            "scheduleStop": stop.format("h:mm:ss A")
+        }));
         this.startCrons(this.start, this.stop, this.halfTime.format('s m H D M d'), this.halfTimePlus);
     }
 
