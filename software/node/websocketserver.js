@@ -38,7 +38,7 @@ exports.listen = function (server) {
         });
         //  Handle automatic irrigation from scheduler.
         scheduler.on('scheduleControl', (controlArray) => {
-            pumpObject.pumpMapProxy.controlArray[0] = controlArray[1];
+            pumpObject.pumpMapProxy[controlArray[0]] = controlArray[1];
             pumpObject.pumpMapProxy.pumpmotor = controlArray[1];            
         });
  //       scheduler.on('zone1off', (controlArray) => {
