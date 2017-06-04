@@ -76,28 +76,46 @@ this.midTime = "";
         //  Calculate the mid-time so the zones can be switched.
         //  Clone start;  Moments get mutated by their methods!
         let startClone = start.clone();
-        this.halfTime = startClone.add(halfTime, 'm').format('s m H D M d');  // Compute half time.
-        this.startCrons(this.start, this.stop, this.halfTime);
+        this.halfTime = startClone.add(halfTime, 'm');  // Compute half time.
+        let halfTimeClone = this.halfTime.clone();
+        this.halfTimePlus = halfTimeClone.add(10, 's').format('s m H D M d'); //  Add 10 seconds to half time.      
+        this.startCrons(this.start, this.stop, this.halfTime.format('s m H D M d'), this.halfTimePlus);
     }
 
-    startCrons(start, stop, halfTime) {
+    startCrons(start, stop, halfTime, halfTimePlus) {
         console.log(`From startCrons, the start is ${start} and the stop is ${stop} and half Time is ${halfTime}`);
         cron.schedule(start, () => {
-            console.log(`System start at ${start}.`);
+            console.log(`System start zone1 at ${start}.`);
             let currentDate = new Date();
             let currentMomentDate = moment();
             console.log(`Javascript date: ${currentDate}`);
             console.log(`Moment date: ${currentMomentDate}`);
-            this.emit('scheduleControl', ["zone2", 1]);
+            this.emit('scheduleControl', ["zone1", 1]);  // Start zone1 irrigation.
+        });
+        cron.schedule(halfTime, () => {
+            console.log(`System shutdown zone1 at ${stop}.`);
+            let currentDate = new Date();
+            let currentMomentDate = moment();
+            console.log(`Javascript date: ${currentDate}`);
+            console.log(`Moment date: ${currentMomentDate}`);
+            this.emit('scheduleControl', ["zone1", 0]);  // Stop zone1 irrigation.
+        });
+        cron.schedule(halfTimePlus, () => {
+            console.log(`System start zone2 at ${start}.`);
+            let currentDate = new Date();
+            let currentMomentDate = moment();
+            console.log(`Javascript date: ${currentDate}`);
+            console.log(`Moment date: ${currentMomentDate}`);
+            this.emit('scheduleControl', ["zone2", 1]);  // Start zone2 irrigation.
         });
         cron.schedule(stop, () => {
-            console.log(`System shutdown at ${stop}.`);
+            console.log(`System shutdown zone2 at ${stop}.`);
             let currentDate = new Date();
             let currentMomentDate = moment();
             console.log(`Javascript date: ${currentDate}`);
             console.log(`Moment date: ${currentMomentDate}`);
-            this.emit('scheduleControl', ["zone2", 0]);
-        });
+            this.emit('scheduleControl', ["zone2", 0]);  // Stop zone2 irrigation.
+        });       
     }
     
     //  The following function calculates the mid-time between start and stop so the zones can be switched.
