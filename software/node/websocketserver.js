@@ -24,16 +24,16 @@ exports.listen = function (server) {
 //  Received messages from the web page and process.
         ws.on('message', (data, flags) => {
             console.log(`Received data from client: ${data}.`);
-            let controlObject = JSON.parse(data);
+            let dataObject = JSON.parse(data);
             //  Determine the type of incoming data and dispatch to
             //  either the actuator or scheduling object.
             //  Modify the ledHash Proxy.  This will actuate the LEDs!
             //  Object.assign updates the ledHash in the ledActuator.
-            if(controlObject.messageType === "pumpControl") {
-            Object.assign(pumpObject.pumpMapProxy, controlObject.control);
-        } else if(controlObject.messageType === "schedule") {
+            if(dataObject.messageType === "pumpControl") {
+            Object.assign(pumpObject.pumpMapProxy, dataObject.control);
+        } else if(dataObject.messageType === "schedule") {
             console.log("Schedule message received");
-            scheduler.scheduleInterpreter(data);
+            scheduler.scheduleInterpreter(dataObject);
         }
         });
         //  Send messages to the web page indicating control status.
