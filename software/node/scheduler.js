@@ -65,10 +65,10 @@ module.exports = class Scheduler extends EventEmitter {
     
     //  This function takes an incoming object with schedule data and creates usable dates.
     scheduleInterpreter(data){
-     //   let start = moment(data.startDate + ' ' + data.startTime).format('s m H D M d');
-     //   let stop  = moment(data.startDate + ' ' + data.stopTime).format('s m H D M d');
-        let start = data.startDate + ' ' + data.startTime;
-        let stop  = data.startDate + ' ' + data.stopTime;
+        let start = moment(data.startDate + ' ' + data.startTime).format('s m H D M d');
+        let stop  = moment(data.startDate + ' ' + data.stopTime).format('s m H D M d');
+     //   let start = data.startDate + ' ' + data.startTime;
+     //   let stop  = data.startDate + ' ' + data.stopTime;
         
         console.log(`The start is ${start} and the stop is ${stop}`);
     }
