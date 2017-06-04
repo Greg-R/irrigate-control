@@ -4,7 +4,7 @@
 //  Get the WebSocket class:
 const WebSocketServer = require('ws').Server;
 let pumpActuator = require('./pumpActuator');
-let Scheduler = require('./Scheduler');
+let Scheduler = require('./scheduler');
 
 exports.listen = function (server) {
     const wss = new WebSocketServer({
