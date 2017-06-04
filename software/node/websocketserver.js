@@ -4,6 +4,7 @@
 //  Get the WebSocket class:
 const WebSocketServer = require('ws').Server;
 let pumpActuator = require('./pumpActuator');
+let Scheduler = require('./Scheduler');
 
 exports.listen = function (server) {
     const wss = new WebSocketServer({
@@ -14,6 +15,7 @@ exports.listen = function (server) {
     wss.on('connection', function (ws) {
         //  Note the use of let for ledObject; the Object will be destroyed if the wss is destroyed.
         let pumpObject = new pumpActuator();
+        let scheduler = new Scheduler();
 
         let url = ws.upgradeReq.url;
         console.info(url);
@@ -31,6 +33,7 @@ exports.listen = function (server) {
             Object.assign(pumpObject.pumpMapProxy, controlObject.control);
         } else if(controlObject.messageType === "schedule") {
             console.log("Schedule message received");
+            scheduler.scheduleInterpreter(data);
         }
         });
         //  Send messages to the web page indicating control status.
