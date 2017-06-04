@@ -75,19 +75,20 @@ module.exports = class Scheduler extends EventEmitter {
     startCrons(start, stop) {
         console.log(`From startCrons, the start is ${start} and the stop is ${stop}`);
         cron.schedule(start, () => {
-            console.log('Firing at plus 5 minutes');
+            console.log(`System start at ${start}.`);
             let currentDate = new Date();
             let currentMomentDate = moment();
             console.log(`Javascript date: ${currentDate}`);
             console.log(`Moment date: ${currentMomentDate}`);
+            this.emit('zone1on');
         });
-
         cron.schedule(stop, () => {
-            console.log('Firing at plus 10 minutes');
+            console.log(`System shutdown at ${stop}.`);
             let currentDate = new Date();
             let currentMomentDate = moment();
             console.log(`Javascript date: ${currentDate}`);
             console.log(`Moment date: ${currentMomentDate}`);
+            this.emit('zone1off');
         });
     }
 };

@@ -36,6 +36,17 @@ exports.listen = function (server) {
             scheduler.scheduleInterpreter(dataObject);
         }
         });
+        //  Handle automatic irrigation from scheduler.
+        scheduler.on('zone1on', () => {
+            pumpObject.pumpMapProxy.zone1 = 1;
+            pumpObject.pumpMapProxy.pumpmotor = 1;            
+        });
+        scheduler.on('zone1off', () => {
+            pumpObject.pumpMapProxy.zone1 = 0;
+            pumpObject.pumpMapProxy.pumpmotor = 0;            
+        });
+        
+        
         //  Send messages to the web page indicating control status.
         pumpObject.on('statusmessage', function (message) {
             console.log(`Status message received by websocketserver and is: ${message}`);
