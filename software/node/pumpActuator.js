@@ -52,7 +52,7 @@ module.exports = class pumpActuator extends EventEmitter {
                 console.log(`Status message emitted from pumpActuator: ${pumpgpio} is set to ${command}.`);
                 //  Send a JSON object with the value being an array.
                 //     this.emit('statusmessage', `["${pumpgpio}",${command}]`);
-                this.emit('pumpStatusMessage', JSON.parse({
+                this.emit('pumpStatusMessage', JSON.stringify({
                     "messageType": "pumpControl",
                     "pumpmotor": this.pumpMap.get('pumpmotor'),
                     "zone1": this.pumpMap.get('zone1'),
