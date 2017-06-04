@@ -48,8 +48,9 @@ module.exports = class Scheduler extends EventEmitter {
         this.pumpGpioMap = new Map([['pumpmotor', '/sys/class/gpio/gpio50/value'],
                                    ['zone1', '/sys/class/gpio/gpio48/value'],
                                    ['zone2', '/sys/class/gpio/gpio51/value']]);
-        //  Set the appropriate header pins to GPIO mode:
-        
+        this.start = "";
+        this.stop = "";
+
     }
 
     scheduleObserver() {
@@ -62,31 +63,30 @@ module.exports = class Scheduler extends EventEmitter {
             }
         };
     }
-    
-    //  This function takes an incoming object with schedule data and creates usable dates.
-    scheduleInterpreter(data){
-        let start = moment(data.startDate + ' ' + data.startTime).format('s m H D M d');
-        let stop  = moment(data.startDate + ' ' + data.stopTime).format('s m H D M d');
-     //   let start = data.startDate + ' ' + data.startTime;
-     //   let stop  = data.startDate + ' ' + data.stopTime;
-        
-        console.log(`The start is ${start} and the stop is ${stop}`);
-    }
-    
 
-    //  This method does system calls on /sys to control the LEDs.
-    pumpControl(pumpgpio, command) {
-        const exec = require('child_process').exec;
-        exec(`echo ${command} > ${this.pumpGpioMap.get(pumpgpio)}`, (error, stdout, stderr) => {
-            // If error, do not update the status of the controls.
-            if (error) {
-                console.error(`exec error: ${error}`);
-                return;
-            } else {
-                console.log(`Status message emitted from ledActuator: ${pumpgpio} is set to ${command}.`);
-                //  Send a JSON object with the value being an array.
-                this.emit('statusmessage', `["${pumpgpio}",${command}]`);
-            }
+    //  This function takes an incoming object with schedule data and creates usable format for node-cron.
+    scheduleInterpreter(data) {
+        this.start = moment(data.startDate + ' ' + data.startTime).format('s m H D M d');
+        this.stop = moment(data.startDate + ' ' + data.stopTime).format('s m H D M d');
+        console.log(`The start is ${this.start} and the stop is ${this.stop}`);
+        this.startCrons();
+    }
+
+    startCrons() {
+        cron.schedule(this.start, () => {
+            console.log('Firing at plus 5 minutes');
+            let currentDate = new Date();
+            let currentMomentDate = moment();
+            console.log(`Javascript date: ${currentDate}`);
+            console.log(`Moment date: ${currentMomentDate}`);
+        });
+
+        cron.schedule(this.stop, () => {
+            console.log('Firing at plus 10 minutes');
+            let currentDate = new Date();
+            let currentMomentDate = moment();
+            console.log(`Javascript date: ${currentDate}`);
+            console.log(`Moment date: ${currentMomentDate}`);
         });
     }
 };
