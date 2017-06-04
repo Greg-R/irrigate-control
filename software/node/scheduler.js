@@ -73,7 +73,7 @@ module.exports = class Scheduler extends EventEmitter {
     }
 
     startCrons(start, stop) {
-        
+        console.log(`From startCrons, the start is ${start} and the stop is ${stop}`);
         cron.schedule(start, () => {
             console.log('Firing at plus 5 minutes');
             let currentDate = new Date();
