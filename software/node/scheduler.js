@@ -80,7 +80,7 @@ module.exports = class Scheduler extends EventEmitter {
             let currentMomentDate = moment();
             console.log(`Javascript date: ${currentDate}`);
             console.log(`Moment date: ${currentMomentDate}`);
-            this.emit('zone1on');
+            this.emit('scheduleControl', ["zone2", 1]);
         });
         cron.schedule(stop, () => {
             console.log(`System shutdown at ${stop}.`);
@@ -88,7 +88,7 @@ module.exports = class Scheduler extends EventEmitter {
             let currentMomentDate = moment();
             console.log(`Javascript date: ${currentDate}`);
             console.log(`Moment date: ${currentMomentDate}`);
-            this.emit('zone1off');
+            this.emit('scheduleControl', ["zone2", 0]);
         });
     }
 };
