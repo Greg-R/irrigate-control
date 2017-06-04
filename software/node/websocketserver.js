@@ -27,7 +27,7 @@ exports.listen = function (server) {
             let dataObject = JSON.parse(data);
             //  Determine the type of incoming data and dispatch to
             //  either the actuator or scheduling object.
-            //  Modify the ledHash Proxy.  This will actuate the LEDs!
+            //  Modify the pumpMapProxy.  This will actuate the LEDs!
             //  Object.assign updates the ledHash in the ledActuator.
             if(dataObject.messageType === "pumpControl") {
             Object.assign(pumpObject.pumpMapProxy, dataObject.control);
@@ -41,11 +41,6 @@ exports.listen = function (server) {
             pumpObject.pumpMapProxy[controlArray[0]] = controlArray[1];
             pumpObject.pumpMapProxy.pumpmotor = controlArray[1];            
         });
- //       scheduler.on('zone1off', (controlArray) => {
- //           pumpObject.pumpMapProxy.controlArray[0] = 0;
- //           pumpObject.pumpMapProxy.pumpmotor = 0;            
- //       });
-        
         
         //  Send messages to the web page indicating control status.
         pumpObject.on('statusmessage', function (message) {

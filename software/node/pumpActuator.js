@@ -49,7 +49,7 @@ module.exports = class pumpActuator extends EventEmitter {
                 console.error(`exec error: ${error}`);
                 return;
             } else {
-                console.log(`Status message emitted from ledActuator: ${pumpgpio} is set to ${command}.`);
+                console.log(`Status message emitted from pumpActuator: ${pumpgpio} is set to ${command}.`);
                 //  Send a JSON object with the value being an array.
                 this.emit('statusmessage', `["${pumpgpio}",${command}]`);
             }
