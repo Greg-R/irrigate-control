@@ -5,36 +5,6 @@
 const cron = require('node-cron');
 const moment = require('moment');
 
-/*
-let startTime = new Date();
-
-let cronString = moment().format('s m H D M d');
-let cronStringPlus5 = moment().add(5, 'm').format('s m H D M d');
-let cronStringPlus10 = moment().add(10, 'm').format('s m H D M d');
-
-console.log(cronString);
-console.log(cronStringPlus5);
-console.log(cronStringPlus10);
-
-cron.schedule(cronStringPlus5, () => {
-    console.log('Firing at plus 5 minutes');
-    let currentDate = new Date();
-    let currentMomentDate = moment();
-    console.log(`Javascript date: ${currentDate}`);
-    console.log(`Moment date: ${currentMomentDate}`);
-});
-
-cron.schedule(cronStringPlus10, () => {
-    console.log('Firing at plus 10 minutes');
-    let currentDate = new Date();
-    let currentMomentDate = moment();
-    console.log(`Javascript date: ${currentDate}`);
-    console.log(`Moment date: ${currentMomentDate}`);
-});
-
-console.log("This message after cron jobs.");pump
-*/
-
 let EventEmitter = require('events').EventEmitter;
 
 module.exports = class Scheduler extends EventEmitter {
@@ -50,7 +20,7 @@ module.exports = class Scheduler extends EventEmitter {
                                    ['zone2', '/sys/class/gpio/gpio51/value']]);
         this.start = "";
         this.stop = "";
-this.midTime = "";
+        this.midTime = "";
     }
 
     scheduleObserver() {
@@ -66,9 +36,9 @@ this.midTime = "";
 
     //  This function takes an incoming object with schedule data and creates usable format for node-cron.
     scheduleInterpreter(data) {
-        let start = moment(data.startDate + ' ' + data.startTime);       
+        let start = moment(data.startDate + ' ' + data.startTime);
         let stop = moment(data.startDate + ' ' + data.stopTime);
-        let halfTime = stop.diff(start, 'm')/2;  //  This is difference in minutes /2.
+        let halfTime = stop.diff(start, 'm') / 2; //  This is difference in minutes /2.
         console.log(`The difference in minutes is ${halfTime}.`);
         this.start = moment(data.startDate + ' ' + data.startTime).format('s m H D M d');
         this.stop = moment(data.startDate + ' ' + data.stopTime).format('s m H D M d');
@@ -76,46 +46,28 @@ this.midTime = "";
         //  Calculate the mid-time so the zones can be switched.
         //  Clone start;  Moments get mutated by their methods!
         let startClone = start.clone();
-        this.halfTime = startClone.add(halfTime, 'm');  // Compute half time.
+        this.halfTime = startClone.add(halfTime, 'm'); // Compute half time.
         let halfTimeClone = this.halfTime.clone();
-        this.halfTimePlus = halfTimeClone.add(10, 's').format('s m H D M d'); //  Add 10 seconds to half time.      
+        this.halfTimePlus = halfTimeClone.add(10, 's').format('s m H D M d'); //  Add 10 seconds to half time.
+        //  Send the Web Page the computed schedule.
+        this.emit('schedule', JSON.stringify({"messageType":"schedule", "scheduleDate":start.format("dddd, MMMM Do YYYY"), "scheduleStart":start.format("h:mm:ss A"), "scheduleStop":stop.format("h:mm:ss A")}));
         this.startCrons(this.start, this.stop, this.halfTime.format('s m H D M d'), this.halfTimePlus);
     }
 
     startCrons(start, stop, halfTime, halfTimePlus) {
         console.log(`From startCrons, the start is ${start} and the stop is ${stop} and half Time is ${halfTime}`);
         cron.schedule(start, () => {
-        //    console.log(`System start zone1 at ${start}.`);
-        //    let currentDate = new Date();
-        //    let currentMomentDate = moment();
-        //    console.log(`Javascript date: ${currentDate}`);
-        //    console.log(`Moment date: ${currentMomentDate}`);
-            this.emit('scheduleControl', ["zone1", 1]);  // Start zone1 irrigation.
+            this.emit('scheduleControl', ["zone1", 1]); // Start zone1 irrigation.
         });
         cron.schedule(halfTime, () => {
-         //   console.log(`System shutdown zone1 at ${stop}.`);
-         //   let currentDate = new Date();
-          //  let currentMomentDate = moment();
-         //   console.log(`Javascript date: ${currentDate}`);
-         //   console.log(`Moment date: ${currentMomentDate}`);
-            this.emit('scheduleControl', ["zone1", 0]);  // Stop zone1 irrigation.
+            this.emit('scheduleControl', ["zone1", 0]); // Stop zone1 irrigation.
         });
         cron.schedule(halfTimePlus, () => {
-        //    console.log(`System start zone2 at ${start}.`);
-        //    let currentDate = new Date();
-        //    let currentMomentDate = moment();
-        //    console.log(`Javascript date: ${currentDate}`);
-        //    console.log(`Moment date: ${currentMomentDate}`);
-            this.emit('scheduleControl', ["zone2", 1]);  // Start zone2 irrigation.
+            this.emit('scheduleControl', ["zone2", 1]); // Start zone2 irrigation.
         });
         cron.schedule(stop, () => {
-       //     console.log(`System shutdown zone2 at ${stop}.`);
-       //     let currentDate = new Date();
-       //     let currentMomentDate = moment();
-       //     console.log(`Javascript date: ${currentDate}`);
-       //     console.log(`Moment date: ${currentMomentDate}`);
-            this.emit('scheduleControl', ["zone2", 0]);  // Stop zone2 irrigation.
-        });       
+            this.emit('scheduleControl', ["zone2", 0]); // Stop zone2 irrigation.
+        });
     }
-    
+
 };
