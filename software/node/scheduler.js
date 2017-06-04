@@ -69,11 +69,12 @@ module.exports = class Scheduler extends EventEmitter {
         this.start = moment(data.startDate + ' ' + data.startTime).format('s m H D M d');
         this.stop = moment(data.startDate + ' ' + data.stopTime).format('s m H D M d');
         console.log(`The start is ${this.start} and the stop is ${this.stop}`);
-        this.startCrons();
+        this.startCrons(this.start, this.stop);
     }
 
-    startCrons() {
-        cron.schedule(this.start, () => {
+    startCrons(start, stop) {
+        
+        cron.schedule(start, () => {
             console.log('Firing at plus 5 minutes');
             let currentDate = new Date();
             let currentMomentDate = moment();
@@ -81,7 +82,7 @@ module.exports = class Scheduler extends EventEmitter {
             console.log(`Moment date: ${currentMomentDate}`);
         });
 
-        cron.schedule(this.stop, () => {
+        cron.schedule(stop, () => {
             console.log('Firing at plus 10 minutes');
             let currentDate = new Date();
             let currentMomentDate = moment();
