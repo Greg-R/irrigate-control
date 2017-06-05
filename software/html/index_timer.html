@@ -55,11 +55,11 @@
         </p>
         <p>
             <label for="starttime">Stop Irrigation Time:</label>
-            <input id="startTime" type="time" value="06:00:00">
+            <input id="startTime" type="time" value="06:00">
         </p>
         <p>
             <label for="stopTime">Stop Irrigation Time:</label>
-            <input id="stopTime" type="time" value="07:00:00">
+            <input id="stopTime" type="time" value="07:00">
         </p>
     </div>
     <div id="scheduler">
@@ -69,11 +69,21 @@
     </div>
     <div id="irrigationschedule">
         <p>Current Irrigation Schedule</p>
-        <p>Date</p>
-        <p>Start Time</p>
-        <p>Stop Time</p>
+        <p id="irrigationDate">Date</p>
+        <p id="irrigationStart">Start Time</p>
+        <p id="irrigationStop">Stop Time</p>
+        <p>Current Time</p>
+        <div id="currentTime">00:00:00 AM</div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script>
+        //  Current Time Updater
+        //setInterval(() => {document.getElementById('currentTime').value = new Date();console.log("Update time.");}, 1000);
+        let clock = document.getElementById('currentTime');
+        clock.textContent = new Date();
+        setInterval(() => {
+            clock.textContent = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
+        }, 1000);
         //  Open a WebSocket to the server.
         let ws = new WebSocket('ws://192.168.1.8:8089');
         // Get buttons.
@@ -88,6 +98,61 @@
         let pumpstatus = document.getElementById('pumpstatus');
         let zone1status = document.getElementById('zone1status');
         let zone2status = document.getElementById('zone2status');
+        let irrigationDate = document.getElementById('irrigationDate');
+        let irrigationStart = document.getElementById('irrigationStart');
+        let irrigationStop = document.getElementById('irrigationStop');
+
+        let pumpMap = {
+            'pumpmotor': 0,
+            'zone1': 0,
+            'zone2': 0
+        };  // Attempted to use Map; did not work with Proxy in Chromium.
+
+        let pumpObserver = () => {
+            return {
+                set: (target, property, value, receiver) => {
+                    console.log(`Setting ${property} to ${value}.`);
+                    target[property] = value;
+                    buttonUpdate(property, value);  //  Update the button colors.
+                    console.log("From pumpObserver function used by Proxy.")
+                    return true;
+                }
+            };
+        }
+
+        // The purpose of the Proxy is to update button colors and text status consistently.
+        let pumpMapProxy = new Proxy(pumpMap, pumpObserver());
+
+        // This function will update button colors.
+        let buttonUpdate = (device, state) => {          
+            if (device === 'pumpmotor') {
+                if (state === 1) {
+                    pumpbuttonon.style.color = "green";
+                    pumpbuttonoff.style.color = "black";
+                } else if (state === 0) {
+                    pumpbuttonon.style.color = "black";
+                    pumpbuttonoff.style.color = "green";
+                }
+            }
+            if (device === 'zone1') {
+                if (state === 1) {
+                    zone1buttonon.style.color = "green";
+                    zone1buttonoff.style.color = "black";
+                } else if (state === 0) {
+                    zone1buttonon.style.color = "black";
+                    zone1buttonoff.style.color = "green";
+                }
+            }
+            if (device === 'zone2') {
+                if (state === 1) {
+                    zone2buttonon.style.color = "green";
+                    zone2buttonoff.style.color = "black";
+                } else if (state === 0) {
+                    zone2buttonon.style.color = "black";
+                    zone2buttonoff.style.color = "green";
+                }
+            }
+        }
 
         ws.onopen = () => {
             console.log('Web browser opened a WebSocket.');
@@ -104,60 +169,54 @@
         //  Get messages from irrigation server and update status.
         ws.onmessage = (message) => {
             console.log(message.data);
-            let statusmessage = JSON.parse(message.data);
-//  Check the message type and handle as required.
-            switch (statusmessage[0]) {
-                case 'pumpmotor':
-                    pumpstatus.textContent = 'Pump status: ' + statusmessage[1];
-                    break;
-                case 'zone1':
-                    zone1status.textContent = 'Zone 1 status: ' + statusmessage[1];
-                    break;
-                case 'zone2':
-                    zone2status.textContent = 'Zone2 status: ' + statusmessage[1];
-                    break;
+            let statusMessage = JSON.parse(message.data);
+            //  Check the message type and handle as required.
+            if (statusMessage.messageType === "pumpControl") {
+                pumpstatus.textContent = 'Pump status: ' + statusMessage.pumpmotor;
+                zone1status.textContent = 'Zone 1 status: ' + statusMessage.zone1;
+                zone2status.textContent = 'Zone2 status: ' + statusMessage.zone2;
+                // Need to also update the button colors!  Try using Proxy...
+                pumpMapProxy.pumpmotor = statusMessage.pumpmotor;
+                pumpMapProxy.zone1 = statusMessage.zone1;
+                pumpMapProxy.zone2 = statusMessage.zone2;
+            } else if (statusMessage.messageType === "schedule") {
+                irrigationDate.textContent = 'Date: ' + statusMessage.scheduleDate;
+                irrigationStart.textContent = 'Start: ' + statusMessage.scheduleStart;
+                irrigationStop.textContent = 'Stop: ' + statusMessage.scheduleStop;
             }
         }
 
-        //  Manual control button event handler.       
-        buttonevent = (device, state, buttonon, buttonoff) => {
+        //  Manual control button event handler.  Note that server will respond back with message
+        //  that will write to Proxy, which then updates the buttons.
+        buttonevent = (device, state) => {
             if (ws.readyState === ws.OPEN) {
                 console.log(`Sending ${state} to device ${device}`);
                 ws.send(`{"messageType":"pumpControl", "control":{"${device}":${state}}}`);
-                if (state === 1) {
-                    buttonon.style.color = "green";
-                    buttonoff.style.color = "black";
-                } else if (state === 0) {
-                    buttonon.style.color = "black";
-                    buttonoff.style.color = "green";
-                }
             } else {
                 console.log('Websocket is not open.  Message aborted.');
             }
         }
 
         pumpbuttonon.addEventListener('click', () => {
-            buttonevent('pumpmotor', 1, pumpbuttonon, pumpbuttonoff);
+            buttonevent('pumpmotor', 1);
         });
         pumpbuttonoff.addEventListener('click', () => {
-            buttonevent('pumpmotor', 0, pumpbuttonon, pumpbuttonoff);
+            buttonevent('pumpmotor', 0);
         });
         zone1buttonon.addEventListener('click', () => {
-            buttonevent('zone1', 1, zone1buttonon, zone1buttonoff);
+            buttonevent('zone1', 1);
         });
         zone1buttonoff.addEventListener('click', () => {
-            buttonevent('zone1', 0, zone1buttonon, zone1buttonoff);
+            buttonevent('zone1', 0);
         });
         zone2buttonon.addEventListener('click', () => {
-            buttonevent('zone2', 1, zone2buttonon, zone2buttonoff);
+            buttonevent('zone2', 1);
         });
         zone2buttonoff.addEventListener('click', () => {
-            buttonevent('zone2', 0, zone2buttonon, zone2buttonoff);
+            buttonevent('zone2', 0);
         });
         //  Initialize the Date input form.
         document.getElementById('startDate').valueAsDate = new Date();
-
-
 
         //  Scheduler button event handler.       
         scheduleevent = () => {
@@ -167,7 +226,7 @@
                 let startTime = document.getElementById('startTime').value;
                 let stopTime = document.getElementById('stopTime').value;
                 let scheduleObject = `{"messageType":"schedule", "startDate": "${startDate}", "startTime":"${startTime}", "stopTime":"${stopTime}"}`;
-              //  let scheduleMap = {"test":"this"};
+                //  let scheduleMap = {"test":"this"};
                 console.log(`Sending schedule to server.`);
                 ws.send(scheduleObject);
             } else {
