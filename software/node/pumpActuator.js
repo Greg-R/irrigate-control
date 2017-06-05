@@ -35,7 +35,6 @@ module.exports = class pumpActuator extends EventEmitter {
                 console.log(`Setting ${property} to ${value}.`);
                 target.set(property, value);
                 this.pumpControl(property, value);
-               // target[property] = value;
                 return true;
             }
         };
