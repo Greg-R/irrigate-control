@@ -1,24 +1,27 @@
 body {
-    width: 400px;
+    width: 430px;
     margin: 10 auto;
 }
 div#buttons {
-    margin: 20px;
+    margin: 10px;
 }
 #pumpbuttons {
     width: 350px;
-    height: 40px;
+    height: 25px;
+    margin: 10px;
 }
 #pumpmotoroff {
     float: right;
 }
 #zone1buttons {
     width: 350px;
-    height: 40px;
+    height: 25px;
+    margin: 10px;
 }
 #zone2buttons {
     width: 350px;
-    height: 40px;
+    height: 25px;
+    margin: 10px;
 }
 
 #zone1off {
@@ -29,3 +32,14 @@ div#buttons {
     float:right;
 }
 
+h2 {
+    margin: 10px;
+}
+
+h3 {
+    margin: 10px;
+}
+
+p {
+    margin: 8px;  
+}
