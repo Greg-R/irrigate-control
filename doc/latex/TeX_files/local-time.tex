@@ -1,0 +1,26 @@
+\chapter{Setting the BBGW to Local Time}
+
+The default time setting of the BBGW was found to be UTC.  It was desired to 
+have this set to local time.
+
+Fortunately, there is a web page by Derek Molloy which covers this subject in 
+detail:
+
+\url{http://derekmolloy.ie/automatically-setting-the-beaglebone-black-time-using-ntp/}
+
+CHECK IF DEFAULT IMAGE HAS ACTIVE NTP
+
+The change to local time is done by removing an existing file, and then adding 
+a symbolic link:
+
+\begin{verbatim}
+cd /etc
+rm localtime
+ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
+\end{verbatim}
+
+In the above example, the time zone is set to North America Eastern (New 
+York).  A complete listing of the possibilities is found in/usr/shar/zoneinfo.
+Simply find the appropriate path for you time zone and create the link.
+
+The time zone setting will take effect upon the next boot.

@@ -1,8 +1,9 @@
 /*jshint esversion: 6 */
-//  This is the WebSockets server for the Irrigation control.
+//  This is the WebSockets server for the Irrigation controller.
 
-//  Get the WebSocket class:
+//  Get the WebSocket class from the Node.js ws package:
 const WebSocketServer = require('ws').Server;
+//  pumpActuator and Scheduler are Objects from the custom classes.
 let pumpActuator = require('./pumpActuator');
 let Scheduler = require('./scheduler');
 
@@ -13,15 +14,15 @@ exports.listen = function (server) {
 
     console.info('WebSocket server started...');
     wss.on('connection', function (ws) {
-        //  Note the use of let for ledObject; the Object will be destroyed if the wss is destroyed.
+        //  Note the use of let here.  The Objects will be destroyed if the wss is destroyed.
         let pumpObject = new pumpActuator();
         let scheduler = new Scheduler();
 
         let url = ws.upgradeReq.url;
         console.info(url);
-        console.log(`The connection is open and request is from ${url}.`);
+        console.log(`The WebSocket is connected and request is from ${url}.`);
         console.log(`The number of clients is ${wss.clients.size}`);
-        //  Received messages from the web page and process.
+        //  Receive/transmit messages to and from the web page and process.
         ws.on('message', (data, flags) => {
             console.log(`Received data from client: ${data}.`);
             let dataObject = JSON.parse(data);
@@ -37,9 +38,10 @@ exports.listen = function (server) {
             }
         });
         //  Handle automatic irrigation from scheduler.
+        //  A control array example: ['zone1', 1].  This means turn on zone1 solenoid and pump.
         scheduler.on('scheduleControl', (controlArray) => {
-            pumpObject.pumpMapProxy[controlArray[0]] = controlArray[1];
-            pumpObject.pumpMapProxy.pumpmotor = controlArray[1];
+            pumpObject.pumpMapProxy[controlArray[0]] = controlArray[1];  // Set zone to 0 or 1.
+            pumpObject.pumpMapProxy.pumpmotor = controlArray[1];         // Set pump to 0 or 1.
         });
 //  Update the "Current Schedule" area of the web page.
         scheduler.on('schedule', (message) => {

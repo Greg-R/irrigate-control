@@ -20,14 +20,18 @@ The controller GUI is an HTML5 web page.  The project was developed with the
 Chromium browser in Ubuntu 16.04.
 
 There was no attempt to fix problems with cross-browser compatibility issues.  
-plain HTML5 and CSS was used throughout.  This is a bare-bones interface with 
+Plain HTML5 and CSS was used throughout.  This is a bare-bones interface with 
 no fancy features.
 
 
 \begin{figure}[h]
 	\centering
-%    \includegraphics[width=0.5\textwidth]{photos/encoder-close-view.jpg}
+    \includegraphics[width=0.5\textwidth]{photos/browser_full.png}
 	\centering\bfseries
-	\caption{}
+	\caption{The Irrigation Controller as seen with a Chromium Browser}
 \end{figure}
 
+Manual control buttons for the zone solenoids and the pump motor are at the 
+top.  The user can enter a schedule date and start and stop times.  Clicking 
+the ``Schedule'' button sends the requested irrigation schedule to the server.  
+The server responds with a message which updates the displayed schedule.
