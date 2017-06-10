@@ -27,6 +27,8 @@ which does not exist on the BeagleBone Green Wireless.
 This is as a typical "headless" embedded project with the primary access using 
 a terminal and ssh.
 
+\section{Get Latest IOT Image}
+
 Download and expand the IOT bone image per this link and flash to micro-sd.  I 
 used this one:
 
@@ -71,6 +73,8 @@ After logging in, a good thing to do first is to run this shell script:
 cd /opt/scripts/tools
 sudo ./grow_partition.sh
 \end{verbatim}
+
+\section{Wireless Network Configuration}
 
 Next:
 
@@ -159,9 +163,26 @@ After logging in you should have internet connectivity, so don't forget to:
 
 sudo apt-get update
 
+\section{USB Serial Device}
+
 Here is an example USB serial device.  This should be on your tool kit list:
 
 \url{https://www.amazon.com/gp/product/B01AFQ00G2/ref=oh_aui_search_detailpage?ie=UTF8&psc=1}
+
+\section{Change of Wireless Router}
+
+If the home wireless router is re-configured or replaced, this could require 
+the use of the serial USB device again.  That's a problem assuming the device 
+is remote mounted.
+
+One possibility is to configure the new WIFI router for deployment in the home 
+network and place it in range of the BBGW.  Using the above procedure for 
+wireless network configuration, the router information for the new router is 
+copied into the configuration while still connected with the old router.
+
+As soon as the correct passphrase is entered the connection to the former 
+router will drop.  The new router can now be deployed and the BBGW will connect 
+to it.
 
 
 

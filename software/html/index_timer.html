@@ -106,14 +106,14 @@
             'pumpmotor': 0,
             'zone1': 0,
             'zone2': 0
-        };  // Attempted to use Map; did not work with Proxy in Chromium.
+        }; // Attempted to use Map; did not work with Proxy in Chromium.
 
         let pumpObserver = () => {
             return {
                 set: (target, property, value, receiver) => {
                     console.log(`Setting ${property} to ${value}.`);
                     target[property] = value;
-                    buttonUpdate(property, value);  //  Update the button colors.
+                    buttonUpdate(property, value); //  Update the button colors.
                     console.log("From pumpObserver function used by Proxy.")
                     return true;
                 }
@@ -124,7 +124,7 @@
         let pumpMapProxy = new Proxy(pumpMap, pumpObserver());
 
         // This function will update button colors.
-        let buttonUpdate = (device, state) => {          
+        let buttonUpdate = (device, state) => {
             if (device === 'pumpmotor') {
                 if (state === 1) {
                     pumpbuttonon.style.color = "green";
@@ -139,8 +139,8 @@
                     zone1buttonon.style.color = "green";
                     zone1buttonoff.style.color = "black";
                 } else if (state === 0) {
-                    zone1buttonon.style.color = "black";
-                    zone1buttonoff.style.color = "green";
+                        zone1buttonon.style.color = "black";
+                        zone1buttonoff.style.color = "green";
                 }
             }
             if (device === 'zone2') {
@@ -236,6 +236,7 @@
 
         schedulebutton.addEventListener('click', () => {
             scheduleevent();
+            schedulebutton.style.color = "green";
         });
 
     </script>

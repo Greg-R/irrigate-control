@@ -43,3 +43,8 @@ h3 {
 p {
     margin: 8px;  
 }
+
+button {
+    border-width: 3px;
+    font-weight: bold;
+}
