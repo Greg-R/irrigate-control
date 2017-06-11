@@ -20,8 +20,9 @@ The controller GUI is an HTML5 web page.  The project was developed with the
 Chromium browser in Ubuntu 16.04.
 
 There was no attempt to fix problems with cross-browser compatibility issues.  
-Plain HTML5 and CSS was used throughout.  This is a bare-bones interface with 
-no fancy features.
+Plain HTML5 and CSS was used throughout.  The HTML was manipulated directly via 
+the ``Document Object Model'' (DOM) technology in the web browser.  This is a 
+bare-bones interface with no fancy features.
 
 
 \begin{figure}[h]
@@ -34,4 +35,7 @@ no fancy features.
 Manual control buttons for the zone solenoids and the pump motor are at the 
 top.  The user can enter a schedule date and start and stop times.  Clicking 
 the ``Schedule'' button sends the requested irrigation schedule to the server.  
-The server responds with a message which updates the displayed schedule.
+The server responds with a message which updates the displayed schedule.  No 
+rigorous checking of inputs is done.
+
+The current date and time  are shown in the last line of the controller page.

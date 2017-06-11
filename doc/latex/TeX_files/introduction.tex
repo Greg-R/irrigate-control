@@ -22,14 +22,7 @@ located here:
 
 \url{https://github.com/Greg-R/irrigate-control}
 
-The Debian-based GNU/Linux distribution used on the BBGW can be downloaded from 
-this page:
-
-\url{http://beagleboard.org/latest-images}
-
-The ``IOT'' (non-GUI) image was chosen, as this provides the shortest path to get the project up and running.
-
-A listing of additional resources is found in the Resources chapter.
+A listing of parts and other resources is found in the Resources chapter.
 
 \section{Project Goals}
 
@@ -42,7 +35,7 @@ This project performs the simple home automation task of controlling a lawn
 irrigation system.  For many years, I had been controlling the irrigation 
 system manually by flipping a circuit breaker to turn the pump motor on and 
 off.  The old timing unit had failed years ago, and I had never replaced it.  
-So now I wanted to be able to control the system via a web browser without 
+I wanted to be able to control the system via a web browser without 
 having to leave my home office desk.
 
 Although in principle the automation is simple, the underlying technology is 
@@ -51,23 +44,24 @@ required to implement the project.
 
 \section{Technologies}
 
-The development board chosen is the Beagle Bone Green Wireless (BBGW).  I have 
-significant experience with the regular Beagle Bone Green, and the WIFI 
-capability is required for this project. The board will be mounted remotely 
-with access to power only (no wired ethernet is possible).
+The development board chosen is the Beagle Bone Green Wireless (BBGW). The 
+board will be mounted remotely 
+with access to power only (no wired ethernet is possible at that location).
 
 The Debian-based GNU/Linux distribution used on the BBGW can be downloaded from 
 this page:
 
 \url{http://beagleboard.org/latest-images}
 
-The ``IOT'' (non-GUI) image was chosen, as this provides the shortest path to 
-get the project up and running.
+The ``IOT'' (non-GUI) image was chosen, as this provides most of the software 
+features required to get the project up and running.  As is, the board is 
+configured as an ``access point''.  This was changed to a conventional wireless 
+LAN interface.
 
-Node.js version v7.9.0 was used.  This is a much later version than what is 
-included in the image.  A section on ungrading is included.
+Node.js version v8.1.0 was used.  This is a much later version than what is 
+included in the image.  A section on upgrading Node is included.
 
-The project's Javascript code uses several "Ecmascript 6" constructs.  In my 
+The project's Javascript code uses several ``Ecmascript 6'' constructs.  In my 
 opinion this release of Javascript is a significant improvement in the 
 language.  Some of the strange quirks of Javascript are eliminated!
 
@@ -93,7 +87,7 @@ taking the GPIO outputs of the BBGW and doing something real:
 This board has four individual relays.  This project uses only three.
 
 Note that this type of relay can switch AC power only.  This was ideal for this 
-project, as the irrigation system is powered by 24VAC.
+project, as the irrigation system controls are powered by 24VAC.
 
 The other common components of the irrigation system are listed in the 
 reference section at the end of this document.
@@ -101,6 +95,10 @@ reference section at the end of this document.
 ``Universal IO'' was used to set the pin multiplexer to GPIO mode:
 
 \url{https://github.com/cdsteinkuehler/beaglebone-universal-io}
+
+The irrigation system control components were manufactured by Orbit.  These 
+types of solenoid valves and relays seem to be standardized to 24VAC power, so 
+other manufacturers products will work as well.
 
 
 

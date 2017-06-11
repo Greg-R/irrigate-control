@@ -27,7 +27,7 @@ The above diagram shows the main components of the system.  A reference section
 is included which has a complete parts list.
 
 
-\section{GNU/Linux Operating System on Host ARM Processor}
+\section{GNU/Linux Operating System on BBGW Host ARM Processor}
 
 The command uname -a on the BBGW used to develop this project reports this:
 
@@ -35,6 +35,10 @@ The command uname -a on the BBGW used to develop this project reports this:
 Linux beaglebone 4.4.48-ti-r88 #1 SMP Sun Feb 12 01:06:00 UTC 2017 armv7l 
 GNU/Linux
 \end{verbatim}
+
+The hardware used in this project only requires GPIOs.  So the actual 
+distribution and kernel used should not be critical as long as it supports the 
+WIFI of the BBGW and upgrading Node is possible.
 
 
 

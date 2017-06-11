@@ -5,14 +5,10 @@ time specified by the user.  The user enters the start and stop timing using
 the web browser controller.  The watering times are equally split between the 
 two zones.
 
-The timing function might seem simple.  However, it proved challenging to 
-implement with simple code.
+A timing function such as this might seem simple.  However, it proved 
+challenging to implement with simple code.
 
-Two excellent Node packages were used:
-
-\url{https://www.npmjs.com/package/node-cron}
-
-and
+Two excellent NPM packages came to the rescue: node-cron and moment.
 
 \url{https://www.npmjs.com/package/moment}
 
@@ -25,6 +21,8 @@ The Moment package provides a robust data and time module which is more
 flexible than the native Javascript Date object.  The module's mode of 
 operation is a little unusual, however, the documentation is excellent and the 
 user should have no problem using the extensive feature set.
+
+\url{https://www.npmjs.com/package/node-cron}
 
 \begin{figure}[H]
 	\centering

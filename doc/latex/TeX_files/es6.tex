@@ -70,16 +70,17 @@ pumpActuator class.
 The ``pumpMap'' is a simple data structure to store the state of the pumpmotor 
 and the two zone actuators.
 
-\subsection{Proxy}
+\subsection{Proxy and Object.assign}
 
 Of the above ES6 constructs, the only one requiring detailed explanation is the 
-``Proxy''.  The construct is used to implement the so-call ``Observer'' pattern.
+``Proxy''.  The construct is used to implement the software ``Observer'' 
+pattern.
 
-The instantiation of the ``pumpHashProxy'' is done in the constructor of the 
+The instantiation of the ``pumpMapProxy'' is done in the constructor of the 
 pumpActuator class:
 
 \begin{verbatim}
-        this.pumpHashProxy = new Proxy(this.pumpMap, this.pumpObserver());
+        this.pumpMapProxy = new Proxy(this.pumpMap, this.pumpObserver());
 \end{verbatim}
 
 The Proxy's constructor takes two arguments, which in this case is this.pumpMap 
@@ -151,7 +152,7 @@ pumpMapProxy with the value from controlObject.  The Proxy intercepts this
 write, and then executes the custom set function.
 
 The Proxy allows a custom behavior to be executed when a data structure is 
-written to or read from.  This is very powerful!  In this particular project 
+written to or read from.  In this particular project 
 with only three controls it does not standout, however, this sort of 
 ``Observer'' pattern is very scalable and could be very advantageous in a much 
 larger and more complex system.
@@ -166,6 +167,12 @@ let and const solve the crazy problem of hard to understand scope and
  var was not used anywhere in this project.
  
  const and let are a huge improvement to Javascript!
+ 
+ \section{Upgrading the BBGW to Node Version 8}
+ 
+ Follow these instructions at the Node.js web site:
+ 
+ \url{https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions}
 
 
 

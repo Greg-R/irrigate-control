@@ -12,7 +12,7 @@ The above diagram shows the flow of data between the web browser controller and
 the BBGW server.
 
 ``Javascript Object Notation'' (JSON) is used the format used for the 
-messages.  These ``Objects'' are really used as associative arrays would be 
+messages.  These ``Objects'' are used as associative arrays would be 
 used in other programming languages.  In fact, ES6 includes a formal 
 associative array called Map.  However, JSON is a de-facto standard for this 
 sort of simple message passing, and the JSON related tools are easy to use.
@@ -42,8 +42,8 @@ routed to the pumpActuator Object.  The ``control'' key's value is another JSON
 object, and this Object has as its key the device to be controlled, and the 
 value is the desired state.
 
-A little bit of Javascript trickery is involved to use this piece of incoming 
-data:
+A little bit of ES6 Javascript trickery is involved to use this piece of 
+incoming data:
 
 \begin{verbatim}
 Object.assign(pumpObject.pumpMapProxy, dataObject.control);
@@ -57,10 +57,10 @@ So what the Object.assign(arg1, arg2) method does is overwrite key:value pair
 located in arg1 with the key:value pair in arg2.
 
 Due to the write being done through a Proxy Object, another function is called 
-which physically changes the state of the correct GPIO, and then it sends 
-another object back to the web browser to update its status display.
+which physically changes the state of the correct GPIO, and the function then 
+sends another object back to the web browser to update its status display.
 
-It could be the case that the ES6 Proxy Object will become a preferred method 
+It is possible that the ES6 Proxy Object will become a preferred method 
 for managing state in Javascript based embedded devices.  The interested reader 
 is encouraged to check out the documentation at this link:
 

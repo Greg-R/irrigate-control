@@ -16,16 +16,19 @@
 
 \chapter{GPIO Control with sysfs Virtual File System}
 
-This ``sysfs'' virtual file system the core functionality which allows the 
-GPIOs to be controlled from user space.
+The ``sysfs'' virtual file system is the core functionality which allows the 
+``General Purpose Input Output'' (GPIO) to be controlled from user space by 
+Node.js Javascript.  Three GPIOs are used in output mode, and these outputs 
+control a solid-state relay board.
 
 Note that the BBGW must be correctly configured for GPIO output mode on the 
-three control pins used to control the irrigation devices.  This document will 
-not cover this subject in detail, as this has been well-covered in numerous web 
-articles and books.
+three control pins used to control the irrigation devices.
 
-A highly recommended resource is ``Exploring Beaglebone'' by Derek Molloy.
-(add footnote here)
+A highly recommended resource which covers this topic is ``Exploring 
+Beaglebone'' by Derek Molloy 
+\footnote{\url{http://exploringbeaglebone.com/}}.
+This book has an excellent chapter on controlling the GPIOs from Linux 
+user-space.
 
 The method of configuring the header pins to GPIO is covered in the chapter 
 ``Universal IO''.  GPIO configuration must be complete before any of the 
