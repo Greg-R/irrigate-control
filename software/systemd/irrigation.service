@@ -1,0 +1,9 @@
+t]
+Description=Irrigation Control Server
+
+[Service]
+ExecStart=/usr/bin/node /home/debian/irrigate-control/software/node/server.js
+
+[Install]
+WantedBy=graphical.target
+

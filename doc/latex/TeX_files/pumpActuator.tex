@@ -1,0 +1,35 @@
+\chapter{Pump Actuator Class}
+
+The pumpActuator class models the control functions of the irrigation system.  
+It extends the Node.js EventEmitter and thus is can emit events.
+
+The class maintains a data structure which stores the current state of the 
+system.  This data structure is set up by the class constructor:
+
+\begin{verbatim}
+        this.pumpMap = new Map([['pumpmotor', 0],
+                              ['zone1', 0],
+                              ['zone2', 0]]);
+\end{verbatim}
+
+This is an ES6 ``Map'' which is an associative array.  There is a ``key'' for 
+the each pump element, and the value of 0 or 1 represents the on or off state.
+
+As explained in the chapter on ES6 a Proxy object is used to implement the 
+``Observer'' pattern.
+
+The Proxy can observe changes made to the data structure and execute 
+side-effects as required.  In this case, the GPIO state needs to be changed 
+each time the pumpMap data structure is updated.  The update can happen via the 
+manual controls on the web page, or they can be initiated by the Scheduler 
+Object.
+
+The system changes the state of the GPIOs and also updates the status 
+indicators on the web page.  This action happens merely by writing to the 
+pumpMap data structure.  So it does not matter who does the update; the 
+side-effects will always be taken care of automatically.
+
+The class contains another Map which are the paths to the virtual file system 
+sys controls for the GPIOs.
+
+The class emits a ``pumpStatusMessage'' whenever a write is done to the pumpMap.

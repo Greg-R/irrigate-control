@@ -76,12 +76,36 @@ cd /opt/scripts/tools
 sudo ./grow_partition.sh
 \end{verbatim}
 
+\section{Enable the BBGW Universal Cape}
+
+The file /boot/uEnv.txt must be edited to enable the BBGW universal cape.  This 
+will set up the GPIOs at boot time.
+
+Using root access, open the file /boot/uEnv.txt.
+Find this section of the file:
+
+\begin{verbatim}
+##Example v4.1.x
+#cape_disable=bone_capemgr.disable_partno=
+#cape_enable=bone_capemgr.enable_partno=
+\end{verbatim}
+
+Edit the cape\_enable line to look like this:
+
+\begin{verbatim}
+##Example v4.1.x
+#cape_disable=bone_capemgr.disable_partno=
+cape_enable=bone_capemgr.enable_partno=univ-bbgw
+\end{verbatim}
+
+The change will take effect upon next boot.
+
 \section{Wireless Network Configuration}
 
 Enter this command:
 
 \begin{verbatim}
-ifconfig
+if addr
 \end{verbatim}
 
 You should see 4 different network resources (not showing the full output here):
@@ -220,6 +244,17 @@ will cause booting the microSD card to flash the eMMC. Images are no longer
 provided here for this to avoid people accidentally overwriting their eMMC 
 flash.
 \end{quotation}
+
+The above process will take a few minutes to complete.  You may observe a 
+special pattern (back and forth ``cylon'') of the LEDs flashing during the 
+process.
+
+When the process is complete, the board will shut itself down.
+
+\textbf{Very important!  Remove the microSD card from its slot or the process 
+will repeat upon next boot!}
+
+Label and store the microSD card in a safe place.
 
 
 
