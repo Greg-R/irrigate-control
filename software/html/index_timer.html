@@ -77,21 +77,18 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script>
-        //  Current Time Updater
-        //setInterval(() => {document.getElementById('currentTime').value = new Date();console.log("Update time.");}, 1000);
+        //  Current Time Updater.  Update each second.
         let clock = document.getElementById('currentTime');
         clock.textContent = new Date();
         setInterval(() => {
             clock.textContent = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
         }, 1000);
         //  Open a WebSocket to the server.
- //       let ws = new WebSocket('ws://192.168.1.8:8089');
         //  Need a Regular Expression to get the URL.
-        const serverUrlRegex = /\d+\.\d+\.\d+\.\d+:\d+/;
-        const currentUrl = window.location.origin;
-        console.log(currentUrl);
-        const serverUrl = currentUrl.match(serverUrlRegex);
-        console.log(`The server URL is ${serverUrl[0]}`);
+        const serverUrlRegex = /\d+\.\d+\.\d+\.\d+:\d+/;  //  Matches 192.168.1.8:8089 etc.
+        const currentUrl = window.location.origin;  //  Get the URL from the browser.
+        const serverUrl = currentUrl.match(serverUrlRegex);  //  Extract what is needed to create WebSocket.
+        console.log(`The server URL is ${serverUrl[0]}`);  //  The match is in the 0th element of the array.
         let ws = new WebSocket(`ws://${serverUrl}`);
         // Get buttons.
         let pumpbuttonon = document.getElementById('pumpmotoron');
