@@ -16,15 +16,36 @@
 
 \chapter{Running the Project}
 
-Running the project at the command line, starting from the top of the git 
-repository:
+The project must be cloned to the BBGW and the NPM modules installed.
 
+After ssh into the BBGW, typically you will be in directory /home/debian.
+From there, enter these commands:
+
+\begin{verbatim}
 git clone https://github.com/Greg-R/irrigate-control.git
 cd irrigate-control
 cd software/node
 npm install --save
+\end{verbatim}
 
-The above should install the Node packages into a directory ``node\_modules''.
+The project will be pulled from the git repository.  The node modules need to 
+be installed in the directory from which the server will be launched.
+The above should install the modules into a directory ``node\_modules''.
+
+Now it is time to run the server!
+
+\begin{verbatim}
+sudo node server.js
+\end{verbatim}
+
+If all goes well, the command line should look like this:
+
+\begin{verbatim}
+WebSocket server started...
+Server is running at port 8089.
+\end{verbatim}
+
+
 
 
 
