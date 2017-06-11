@@ -8,8 +8,6 @@ detail:
 
 \url{http://derekmolloy.ie/automatically-setting-the-beaglebone-black-time-using-ntp/}
 
-CHECK IF DEFAULT IMAGE HAS ACTIVE NTP
-
 The change to local time is done by removing an existing file, and then adding 
 a symbolic link:
 
@@ -24,3 +22,7 @@ York).  A complete listing of the possibilities is found in/usr/share/zoneinfo.
 Simply find the appropriate path for your time zone and create the link.
 
 The time zone setting will take effect upon the next boot.
+
+Note that the BBGW does not have a local clock source.  It obtains timing data 
+via the ``Network Time Protocol''.  It must have internet access for this to 
+function.

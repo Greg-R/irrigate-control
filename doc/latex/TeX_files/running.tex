@@ -34,6 +34,14 @@ The above should install the modules into a directory ``node\_modules''.
 
 Now it is time to run the server!
 
+First, determine the IP address:
+
+\begin{verbatim}
+ip addr
+\end{verbatim}
+
+Look for the address associated with WLAN0 and remember it.  Next:
+
 \begin{verbatim}
 sudo node server.js
 \end{verbatim}
@@ -45,7 +53,45 @@ WebSocket server started...
 Server is running at port 8089.
 \end{verbatim}
 
+Now open a brower, preferably Chromium or Chrome, and go to this URL:
 
+\begin{verbatim}
+http://192.168.1.3:8089/index_timer.html
+\end{verbatim}
+
+In this example, the IP address is: 192.168.1.3
+The port number is 8089, and this is hard-coded into the server code.
+
+You should get a web page like the following:
+
+\begin{figure}[h]
+	\centering
+    \includegraphics[width=0.5\textwidth]{photos/browser_full.png}
+	\centering\bfseries
+	\caption{The Irrigation Controller as seen with a Chromium Browser}
+\end{figure}
+
+The six buttons at the top toggle the three pump components on and off.  The 
+left column is on, and the right column is off.  You should see the status 
+display below the buttons updated as you click the buttons.
+
+Setting the irrigation schedule is done by choosing clicking in the right hand 
+end of the date form.  You will see the controls if you hover the mouse in that 
+area.  Clicking on the triangular down arrow will bring up a calendar and the 
+date can be chosen.
+
+The start and stop input forms are set by clicking the hour minute and AM/PM 
+fields in the form and then using the up/down arrows to set the desired time.
+
+When the schedule is satisfactory, click the ``Schedule Irrigation'' button and 
+a message will be sent to the server.  If all is well, the schedule is sent 
+back to the browser and the ``Current Irrigation Schedule'' fields are updated.
+
+The system will begin irrigation at the chosen date and time.  The time in 
+zone1 and zone2 is divided in half based on the start and stop times.
+
+The manual control buttons will still function during automated irrigation if 
+it is desired to terminate watering early.
 
 
 

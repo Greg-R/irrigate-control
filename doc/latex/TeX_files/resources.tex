@@ -16,18 +16,128 @@
 
 \chapter{Resources}
 
-\section{Github repository for this project}
+\section{Hardware}
 
-\url{https://github.com/Greg-R/}
-
-
-
-\section{Beagle Bone Green Wireless}
+\subsection{Beagle Bone Green Wireless}
 
 \url{https://www.seeedstudio.com/SeeedStudio-BeagleBone-Green-Wireless-p-2650.html}
 
-\section{WebSockets}
+\subsection{Adafruit Proto-Cape}
 
-https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API
+This allows for a solid interconnect of the BBGW to the solid-state-relay.
+The wires are soldered to this board.  The pin numbering is helpful.
 
+\url{https://www.adafruit.com/product/572}
 
+\subsection{SainSmart Solid-State Relay Board}
+
+\url{https://www.amazon.com/gp/product/B00ZZVQR5Q/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1}
+
+There are two interesting points about the various solid-state relay boards.  
+Some of them are ``active-low''.  This is bad for this project!  The logic will 
+be reversed and the irrigation controls will be ON when the BBGW is OFF!  The 
+board in the link above is labelled ``High Level'' and it does indeed use 
+conventional high/on low/off logic.
+
+The second point is that the technology in this board is for switching AC 
+only!  Beware of specifications being claimed for these devices as the 
+information is often incorrect.
+
+\subsection{Power Supplies}
+
+A 5 volt USB supply for the BBGW:
+
+\url{https://www.amazon.com/gp/product/B0117O020U/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1}
+
+This device claims to be extra durable.  It remains to be seen if it will 
+survive in a box bolted to the outside of the house.
+
+24VAC supply for the irrigation controls:
+
+\url{https://www.amazon.com/Orbit-Sprinkler-System-Transformer-57040/dp/B000VRYVYS/ref=sr_1_1?ie=UTF8&qid=1497211848&sr=8-1&keywords=orbit+24vac+transformer}
+
+\subsection{Connectors}
+
+These mated JST connectors are perfect for wiring the electronics into the box:
+
+\url{https://www.amazon.com/gp/product/B013WTV270/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1}
+
+\subsection{Irrigation Components}
+
+In general these components are generic and similar products are available from 
+different manufacturers.  I chose Orbit and their stuff is holding up so far.
+
+The most important component is the box the BBGW and solid-state relay are 
+mounted in.  Since it is mounted on the side of the house is must be sturdy and 
+water tight.  This one even includes a ground-interrupt outlet.  The power 
+supplies were plugged into this outlet.
+
+\url{https://www.amazon.com/gp/product/B000VYGMF2/ref=oh_aui_detailpage_o05_s00?ie=UTF8&psc=1}
+
+The irrigation pump is a large unit powered by 220VAC.  Originally I was going 
+to use a solid-state relay for this.  However, this nicely boxed conventional 
+magnetic relay fit into the system nicely and is working great so far:
+
+\url{https://www.amazon.com/gp/product/B000I19I5E/ref=oh_aui_detailpage_o05_s00?ie=UTF8&psc=1}
+
+The ``manifold'' has two 24VAC solenoid valves and made the plumbing easier to 
+accomplish.
+
+\url{https://www.amazon.com/Orbit-57250-2-Valve-Preassembled-Manifold/dp/B001H1GWLC/ref=sr_1_1?s=lawn-garden&ie=UTF8&qid=1497212560&sr=1-1&keywords=orbit+2-valve+heavy+duty+preassembled+manifold}
+
+\subsection{Miscellaneous}
+
+The wiring, conduit etcetera is generic and there is no need to list it here.
+
+This assortment of small hardware was very useful:
+
+\url{https://www.amazon.com/gp/product/B01G0LJ8FA/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1}
+
+\section{Software}
+
+\subsection{Github repository for this project}
+
+\url{https://github.com/Greg-R/irrigate-control}
+
+\subsection{WebSockets}
+
+A good introduction to the browser WebSocket API.
+
+\url{https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API}
+
+\subsection{Beaglebone Green Wireless Development Image}
+
+Recommended stable images are downloaded from this page:
+
+\url{http://beagleboard.org/latest-images}
+
+This project used the IOT non-GUI image:
+
+\url{https://debian.beagleboard.org/images/bone-debian-8.7-iot-armhf-2017-03-19-4gb.img.xz}
+
+\subsection{Node WebSocket Library: ws}
+
+It's easy to use and works great!
+
+\url{https://github.com/websockets/ws}
+
+\subsection{Node Timing Library: node-cron}
+
+This provides the timing functionality used by the Scheduler:
+
+\url{https://github.com/kelektiv/node-cron}
+
+\subsection{Node Mime Parsing Library: mime}
+
+Provides a convenient functionality for detecting mime types in http requests:
+
+\url{https://github.com/broofa/node-mime}
+
+This is used in the server.js code.
+
+\subsection{Node Time Manipulation Library: moment}
+
+\url{https://momentjs.com/}
+
+This improves upon native Javascript date manipulations.  This is used in 
+concert with node-cron to implement the scheduling feature.
