@@ -86,7 +86,13 @@
         }, 1000);
         //  Open a WebSocket to the server.
  //       let ws = new WebSocket('ws://192.168.1.8:8089');
-        let ws = new WebSocket(window.location.origin);
+        //  Need a Regular Expression to get the URL.
+        const serverUrlRegex = /\d+\.\d+\.\d+\.\d+:\d+/;
+        const currentUrl = window.location.origin;
+        console.log(currentUrl);
+        const serverUrl = currentUrl.match(serverUrlRegex);
+        console.log(`The server URL is ${serverUrl[0]}`);
+        let ws = new WebSocket(`ws://${serverUrl}`);
         // Get buttons.
         let pumpbuttonon = document.getElementById('pumpmotoron');
         let pumpbuttonoff = document.getElementById('pumpmotoroff');
