@@ -16,38 +16,56 @@
 
 \chapter{Solid State AC Relays}
 
+The BBGW GPIOs are low-current capability with logic voltage of 3.3 volts.  
+This solid-state relay board allows the GPIOs to control the irrigation devices:
+
+\url{https://www.amazon.com/gp/product/B00ZZVQR5Q/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1}
+
 \begin{figure}[h]
 	\centering
-%    \includegraphics[width=0.5\textwidth]{photos/drv8833_breakout.jpg}
+    \includegraphics[width=0.5\textwidth]{photos/sainsmart_4relay_board.jpg}
 	\centering\bfseries
-	\caption{DRV8833 Break-out board (2 boards showing with view of top and bottom sides)}
+	\caption{Solid-State Relay Board)}
 \end{figure}
 
+Note that in the photo above you can see that the board uses four independent 
+solid-state relay modules.  These modules use photo-electric isolation.  This 
+should allow excellent protection from voltage transients on the irrigation 
+equipment side of the system from damaging the BBGW.  Long-term testing needs 
+to be done to see how well this works out.
 
-The recommended motor driver IC is the Texas Instruments DRV8833:
+The individual relay modules require 5 volt logic.  However, there is some 
+additional circuitry on the board which appears to allow less than 5 volt 
+logic, as long as a 5 volt supply is available.  Unfortunately a circuit 
+diagram for this board could not be found.  A ``best guess'' as to the hook-up 
+seems to function well.
 
-\url{http://www.ti.com/lit/ds/symlink/drv8833.pdf}
+Viewing the photo of the board above, the screw terminals are labelled:
 
-This devices works perfectly with this project and is inexpensive.
-Several eBay sellers offer a ``break-out board'' with the IC and several external components mounted with break-board friendly header pin holes.  The board shown in the photo above even includes a surface mounted LED power indicator!
+\begin{verbatim}
+D+ D- CH1 CH2 CH3 CH4
+\end{verbatim}
 
-The connections to the board are as follows:
+The BBGW has 5 volts DC supply available on header pins P9-5 and P9-6 
+(VDD\_5V), and also on P9-7 and P9-8 (SYS\_5V).
 
-\begin{enumerate}
-\item ULT PIN:mode set. Low level is sleep mode
-\item OUT1,OUT2:1-channel H-bridge controlled by IN1/IN2
-\item OUT3,OUT4:2-channel H-bridge controlled by IN3/IN4
-\item EEP PIN:Output protection. Default no need to connect.
-\item VCC:3-10V
-\item GND
-\end{enumerate}
+VDD\_5V is the same as the regulated 5 volt power supply which powers the BBGW 
+via the USB connector.  SYS\_5V is switched on immediately after VDD\_5V is 
+applied to the board via the USB connector, so functionally it doesn't matter 
+which supply is used to power the solid-state-relay input circuitry.
 
-From the above list, only 2, 5 and 6 are used in this project.
+The suggested hook-up is to connect P9-5 to D+, and both of the ground pins 
+(P9-1 or P9-2) to D-.  The GPIOs are then connected to CH1, CH2, and CH3 as 
+shown in the table:
 
-IN1 is connected to the PWM output of the BBG, which is header P9.42.
-The GND pin requires a connection to one of the grounds on the BBG such as P8.1 or P8.2.
-
-VCC should be connected to an 8Volt DC power supply, however, the exact voltage is not critical.  A solid ground connection should be made between the 8Volt supply and the DRV8833 board.
-
-OUT1 and OUT2 should be connected to the motor power terminals.
-
+\begin{longtable}{lll}
+\caption{BBGW to Solid-State Relay Interconnect}\\
+\toprule
+Header Pin & Relay Terminal & Function \\\midrule
+P9-1 & D- & Ground \\
+P9-2 & D- & Ground \\
+P9-5 & D+ & 5 volts \\
+P9-14 & CH1 & Pump Motor \\
+P9-15 & CH2 & Zone 1 Solenoid \\
+P9-16 & CH3 & Zone 2 Solenoid
+\end{longtable}

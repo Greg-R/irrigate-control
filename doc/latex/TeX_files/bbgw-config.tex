@@ -16,13 +16,14 @@
 
 \chapter{Configuration of the Beagle Bone Green Wireless}
 
-The default configuration of the Beagle Bone Green Wireless is as a ``access 
+The default configuration of the Beagle Bone Green Wireless is as an ``access 
 point'' (a wireless router).  This is not a desired configuration for a 
 dedicated embedded device as used in this project.
 
-The following process re-configures the BBGW to a non-access point mode.
+The following process re-configures the BBGW to a non-access point wireless 
+mode.
 
-The goal is to have a working wireless substitute for the ethernet connector 
+The goal is to have a working wireless substitute for the Ethernet connector 
 which does not exist on the BeagleBone Green Wireless.
 This is as a typical "headless" embedded project with the primary access using 
 a terminal and ssh.
@@ -38,17 +39,17 @@ Write the image to the micro-sd (I put the micro-sd in a USB adapter plugged
 into my Ubuntu workstation):
 
 \begin{verbatim}
-sudo dd if=bone-debian-8.7-iot-armhf-2017-01-15-4gb.img of=/def/sdb bs=8M
+xzcat bone-debian-8.7-iot-armhf-2017-03-19-4gb.img.xz | sudo dd of=/def/sdb
 \end{verbatim}
 
 Eject the micro-sd from workstation and insert in the BBGW micro-sd slot.
 Connect a USB 3.3V serial device to the "debug serial header".  The USB network 
 connection could be substituted, however, my experience
 with this is that using the serial device is solid and will work consistently.
-Also, since the BBGW doesn't have a dedicated power connector.  It uses the 
+Also, the BBGW doesn't have a dedicated power connector.  It uses the 
 micro-USB.
-It is my preference to use a high-current dedicated USB power supply and ignore 
-this as a possible network connection.
+It is my preference to use a dedicated USB power supply and ignore 
+USB as a network connection.
 
 Power-up the BBGW and wait for the boot process to complete.
 Open a (bash) terminal and use the screen utility to connect via the serial USB 
@@ -67,7 +68,8 @@ You may have to install screen:
 sudo apt-get install screen
 \end{verbatim}
 
-After logging in, a good thing to do first is to run this shell script:
+After logging in the first time, a good thing to do first is to run this shell 
+script:
 
 \begin{verbatim}
 cd /opt/scripts/tools
@@ -76,7 +78,7 @@ sudo ./grow_partition.sh
 
 \section{Wireless Network Configuration}
 
-Next:
+Enter this command:
 
 \begin{verbatim}
 ifconfig
@@ -143,10 +145,10 @@ An outstanding page with good info on connman:
 
 \url{https://wiki.archlinux.org/index.php/Connman}
 
-Another very good thing is to login to your router and use this to determine if 
+Next, login to your router and use this to determine if 
 your BBGW is successfully connected.
-And remember the router may have security settings which may block it from 
-connecting.
+Remember the router may have security settings which may block it from 
+connecting.  Change this as required.
 Also, rather than attempting to force a fixed IP address on the BBGW, I used 
 the "address reservation" feature
 so that the IP address assigned by the router will be the same each time it 
@@ -161,7 +163,20 @@ ssh debian@(the assigned IP address)
 
 After logging in you should have internet connectivity, so don't forget to:
 
+\begin{verbatim}
 sudo apt-get update
+\end{verbatim}
+
+\section{Copy Public SSH Key to BBGW}
+
+Another good thing to do is to copy your public ssh key to the BBGW:
+
+\begin{verbatim}
+ssh-copy-id -i id\_rsa.pub debian@192.168.1.3
+\end{verbatim}
+
+where you need to substitute the IP address assigned to the BBGW by the 
+router.  This will allow you to bypass the usual login authentication routine.
 
 \section{USB Serial Device}
 
@@ -183,6 +198,28 @@ copied into the configuration while still connected with the old router.
 As soon as the correct passphrase is entered the connection to the former 
 router will drop.  The new router can now be deployed and the BBGW will connect 
 to it.
+
+\section{Flash the eMMC After Completing Development}
+
+Running the GNU/Linux OS and applications from the SD card is OK for 
+development purposes.  However, using an SD card is not a reliable long-term 
+solution.
+
+It is better to flash the contents of the SD card to the on-board eMMC flash 
+drive.  This device is specifically designed for use with an operating system 
+and will adapt and survive as the memory cells wear out.
+
+A simple change to a file on the microSD card will cause the flash process to 
+commence upon the next boot-up.  From the Beagleboard web site:
+
+\begin{quotation}
+To turn these images into eMMC flasher images, edit the /boot/uEnv.txt file on 
+the Linux partition on the microSD card and remove the '\#' on the line with 
+'cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh'. Enabling this 
+will cause booting the microSD card to flash the eMMC. Images are no longer 
+provided here for this to avoid people accidentally overwriting their eMMC 
+flash.
+\end{quotation}
 
 
 

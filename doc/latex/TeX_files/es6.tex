@@ -170,9 +170,31 @@ let and const solve the crazy problem of hard to understand scope and
  
  \section{Upgrading the BBGW to Node Version 8}
  
+ The Beaglebone image used in this project is built with Node version 4.8.0.  
+ This will need to upgrade to the latest Node.
+ 
  Follow these instructions at the Node.js web site:
  
  \url{https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions}
 
+A couple of command lines is all it takes:
 
+\begin{verbatim}
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+\end{verbatim}
+
+After the upgrade completes, run this command:
+
+\begin{verbatim}
+node -v
+\end{verbatim}
+
+The shell should respond with something like
+
+\begin{verbatim}
+v8.1.0
+\end{verbatim}
+
+which was the current Node version at the time of this writing.
 
