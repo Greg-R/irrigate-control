@@ -1,4 +1,4 @@
-t]
+[Unit]
 Description=Irrigation Control Server
 
 [Service]
