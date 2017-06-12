@@ -1,5 +1,5 @@
-%    Documentation for PRU ADC Project
-%    Copyright (C) 2016  Gregory Raven
+%    Documentation for Irrigation Control Project
+%    Copyright (C) 2017  Gregory Raven
 %
 %    This program is free software: you can redistribute it and/or modify
 %    it under the terms of the GNU General Public License as published by
@@ -46,15 +46,9 @@ Viewing the photo of the board above, the screw terminals are labelled:
 D+ D- CH1 CH2 CH3 CH4
 \end{verbatim}
 
-The BBGW has 5 volts DC supply available on header pins P9-5 and P9-6 
-(VDD\_5V), and also on P9-7 and P9-8 (SYS\_5V).
+The BBGW has 5 volts DC supply available on header pins P9-7 and P9-8 (SYS\_5V).
 
-VDD\_5V is the same as the regulated 5 volt power supply which powers the BBGW 
-via the USB connector.  SYS\_5V is switched on immediately after VDD\_5V is 
-applied to the board via the USB connector, so functionally it doesn't matter 
-which supply is used to power the solid-state-relay input circuitry.
-
-The suggested hook-up is to connect P9-5 to D+, and both of the ground pins 
+The suggested hook-up is to connect P9-7 to D+, and both of the ground pins 
 (P9-1 or P9-2) to D-.  The GPIOs are then connected to CH1, CH2, and CH3 as 
 shown in the table:
 
@@ -64,7 +58,7 @@ shown in the table:
 Header Pin & Relay Terminal & Function \\\midrule
 P9-1 & D- & Ground \\
 P9-2 & D- & Ground \\
-P9-5 & D+ & 5 volts \\
+P9-7 & D+ & 5 volts \\
 P9-14 & CH1 & Pump Motor \\
 P9-15 & CH2 & Zone 1 Solenoid \\
 P9-16 & CH3 & Zone 2 Solenoid
