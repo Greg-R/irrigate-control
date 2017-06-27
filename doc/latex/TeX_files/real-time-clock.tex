@@ -59,3 +59,20 @@ Now check the real time clock:
 \begin{verbatim}
 hwclock -r -f /dev/rtc1
 \end{verbatim}
+
+The above process will not be preserved upon next boot-up.  It is necessary to create a ``service'' and start it each time the board is booted.  Fortunately this is simple to accomplish.
+
+A bash script which duplicates the set-up described above is included in the software directory:
+
+\begin{verbatim}
+#!/bin/bash
+
+sleep 15
+echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-2/new_device
+hwclock -s -f /dev/rtc1
+hwclock -w
+\end{verbatim}
+
+
+
+
