@@ -1,0 +1,61 @@
+\chapter{I2C Real Time Clock}
+
+The Beaglebone series of development boards does not include a ``real time clock''.
+
+When a Linux based device has connectivity to the internet, it can access the current time via ``Network Time Protocol'' (NTP).  These are servers which are maintained with very precise timing.
+
+The Debian distribution used with the BBGW includes NTP already up and running.
+
+This creates a potential problem if the BBGW irrigation controller has a scheduled watering event and it loses the internet connection.  Time will ``freeze'' at the last moment the internet connection is lost.
+
+A hardware ``real time clock'' can be added to provide timing to the board even if the internet connection is down.  A lithium battery powers the clock even when power is removed from the BBGW.
+
+The following real time clock module is suggested:
+
+\url{https://www.seeedstudio.com/Grove-High-Precision-RTC-p-2741.html}
+
+You will need to also purchase a CR1225 3.3volt coin cell battery.
+
+Install the battery in the RTC, and plug it into the I2C Grove connector on the BBGW.  This is the Grove connector closest to P9.  The other Grove connector is for UART.
+
+Power up the BBGW and log in.  Try this command at the command line:
+
+\begin{verbatim}
+i2cdetect -y -r 2
+\end{verbatim}
+
+\begin{verbatim}
+echo pcf85063 0x51 > /sys/class/i2c-adapter/i2c-2/new_device
+\end{verbatim}
+
+\begin{verbatim}
+hwclock -r -f /dev/rtc1
+\end{verbatim}
+
+\begin{verbatim}
+sudo apt-get install ntpdate
+\end{verbatim}
+
+Now, the following command will set the RTC to the current time.  The BBGW will have to have an active internet connection when this is done:
+
+\begin{verbatim}
+ntpdate -b -s -u pool.ntp.org
+\end{verbatim}
+
+This command will indicate if the time setting was successful:
+
+\begin{verbatim}
+timedatectl
+\end{verbatim}
+
+If the time setting was successful, use this command to write to the RTC:
+
+\begin{verbatim}
+hwclock -w -f /dev/rtc1
+\end{verbatim}
+
+Now check the real time clock:
+
+\begin{verbatim}
+hwclock -r -f /dev/rtc1
+\end{verbatim}

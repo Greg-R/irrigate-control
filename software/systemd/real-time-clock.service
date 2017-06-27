@@ -4,7 +4,7 @@ Description=PCF85063 RTC Service
 [Service]
 Type=simple
 WorkingDirectory=/home/debian/irrigate-control/software/systemd
-ExecStart=/bin/bash real_time_clock_init.sh
+ExecStart=/bin/bash real-time-clock-init.sh
 SyslogIdentifier=real_time_clock
  
 [Install]
