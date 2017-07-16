@@ -71,16 +71,10 @@
         <p id="irrigationDate">Date</p>
         <p id="irrigationStart">Start Time</p>
         <p id="irrigationStop">Stop Time</p>
-        <p>Current Time</p>
+        <p>Current Server Time (scheduling based on this)</p>
         <div id="currentTime">00:00:00 AM</div>
     </div>
-    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> -->
-    <script src="moment.min.js"></script>
     <script>
-        //        clock.textContent = new Date();
-        //        setInterval(() => {
-        //            clock.textContent = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
-        //        }, 1000);
         //  Open a WebSocket to the server.
         //  Need a Regular Expression to get the URL to open the WebSocket to.
         const serverUrlRegex = /\d+\.\d+\.\d+\.\d+:\d+/; //  Matches 192.168.1.8:8089 etc.
@@ -187,7 +181,7 @@
                 irrigationStart.textContent = 'Start: ' + statusMessage.scheduleStart;
                 irrigationStop.textContent = 'Stop: ' + statusMessage.scheduleStop;
             } else if (statusMessage.messageType === "serverTime") {
-                //  Current Time Updater.  Update every 30 seconds.
+                //  Current Server Time Updater.  Updated every 30 seconds by server.
                 let clock = document.getElementById('currentTime');
                 clock.textContent = statusMessage.serverTime;
             }
