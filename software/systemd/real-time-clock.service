@@ -2,10 +2,10 @@
 Description=PCF85063 RTC Service
  
 [Service]
-Type=oneshot
-ExecStartPre=/bin/bash -c echo "pcf85063 0x51 > /sys/class/i2c-adapter/i2c-2/new_device" 
-ExecStart=/sbin/hwclock -s
-RemainAfterExit=yes
-
+Type=simple
+WorkingDirectory=/home/debian/irrigate-control/software/systemd
+ExecStart=/bin/bash real-time-clock-init.sh
+SyslogIdentifier=real_time_clock
+ 
 [Install]
 WantedBy=graphical.target
