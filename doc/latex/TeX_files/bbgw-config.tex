@@ -191,11 +191,15 @@ After logging in you should have internet connectivity, so don't forget to:
 sudo apt-get update
 \end{verbatim}
 
-\section{Another Method to Control Tethering}
+\section{Another Method to Enable/Disable Tethering}
 
 The following method may be better than the above described method of editing a text file.  This different method uses connmanctl only.
 
-
+\begin{verbatim}
+connmanctl> tether wifi on
+Enabled tethering for wifi
+connmanctl> quit  (this will get cut off)
+\end{verbatim}
 
 \section{Copy Public SSH Key to BBGW}
 

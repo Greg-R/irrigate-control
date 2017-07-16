@@ -1,18 +1,20 @@
 \chapter{I2C Real Time Clock}
 
-The Beaglebone series of development boards does not include a ``real time clock''.
+The Beaglebone series of development boards does not include a ``real time clock'' with a battery back-up.  The included real time clock only functions while power is applied to the board.
 
 When a Linux based device has connectivity to the internet, it can access the current time via ``Network Time Protocol'' (NTP).  These are servers which are maintained with very precise timing.
 
-The Debian distribution used with the BBGW includes NTP already up and running.
+The Debian distribution used with the BBGW includes NTP already up and running.  The Beaglebone's own real time clock is synchronized using NTP at boot.  However, if boot occurs with no access to internet, the real time clock will have a large error.
 
-This creates a potential problem if the BBGW irrigation controller has a scheduled watering event and it loses the internet connection.  Time will ``freeze'' at the last moment the internet connection is lost.
+A hardware ``real time clock'' can be added to provide accurate timing to the board even if the internet connection is down.  A lithium battery powers the real time clock even when power is removed from the BBGW.
 
-A hardware ``real time clock'' can be added to provide timing to the board even if the internet connection is down.  A lithium battery powers the clock even when power is removed from the BBGW.
+Please note that this subject of time, date, and clocks can get quite complex!  Linux has several mechanisms and services for tracking date and time and keeping everything synchronized, and this can get rather confusing.
 
 The following real time clock module is suggested:
 
 \url{https://www.seeedstudio.com/Grove-High-Precision-RTC-p-2741.html}
+
+The clock has a ``Grove'' connector and cable and easily plugs into the BBGW.
 
 You will need to also purchase a CR1225 3.3volt coin cell battery.
 
@@ -24,22 +26,77 @@ Power up the BBGW and log in.  Try this command at the command line:
 i2cdetect -y -r 2
 \end{verbatim}
 
+You should see this:
+
 \begin{verbatim}
-echo pcf85063 0x51 > /sys/class/i2c-adapter/i2c-2/new_device
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+     00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+     10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+     20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+     30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+     40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+     50: -- 51 -- -- UU UU UU UU -- -- -- -- -- -- -- -- 
+     60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+     70: -- -- -- -- -- -- -- --
 \end{verbatim}
 
+The above output from i2cdetect indicates the RTC is successfully installed and communicating via I2C bus.
+
+Now permanently ``install'' the I2C device with this command:
+
 \begin{verbatim}
-hwclock -r -f /dev/rtc1
+sudo sh -c 'echo pcf85063 0x51 > /sys/class/i2c-adapter/i2c-2/new_device'
 \end{verbatim}
 
+Now see if the real time clock installed successfully:
+
 \begin{verbatim}
-sudo apt-get install ntpdate
+cat /sys/class/rtc/rtc1/name
 \end{verbatim}
 
-Now, the following command will set the RTC to the current time.  The BBGW will have to have an active internet connection when this is done:
+This should return:
 
 \begin{verbatim}
-ntpdate -b -s -u pool.ntp.org
+rtc-pcf85063
+\end{verbatim}
+
+Now read back the time from the new RTC:
+
+\begin{verbatim}
+sudo hwclock -r -f /dev/rtc1
+\end{verbatim}
+
+You will probably get something like this:
+
+\begin{verbatim}
+Sat 01 Jan 2000 12:24:47 AM EST  -0.582551 seconds
+\end{verbatim}
+
+Now the RTC must be ``set''.  The following assumes that the BBGW is connected to the internet, and it is using the ``Network Time Protocol'' service which was implemented by default in the image used for this project.
+To check this, use this command:
+
+\begin{verbatim}
+timedatectl
+\end{verbatim}
+
+This will return something like this:
+
+\begin{verbatim}
+      Local time: Sat 2017-07-15 19:24:20 EDT
+      Universal time: Sat 2017-07-15 23:24:20 UTC
+      RTC time: Sat 2017-07-15 23:24:21
+      Time zone: America/New_York (EDT, -0400)
+      Network time on: yes
+      NTP synchronized: yes
+      RTC in local TZ: no
+\end{verbatim}
+
+This indicates that the automatic synchronization to NTP is enabled.
+
+Next, the RTC must be set to the I2C device.  This is accomplished by the addition of a new file to the udev rules:
+
+\begin{verbatim}
+sudo sh -c 'echo "SUBSYSTEM=="rtc", KERNEL=="rtc1", SYMLINK+="rtc", OPTIONS+="link_priority=10", TAG+="systemd"" > /etc/udev/rules.d/51-i2c-rtc.rules'
 \end{verbatim}
 
 This command will indicate if the time setting was successful:
@@ -73,6 +130,8 @@ hwclock -s -f /dev/rtc1
 hwclock -w
 \end{verbatim}
 
+The above process was based on this information at Adafruit:
 
+\url{https://learn.adafruit.com/adding-a-real-time-clock-to-beaglebone-black/set-rtc-time}
 
 
