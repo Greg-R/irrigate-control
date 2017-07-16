@@ -78,7 +78,7 @@ exports.listen = function (server) {
         
         //  Update the "Current Time" area of the web page.
         scheduler.on('timeDisplayUpdate', (message) => {
-            console.log(`Time update message received by websocketserver and is: ${message}`);
+        //    console.log(`Time update message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {
                 console.log("WebSocket is ready and sending time update to Web Page.");

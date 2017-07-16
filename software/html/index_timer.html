@@ -181,7 +181,7 @@
                 irrigationStart.textContent = 'Start: ' + statusMessage.scheduleStart;
                 irrigationStop.textContent = 'Stop: ' + statusMessage.scheduleStop;
             } else if (statusMessage.messageType === "serverTime") {
-                //  Current Server Time Updater.  Updated every 30 seconds by server.
+                //  Current Server Time Updater.  Updated every 1 second by server.
                 let clock = document.getElementById('currentTime');
                 clock.textContent = statusMessage.serverTime;
             }
