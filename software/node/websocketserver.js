@@ -33,6 +33,8 @@ exports.listen = function (server) {
         //  Note the use of let here.  The Objects will be destroyed if the wss is destroyed.
         let pumpObject = new pumpActuator();
         let scheduler = new Scheduler();
+        //  Start the time updater function:
+        scheduler.timeDisplayUpdate();
 
         let url = ws.upgradeReq.url;
         console.info(url);
@@ -75,7 +77,7 @@ exports.listen = function (server) {
         });
         
         //  Update the "Current Time" area of the web page.
-        scheduler.on('timeUpdate', (message) => {
+        scheduler.on('timeDisplayUpdate', (message) => {
             console.log(`Time update message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {
