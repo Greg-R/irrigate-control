@@ -6,7 +6,6 @@
     <title>Main Irrigation Controller</title>
 </head>
 
-
 <body>
     <div>
         <H2>MAIN IRRIGATION CONTROLLER</H2>
@@ -75,20 +74,20 @@
         <p>Current Time</p>
         <div id="currentTime">00:00:00 AM</div>
     </div>
-<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> -->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> -->
     <script src="moment.min.js"></script>
     <script>
- 
-//        clock.textContent = new Date();
-//        setInterval(() => {
-//            clock.textContent = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
-//        }, 1000);
+        //        clock.textContent = new Date();
+        //        setInterval(() => {
+        //            clock.textContent = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
+        //        }, 1000);
         //  Open a WebSocket to the server.
         //  Need a Regular Expression to get the URL.
-        const serverUrlRegex = /\d+\.\d+\.\d+\.\d+:\d+/;  //  Matches 192.168.1.8:8089 etc.
-        const currentUrl = window.location.origin;  //  Get the URL from the browser.
-        const serverUrl = currentUrl.match(serverUrlRegex);  //  Extract what is needed to create WebSocket.
-        console.log(`The server URL is ${serverUrl[0]}`);  //  The match is in the 0th element of the array.
+        const serverUrlRegex = /\d+\.\d+\.\d+\.\d+:\d+/; //  Matches 192.168.1.8:8089 etc.
+        const currentUrl = window.location.origin; //  Get the URL from the browser.
+        console.log(`The currentURL is ${currentUrl}.`);
+        const serverUrl = currentUrl.match(serverUrlRegex); //  Extract what is needed to create WebSocket.
+        console.log(`The server URL is ${serverUrl[0]}`); //  The match is in the 0th element of the array.
         let ws = new WebSocket(`ws://${serverUrl}`);
         // Get buttons.
         let pumpbuttonon = document.getElementById('pumpmotoron');
@@ -143,8 +142,8 @@
                     zone1buttonon.style.color = "green";
                     zone1buttonoff.style.color = "black";
                 } else if (state === 0) {
-                        zone1buttonon.style.color = "black";
-                        zone1buttonoff.style.color = "green";
+                    zone1buttonon.style.color = "black";
+                    zone1buttonoff.style.color = "green";
                 }
             }
             if (device === 'zone2') {
@@ -188,8 +187,8 @@
                 irrigationStart.textContent = 'Start: ' + statusMessage.scheduleStart;
                 irrigationStop.textContent = 'Stop: ' + statusMessage.scheduleStop;
             } else if (statusMessage.messageType === "timeUpdate") {
-                       //  Current Time Updater.  Update each second.
-        let clock = document.getElementById('currentTime');
+                //  Current Time Updater.  Update each second.
+                let clock = document.getElementById('currentTime');
                 clock.textContent = statusMessage;
             }
         }
