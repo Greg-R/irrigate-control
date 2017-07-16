@@ -8,7 +8,9 @@ The Debian distribution used with the BBGW includes NTP already up and running. 
 
 A hardware ``real time clock'' can be added to provide accurate timing to the board even if the internet connection is down.  A lithium battery powers the real time clock even when power is removed from the BBGW.
 
-Please note that this subject of time, date, and clocks can get quite complex!  Linux has several mechanisms and services for tracking date and time and keeping everything synchronized, and this can get rather confusing.
+If the home system has consistent power and the wireless is never turned off, then adding a real time clock will not provide a benefit.  In fact, the real time clock included with the BBGW may be adequate for most applications.  The timing controller does not save to non-volatile memory, and timing events will be lost in case of a power failure.  Addition of a battery powered external real time clock will benefit systems which do not have reliable access to the internet.
+
+Please note that this subject of time, date, and clocks can get quite complex!  Linux has several mechanisms and services for tracking date and time and keeping everything synchronized, and this can get rather confusing.  Reading the manual pages for ``hwclock'' and ``timedatectl'' is highly encouraged.
 
 The following real time clock module is suggested:
 
@@ -105,16 +107,18 @@ This command will indicate if the time setting was successful:
 timedatectl
 \end{verbatim}
 
-If the time setting was successful, use this command to write to the RTC:
+If the time setting was successful, use this command to write the system time to the RTC:
 
 \begin{verbatim}
-hwclock -w -f /dev/rtc1
+hwclock -w --rtc /dev/rtc1
 \end{verbatim}
+
+Note the override --rtc option in the above command.  Please see the hwclock man page for an explanation of this option.
 
 Now check the real time clock:
 
 \begin{verbatim}
-hwclock -r -f /dev/rtc1
+hwclock -r -f --rtc /dev/rtc1
 \end{verbatim}
 
 The above process will not be preserved upon next boot-up.  It is necessary to create a ``service'' and start it each time the board is booted.  Fortunately this is simple to accomplish.
@@ -130,8 +134,24 @@ hwclock -s -f /dev/rtc1
 hwclock -w
 \end{verbatim}
 
+systemctl enable real-time-clock
+
 The above process was based on this information at Adafruit:
 
 \url{https://learn.adafruit.com/adding-a-real-time-clock-to-beaglebone-black/set-rtc-time}
+
+In configuring the system, there is the choice of either setting the system time via NTP or via the real time clock.  This is controlled via the following commands.
+
+Synchrnize the system clock with the real time clock:
+
+\begin{verbatim}
+sudo timedatectl set-ntp false
+\end{verbatim}
+
+Synchronize the system clock with NTP (the distribution's default):
+
+\begin{verbatim}
+sudo timedatectl set-ntp true
+\end{verbatim}
 
 

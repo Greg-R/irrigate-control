@@ -24,7 +24,6 @@ Plain HTML5 and CSS was used throughout.  The HTML was manipulated directly via
 the ``Document Object Model'' (DOM) technology in the web browser.  This is a 
 bare-bones interface with no fancy features.
 
-
 \begin{figure}[h]
 	\centering
     \includegraphics[width=0.5\textwidth]{photos/browser_full.png}
@@ -38,4 +37,14 @@ the ``Schedule'' button sends the requested irrigation schedule to the server.
 The server responds with a message which updates the displayed schedule.  No 
 rigorous checking of inputs is done.
 
-The current date and time  are shown in the last line of the controller page.
+The current date and time are shown in the last line of the controller page.
+Originally, the time and date were obtained from the host computer.  This
+information is redundant, as the user will have access to the host system time
+via some other GUI.  Also, the irrigation timing events will be use the system
+time on the BBGW server.  It makes sense to show display the BBGW system time, as
+there could be a discrepancy if the BBGW uses a real time clock which has significant
+error.
+
+The HTML has been modified to show the BBGW server's system time sent via WebSocket.
+The time is updated every minute.  This should be sufficient precision for this
+particular application.

@@ -53,18 +53,33 @@ exports.listen = function (server) {
                 scheduler.scheduleInterpreter(dataObject);
             }
         });
+        
         //  Handle automatic irrigation from scheduler.
         //  A control array example: ['zone1', 1].  This means turn on zone1 solenoid and pump.
         scheduler.on('scheduleControl', (controlArray) => {
             pumpObject.pumpMapProxy[controlArray[0]] = controlArray[1];  // Set zone to 0 or 1.
             pumpObject.pumpMapProxy.pumpmotor = controlArray[1];         // Set pump to 0 or 1.
         });
+        
 //  Update the "Current Schedule" area of the web page.
         scheduler.on('schedule', (message) => {
             console.log(`Status message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {
                 console.log("WebSocket is ready and sending schedule to Web Page.");
+                ws.send(message);
+            } else {
+                console.log("Killing a defective websocket.");
+                ws.terminate();
+            }
+        });
+        
+        //  Update the "Current Time" area of the web page.
+        scheduler.on('timeUpdate', (message) => {
+            console.log(`Time update message received by websocketserver and is: ${message}`);
+            //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
+            if (ws.readyState === 1) {
+                console.log("WebSocket is ready and sending time update to Web Page.");
                 ws.send(message);
             } else {
                 console.log("Killing a defective websocket.");

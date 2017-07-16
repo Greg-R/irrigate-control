@@ -78,12 +78,11 @@
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> -->
     <script src="moment.min.js"></script>
     <script>
-        //  Current Time Updater.  Update each second.
-        let clock = document.getElementById('currentTime');
-        clock.textContent = new Date();
-        setInterval(() => {
-            clock.textContent = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
-        }, 1000);
+ 
+//        clock.textContent = new Date();
+//        setInterval(() => {
+//            clock.textContent = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
+//        }, 1000);
         //  Open a WebSocket to the server.
         //  Need a Regular Expression to get the URL.
         const serverUrlRegex = /\d+\.\d+\.\d+\.\d+:\d+/;  //  Matches 192.168.1.8:8089 etc.
@@ -188,6 +187,10 @@
                 irrigationDate.textContent = 'Date: ' + statusMessage.scheduleDate;
                 irrigationStart.textContent = 'Start: ' + statusMessage.scheduleStart;
                 irrigationStop.textContent = 'Stop: ' + statusMessage.scheduleStop;
+            } else if (statusMessage.messageType === "timeUpdate") {
+                       //  Current Time Updater.  Update each second.
+        let clock = document.getElementById('currentTime');
+                clock.textContent = statusMessage;
             }
         }
 

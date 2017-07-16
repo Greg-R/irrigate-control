@@ -90,5 +90,16 @@ module.exports = class Scheduler extends EventEmitter {
             this.emit('scheduleControl', ["zone2", 0]); // Stop zone2 irrigation.
         });
     }
+    
+    //  This function sends a JSON object with the current server time to the HTML client.
+    //  This allows the actual server time to be displayed, rather than the local time of the client.
+    //  This is important in the case of when a server gets time from a real time clock.
+    timeDisplay() {
+       setInterval(() => {
+        let serverTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
+           this.emit('timeUpdate', serverTime);
+        }, 30 * 1000); //  Every 30 seconds.
+        
+    }
 
 };
