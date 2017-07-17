@@ -45,4 +45,6 @@ jspm_packages
 *.toc
 doc/latex/photos/extras/
 software/node/websocketserver_mitigation_functions.js
+doc/video
+.brackets.json
 

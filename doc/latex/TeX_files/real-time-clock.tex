@@ -1,5 +1,6 @@
 \chapter{I2C Real Time Clock}
 
+\section{Configuration}
 The Beaglebone series of development boards does not include a ``real time clock'' with a battery back-up.  The included real time clock only functions while power is applied to the board.
 
 When a Linux based device has connectivity to the internet, it can access the current time via ``Network Time Protocol'' (NTP).  These are servers which are maintained with very precise timing.
@@ -8,7 +9,7 @@ The Debian distribution used with the BBGW includes NTP already up and running. 
 
 A hardware ``real time clock'' can be added to provide accurate timing to the board even if the internet connection is down.  A lithium battery powers the real time clock even when power is removed from the BBGW.
 
-If the home system has consistent power and the wireless is never turned off, then adding a real time clock will not provide a benefit.  In fact, the real time clock included with the BBGW may be adequate for most applications.  The timing controller does not save to non-volatile memory, and timing events will be lost in case of a power failure.  Addition of a battery powered external real time clock will benefit systems which do not have reliable access to the internet.
+If the home system has consistent power and the wireless is never turned off, then adding a real time clock will not provide a benefit.  In fact, the real time clock included with the BBGW may be adequate for most applications even with intermittent internet connection.  This project's timing controller does not save to non-volatile memory, and timing events will be lost in case of a power failure.  Addition of a battery powered external real time clock will benefit systems which rarely or never have access to the internet.
 
 Please note that this subject of time, date, and clocks can get quite complex!  Linux has several mechanisms and services for tracking date and time and keeping everything synchronized, and this can get rather confusing.  Reading the manual pages for ``hwclock'' and ``timedatectl'' is highly encouraged.
 
@@ -16,9 +17,16 @@ The following real time clock module is suggested:
 
 \url{https://www.seeedstudio.com/Grove-High-Precision-RTC-p-2741.html}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{photos/grove-rtc}
+	\centering\bfseries
+	\caption{Seeed Studio's Grove High Precision RTC}
+\end{figure}
+
 The clock has a ``Grove'' connector and cable and easily plugs into the BBGW.
 
-You will need to also purchase a CR1225 3.3volt coin cell battery.
+You will need to purchase a CR1225 3.3 volt coin cell battery.  This is a less-common cell which may have to be mail ordered.
 
 Install the battery in the RTC, and plug it into the I2C Grove connector on the BBGW.  This is the Grove connector closest to P9.  The other Grove connector is for UART.
 
@@ -94,31 +102,34 @@ This will return something like this:
 \end{verbatim}
 
 This indicates that the automatic synchronization to NTP is enabled.
+The system time should be accurate.
 
-Next, the RTC must be set to the I2C device.  This is accomplished by the addition of a new file to the udev rules:
+Now write the system time to the RTC:
+
+\begin{verbatim}
+sudo hwclock -w --rtc /dev/rtc1
+\end{verbatim}
+
+Note the override --rtc option in the above command.  Please see the hwclock man page for an explanation of this option.
+
+Now read the real time clock to verify it is accurately set:
+
+\begin{verbatim}
+hwclock -r --rtc /dev/rtc1
+\end{verbatim}
+
+Next, the kernel must be instructed to use the I2C device as the real time clock.  This is accomplished by the addition of a new file to the udev rules:
 
 \begin{verbatim}
 sudo sh -c 'echo "SUBSYSTEM=="rtc", KERNEL=="rtc1", SYMLINK+="rtc", OPTIONS+="link_priority=10", TAG+="systemd"" > /etc/udev/rules.d/51-i2c-rtc.rules'
 \end{verbatim}
 
-This command will indicate if the time setting was successful:
+The above is included as a file in the github repository in the software/systemd directory.
+
+Copy this file from that directory as follows:
 
 \begin{verbatim}
-timedatectl
-\end{verbatim}
-
-If the time setting was successful, use this command to write the system time to the RTC:
-
-\begin{verbatim}
-hwclock -w --rtc /dev/rtc1
-\end{verbatim}
-
-Note the override --rtc option in the above command.  Please see the hwclock man page for an explanation of this option.
-
-Now check the real time clock:
-
-\begin{verbatim}
-hwclock -r -f --rtc /dev/rtc1
+sudo cd 51-i2c-rtc.rules /etc/udev/rules.d
 \end{verbatim}
 
 The above process will not be preserved upon next boot-up.  It is necessary to create a ``service'' and start it each time the board is booted.  Fortunately this is simple to accomplish.
@@ -128,30 +139,89 @@ A bash script which duplicates the set-up described above is included in the sof
 \begin{verbatim}
 #!/bin/bash
 
-sleep 15
-echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-2/new_device
-hwclock -s -f /dev/rtc1
-hwclock -w
+echo pcf85063 0x51 > /sys/class/i2c-adapter/i2c-2/new_device
+hwclock -s --rtc /dev/rtc1
 \end{verbatim}
 
-systemctl enable real-time-clock
+The above script is in the github repository with path software/systemd/real-time-clock-init.sh.
 
-The above process was based on this information at Adafruit:
+Next, a systemd service must be established to run the script and synchronize the system clock at boot:
 
-\url{https://learn.adafruit.com/adding-a-real-time-clock-to-beaglebone-black/set-rtc-time}
+\begin{verbatim}
+[Unit]
+Description=PCF85063 RTC Service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/debian/irrigate-control/software/systemd
+ExecStart=/bin/bash real-time-clock-init.sh
+SyslogIdentifier=real_time_clock
+
+[Install]
+WantedBy=graphical.target
+\end{verbatim}
+
+The file is located in the github repository at software/systemd/real-time-clock.service.
+Copy this as follows:
+
+\begin{verbatim}
+sudo cp real-time-clock.service /etc/systemd/system
+\end{verbatim}
+
+Now the service must be enabled:
+
+\begin{verbatim}
+sudo systemctl enable real-time-clock
+\end{verbatim}
 
 In configuring the system, there is the choice of either setting the system time via NTP or via the real time clock.  This is controlled via the following commands.
 
-Synchrnize the system clock with the real time clock:
+Synchronize the system clock using the real time clock:
 
 \begin{verbatim}
 sudo timedatectl set-ntp false
 \end{verbatim}
 
-Synchronize the system clock with NTP (the distribution's default):
+The above would be the used with a system without internet connection.
+
+A system with reliable internet should synchronize the system clock using NTP (the distribution's default):
 
 \begin{verbatim}
 sudo timedatectl set-ntp true
 \end{verbatim}
+
+This command will show time and synchronization settings:
+
+\begin{verbatim}
+timedatectl
+\end{verbatim}
+
+Reboot after all of the above configuration is complete.
+
+\section{RTC Hardware Installation}
+
+Thanks to the Grove connector system the installation of the RTC is easy.
+
+A Grove I2C hub was used, as this allows other devices to be added to the I2C bus in the future:
+
+\url{https://www.seeedstudio.com/Grove-I2C-Hub-p-851.html}
+
+Both the hub and the RTC were mounted using electronic grade silicone adhesive.  Do not use ordinary RTV!  The usual hardware store RTV contains acid which will damage electronics.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{photos/silicone}
+	\centering\bfseries
+	\caption{Electronics Grade Silicone Adhesive}
+\end{figure}
+
+The mounting surface should be clean.  Coat the bottom surface of the boards and lightly press them onto the desired location.  Wait about two hours for the silicone to firm up, and then install the cable assemblies.  Be sure to plug into the Grove I2C connector on the BBGW, not the UART.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{photos/rtc-mounted}
+	\centering\bfseries
+	\caption{Grove Hub and Precision RTC Mounted in the Weatherproof Enclosure}
+\end{figure}
 
 

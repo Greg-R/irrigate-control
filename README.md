@@ -1,5 +1,6 @@
 # irrigate-control
-Simple irrigation server based on BeagleBone Green Wireless and Node.js
+Simple irrigation server based on BeagleBone Green Wireless and Node.js.
+A optional real time clock has been added to the system.
 
 For an introduction to the project and youtube video introduction please see:
 
