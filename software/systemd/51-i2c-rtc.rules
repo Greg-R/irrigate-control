@@ -1,1 +1,0 @@
-SUBSYSTEM==rtc, KERNEL==rtc1, SYMLINK+=rtc, OPTIONS+=link_priority=10, TAG+=systemd

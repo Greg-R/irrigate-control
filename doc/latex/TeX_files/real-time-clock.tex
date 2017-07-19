@@ -198,6 +198,16 @@ timedatectl
 
 Reboot after all of the above configuration is complete.
 
+Interesting files:
+
+/etc/default/hwclock
+
+This file seems to be the key.  Can change the rtc used by sysctohc:
+/lib/udev/hwclock-set
+
+Big problems with RTCs in Linux:
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=785445
+
 \section{RTC Hardware Installation}
 
 Thanks to the Grove connector system the installation of the RTC is easy.
