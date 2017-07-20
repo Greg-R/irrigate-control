@@ -7,11 +7,13 @@ When a Linux based device has connectivity to the internet, it can access the cu
 
 The Debian distribution used with the BBGW includes NTP already up and running.  The Beaglebone's own real time clock is synchronized using NTP at boot.  However, if boot occurs with no access to internet, the real time clock will have a large error.
 
-A hardware ``real time clock'' can be added to provide accurate timing to the board even if the internet connection is down.  A lithium battery powers the real time clock even when power is removed from the BBGW.
+A hardware ``real time clock'' (RTC) can be added to provide accurate timing to the board even if the internet connection is down.  A lithium battery powers the RTC even when power is removed from the BBGW.
 
-If the home system has consistent power and the wireless is never turned off, then adding a real time clock will not provide a benefit.  In fact, the real time clock included with the BBGW may be adequate for most applications even with intermittent internet connection.  This project's timing controller does not save to non-volatile memory, and timing events will be lost in case of a power failure.  Addition of a battery powered external real time clock will benefit systems which rarely or never have access to the internet.
+If the home system has consistent power and the wireless is never turned off, adding a real time clock will not provide a benefit.  In fact, the RTC included with the BBGW may be adequate for most applications even with intermittent internet connection.  This project's timing controller does not save to non-volatile memory, and timing events will be lost in case of a power failure.  Addition of a battery powered external real time clock will benefit systems which rarely or never have access to the internet.
 
-Please note that this subject of time, date, and clocks can get quite complex!  Linux has several mechanisms and services for tracking date and time and keeping everything synchronized, and this can get rather confusing.  Reading the manual pages for ``hwclock'' and ``timedatectl'' is highly encouraged.
+Please note that this subject of time, date, and clocks can get quite complex!  Linux has several mechanisms and services for tracking date and time and keeping everything synchronized, and this can get rather confusing.  Reading the manual pages for ``hwclock'' and ``timedatectl'' is highly encouraged.  Read the discussion in this link to get an idea of the complexities of Linux and RTCs:
+
+\url{https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=785445}
 
 The following real time clock module is suggested:
 
@@ -24,7 +26,7 @@ The following real time clock module is suggested:
 	\caption{Seeed Studio's Grove High Precision RTC}
 \end{figure}
 
-The clock has a ``Grove'' connector and cable and easily plugs into the BBGW.
+The clock has a ``Grove'' connector and cable and easily plugs into the BBGW.  A kernel driver exists for this device and is included with the Beagleboard Debian distributions.
 
 You will need to purchase a CR1225 3.3 volt coin cell battery.  This is a less-common cell which may have to be mail ordered.
 
@@ -52,7 +54,7 @@ You should see this:
 
 The above output from i2cdetect indicates the RTC is successfully installed and communicating via I2C bus.
 
-Now permanently ``install'' the I2C device with this command:
+Now ``install'' the I2C device with this command:
 
 \begin{verbatim}
 sudo sh -c 'echo pcf85063 0x51 > /sys/class/i2c-adapter/i2c-2/new_device'
@@ -69,6 +71,8 @@ This should return:
 \begin{verbatim}
 rtc-pcf85063
 \end{verbatim}
+
+There should also be a new device appear at /dev/rtc1.  There are also /dev/rtc which is a link to /dev/rtc0.  rtc0 is the BBGW's own internal RTC.
 
 Now read back the time from the new RTC:
 
@@ -102,9 +106,9 @@ This will return something like this:
 \end{verbatim}
 
 This indicates that the automatic synchronization to NTP is enabled.
-The system time should be accurate.
+Note that the ``RTC time'' is the BBGW's own internal RTC.  ``Local time'' and ``Universal time'' are both derived from the ``system time''.  ``System time'' is what the microcontroller actually uses, so it is system time which is ultimately desired to be set accurately.  System time is typically set at boot via some accurate source like that from NTP or an RTC.
 
-Now write the system time to the RTC:
+Now write the system time to the external RTC.  This should be accurate if the BBGW is connected to the internet.
 
 \begin{verbatim}
 sudo hwclock -w --rtc /dev/rtc1
@@ -118,19 +122,7 @@ Now read the real time clock to verify it is accurately set:
 hwclock -r --rtc /dev/rtc1
 \end{verbatim}
 
-Next, the kernel must be instructed to use the I2C device as the real time clock.  This is accomplished by the addition of a new file to the udev rules:
-
-\begin{verbatim}
-sudo sh -c 'echo "SUBSYSTEM=="rtc", KERNEL=="rtc1", SYMLINK+="rtc", OPTIONS+="link_priority=10", TAG+="systemd"" > /etc/udev/rules.d/51-i2c-rtc.rules'
-\end{verbatim}
-
-The above is included as a file in the github repository in the software/systemd directory.
-
-Copy this file from that directory as follows:
-
-\begin{verbatim}
-sudo cd 51-i2c-rtc.rules /etc/udev/rules.d
-\end{verbatim}
+The time returned above can be compared to the ``date'' command.
 
 The above process will not be preserved upon next boot-up.  It is necessary to create a ``service'' and start it each time the board is booted.  Fortunately this is simple to accomplish.
 
@@ -139,8 +131,9 @@ A bash script which duplicates the set-up described above is included in the sof
 \begin{verbatim}
 #!/bin/bash
 
-echo pcf85063 0x51 > /sys/class/i2c-adapter/i2c-2/new_device
-hwclock -s --rtc /dev/rtc1
+echo 'pcf85063 0x51' > /sys/class/i2c-adapter/i2c-2/new_device
+hwclock -s --rtc /dev/rtc1 --debug
+hwclock --adjust --rtc /dev/rtc1
 \end{verbatim}
 
 The above script is in the github repository with path software/systemd/real-time-clock-init.sh.
@@ -174,39 +167,21 @@ Now the service must be enabled:
 sudo systemctl enable real-time-clock
 \end{verbatim}
 
-In configuring the system, there is the choice of either setting the system time via NTP or via the real time clock.  This is controlled via the following commands.
-
-Synchronize the system clock using the real time clock:
+One last bit of configuration is required.  The RTC kernel module must be added to the /etc/modules file.  Simply add this line to the file:
 
 \begin{verbatim}
-sudo timedatectl set-ntp false
+rtc-pcf85063
 \end{verbatim}
 
-The above would be the used with a system without internet connection.
+Reboot after all of the above configuration is complete.  If all is well, the hwclock -r command as shown above should show good absolute time accuracy.  The RTC should show up as device /dev/rtc1 and also by using the command lsmod, the driver rtc\_pcf85063 should be listed.
 
-A system with reliable internet should synchronize the system clock using NTP (the distribution's default):
+To see the status of the real-time-clock service, use this command:
 
 \begin{verbatim}
-sudo timedatectl set-ntp true
+systemctl status real-time-clock
 \end{verbatim}
 
-This command will show time and synchronization settings:
-
-\begin{verbatim}
-timedatectl
-\end{verbatim}
-
-Reboot after all of the above configuration is complete.
-
-Interesting files:
-
-/etc/default/hwclock
-
-This file seems to be the key.  Can change the rtc used by sysctohc:
-/lib/udev/hwclock-set
-
-Big problems with RTCs in Linux:
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=785445
+The above command will print current status of the service as well as error messages if the service has malfunctioned.
 
 \section{RTC Hardware Installation}
 
