@@ -55,15 +55,15 @@ exports.listen = function (server) {
                 scheduler.scheduleInterpreter(dataObject);
             }
         });
-        
+
         //  Handle automatic irrigation from scheduler.
         //  A control array example: ['zone1', 1].  This means turn on zone1 solenoid and pump.
         scheduler.on('scheduleControl', (controlArray) => {
-            pumpObject.pumpMapProxy[controlArray[0]] = controlArray[1];  // Set zone to 0 or 1.
-            pumpObject.pumpMapProxy.pumpmotor = controlArray[1];         // Set pump to 0 or 1.
+            pumpObject.pumpMapProxy[controlArray[0]] = controlArray[1]; // Set zone to 0 or 1.
+            pumpObject.pumpMapProxy.pumpmotor = controlArray[1]; // Set pump to 0 or 1.
         });
-        
-//  Update the "Current Schedule" area of the web page.
+
+        //  Update the "Current Schedule" area of the web page.
         scheduler.on('schedule', (message) => {
             console.log(`Status message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
@@ -75,10 +75,10 @@ exports.listen = function (server) {
                 ws.terminate();
             }
         });
-        
+
         //  Update the "Current Time" area of the web page.
         scheduler.on('timeDisplayUpdate', (message) => {
-        //    console.log(`Time update message received by websocketserver and is: ${message}`);
+            //    console.log(`Time update message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {
                 console.log("WebSocket is ready and sending time update to Web Page.");
@@ -86,7 +86,6 @@ exports.listen = function (server) {
             } else {
                 console.log("Killing a defective websocket.");
                 ws.terminate();
-                wss.emit('close');
             }
         });
 
@@ -99,10 +98,30 @@ exports.listen = function (server) {
                 ws.send(message);
             } else {
                 console.log("Killing a defective websocket.");
-                ws.terminate();                
+                ws.terminate();
             }
         });
     });
+
+    //  The following code cleans up broken WebSockets connections.
+
+    function heartbeat() {
+        this.isAlive = true;
+    }
+
+    wss.on('connection', function connection(ws) {
+        ws.isAlive = true;
+        ws.on('pong', heartbeat);
+    });
+
+    const interval = setInterval(function ping() {
+        wss.clients.forEach(function each(ws) {
+            if (ws.isAlive === false) return ws.terminate();
+
+            ws.isAlive = false;
+            ws.ping('', false, true);
+        });
+    }, 30000);
 
     //  Close the server if the 'close' event is sent.
     wss.on('close', function () {
