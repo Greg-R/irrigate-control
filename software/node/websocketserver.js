@@ -86,6 +86,7 @@ exports.listen = function (server) {
             } else {
                 console.log("Killing a defective websocket.");
                 ws.terminate();
+                wss.emit('close');
             }
         });
 
@@ -98,7 +99,7 @@ exports.listen = function (server) {
                 ws.send(message);
             } else {
                 console.log("Killing a defective websocket.");
-                ws.terminate();
+                ws.terminate();                
             }
         });
     });
