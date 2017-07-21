@@ -30,30 +30,30 @@ exports.listen = function (server) {
 
     console.info('WebSocket server started...');
     wss.on('connection', function (ws) {
-        
-        
-           //  The following code cleans up broken WebSockets connections.
 
-    function heartbeat() {
-        this.isAlive = true;
-    }
-   
+
+        //  The following code cleans up broken WebSockets connections.
+
+        function heartbeat() {
+            this.isAlive = true;
+        }
+
         ws.isAlive = true;
         ws.on('pong', heartbeat);
-    
-    const interval = setInterval(function ping() {
-        wss.clients.forEach(function each(ws) {
-            if (ws.isAlive === false) return ws.terminate();
 
-            ws.isAlive = false;
-            ws.ping('', false, true);
-        });
-    }, 30000);  //  Clean-up every 30 seconds.
+        const interval = setInterval(function ping() {
+            wss.clients.forEach(function each(ws) {
+                if (ws.isAlive === false) return ws.terminate();
+
+                ws.isAlive = false;
+                ws.ping('', false, true);
+            });
+        }, 30000); //  Clean-up every 30 seconds.
 
 
-        
-        
-        
+
+
+
         //  Note the use of let here.  The Objects will be destroyed if the wss is destroyed.
         let pumpObject = new pumpActuator();
         let scheduler = new Scheduler();
@@ -97,6 +97,7 @@ exports.listen = function (server) {
             } else {
                 console.log("Killing a defective websocket.");
                 ws.terminate();
+                this.emit('close');  //  Terminate the server instance.
             }
         });
 
@@ -125,12 +126,12 @@ exports.listen = function (server) {
                 ws.terminate();
             }
         });
-        
-        
-        
+
+
+
     });
 
-     //  Close the server if the 'close' event is sent.
+    //  Close the server if the 'close' event is sent.
     wss.on('close', function () {
         wss.close(() => {
             console.log("Closing WebSocketServer.");
