@@ -130,7 +130,7 @@ console.log(`The number of ws clients is ${wss.clients.size}`);
             }
         });
 
-ws.onclose(() => {scheduler.removeListener('timeDisplayUpdate', () => {console.log(`Removed listener from scheduler`);});});
+ws.on('close', () => {scheduler.removeListener('timeDisplayUpdate', () => {console.log(`Removed listener from scheduler`);})});
 
     });
 
