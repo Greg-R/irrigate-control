@@ -18,7 +18,7 @@
 //  This is the WebSockets server for the Irrigation controller.
 
 //  Get the WebSocket class from the Node.js ws package:
-const WebSocketServer = require('ws').Server;
+const WebSocketServer = require('ws').Server({'clientTracking': true});
 //  pumpActuator and Scheduler are Objects from the custom classes.
 let pumpActuator = require('./pumpActuator');
 let Scheduler = require('./scheduler');
@@ -30,7 +30,7 @@ exports.listen = function (server) {
 
     console.info('WebSocket server started...');
     wss.on('connection', function (ws) {
-
+console.log(`The number of ws clients is ${wss.clients.length}`);
 
         //  The following code cleans up broken WebSockets connections.
 
