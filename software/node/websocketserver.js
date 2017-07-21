@@ -31,7 +31,7 @@ exports.listen = function (server) {
 
     console.info('WebSocket server started...');
     wss.on('connection', (ws) => {
-console.log(`The number of ws clients is ${this.clients.length}`);
+console.log(`The number of ws clients is ${wss.clients.length}`);
 
         //  The following code cleans up broken WebSockets connections.
 
