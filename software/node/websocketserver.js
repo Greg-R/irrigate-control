@@ -112,6 +112,7 @@ console.log(`The number of ws clients is ${wss.clients.size}`);
             } else {
                 console.log("Killing a defective websocket.");
  //               this.emit('close');  //  Terminate the server instance.
+                scheduler.removeListener('timeDisplayUpdate', () => {console.log(`Removed listener from scheduler`);});
                 ws.terminate();
             }
         });
