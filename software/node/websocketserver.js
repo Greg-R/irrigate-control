@@ -25,7 +25,9 @@ let Scheduler = require('./scheduler');
 
         //  Note the use of let here.  The Objects will be destroyed if the wss is destroyed.
         let pumpObject = new pumpActuator();
+        pumpObject.setMaxListeners(1);
         let scheduler = new Scheduler();
+scheduler.setMaxListeners(1);
         //  Start the time updater function:
         scheduler.timeDisplayUpdate();
 
@@ -38,7 +40,7 @@ exports.listen = function (server) {
 
     console.info('WebSocket server started...');
     wss.on('connection', (ws) => {
-console.log(`The number of ws clients is ${wss.clients.length}`);
+console.log(`The number of ws clients is ${wss.clients.size}`);
 
         //  The following code cleans up broken WebSockets connections.
 
@@ -57,11 +59,6 @@ console.log(`The number of ws clients is ${wss.clients.length}`);
                 ws.ping('', false, true);
             });
         }, 30000); //  Clean-up every 30 seconds.
-
-
-
-
-
 
 
         let url = ws.upgradeReq.url;
