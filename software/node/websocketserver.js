@@ -43,7 +43,9 @@ exports.listen = function (server) {
 console.log(`The number of ws clients is ${wss.clients.size}`);
 
         //  The following code cleans up broken WebSockets connections.
-
+scheduler.removeAllListeners('timeDisplayUpdate');
+        
+        
         function heartbeat() {
             this.isAlive = true;
         }
@@ -113,7 +115,7 @@ console.log(`The number of ws clients is ${wss.clients.size}`);
                 console.log("Killing a defective websocket (by the scheduler).");
  //               this.emit('close');  //  Terminate the server instance.
                 console.log(`The number of listeners is ${scheduler.listenerCount('timeDisplayUpdate')}`);
-                scheduler.removeAllListeners('timeDisplayUpdate');
+ //               scheduler.removeAllListeners('timeDisplayUpdate');
                 ws.terminate();
             }
         });
