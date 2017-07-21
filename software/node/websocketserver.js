@@ -23,45 +23,28 @@ const WebSocketServer = require('ws').Server;
 let pumpActuator = require('./pumpActuator');
 let Scheduler = require('./scheduler');
 
-        //  Note the use of let here.  The Objects will be destroyed if the wss is destroyed.
-        let pumpObject = new pumpActuator();
-        pumpObject.setMaxListeners(1);
-        let scheduler = new Scheduler();
+//  Note the use of let here.  The Objects will be destroyed if the wss is destroyed.
+let pumpObject = new pumpActuator();
+pumpObject.setMaxListeners(1);
+let scheduler = new Scheduler();
 scheduler.setMaxListeners(1);
-        //  Start the time updater function:
-        scheduler.timeDisplayUpdate();
+//  Start the time updater function:
+scheduler.timeDisplayUpdate();
 
 exports.listen = function (server) {
     console.log(`Creating new WebSocketServer`);
     const wss = new WebSocketServer({
-        server: server,
-        clientTracking: true
+        server: server
     });
 
     console.info('WebSocket server started...');
     wss.on('connection', (ws) => {
-console.log(`The number of ws clients is ${wss.clients.size}`);
 
-        //  The following code cleans up broken WebSockets connections.
-scheduler.removeAllListeners('timeDisplayUpdate');
-        
-        
-        function heartbeat() {
-            this.isAlive = true;
-        }
-
-        ws.isAlive = true;
-        ws.on('pong', heartbeat);
-
-        const interval = setInterval(function ping() {
-            wss.clients.forEach(function each(ws) {
-                if (ws.isAlive === false) return ws.terminate();
-
-                ws.isAlive = false;
-                ws.ping('', false, true);
-            });
-        }, 30000); //  Clean-up every 30 seconds.
-
+        //  The following prevents multiple listeners from being attached.
+        scheduler.removeAllListeners('scheduleControl');
+        scheduler.removeAllListeners('schedule');
+        scheduler.removeAllListeners('timeDisplayUpdate');
+        pumpObject.removeAllListeners('pumpStatusMessage');
 
         let url = ws.upgradeReq.url;
         console.info(url);
@@ -100,7 +83,6 @@ scheduler.removeAllListeners('timeDisplayUpdate');
             } else {
                 console.log("Killing a defective websocket.");
                 ws.terminate();
-                
             }
         });
 
@@ -113,9 +95,6 @@ scheduler.removeAllListeners('timeDisplayUpdate');
                 ws.send(message);
             } else {
                 console.log("Killing a defective websocket (by the scheduler).");
- //               this.emit('close');  //  Terminate the server instance.
-                console.log(`The number of listeners is ${scheduler.listenerCount('timeDisplayUpdate')}`);
- //               scheduler.removeAllListeners('timeDisplayUpdate');
                 ws.terminate();
             }
         });
@@ -132,9 +111,6 @@ scheduler.removeAllListeners('timeDisplayUpdate');
                 ws.terminate();
             }
         });
-
-ws.on('close', () => {scheduler.removeListener('timeDisplayUpdate', () => {console.log(`Removed listener from scheduler`);})});
-
     });
 
     //  Close the server if the 'close' event is sent.
