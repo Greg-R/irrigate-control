@@ -18,14 +18,15 @@
 //  This is the WebSockets server for the Irrigation controller.
 
 //  Get the WebSocket class from the Node.js ws package:
-const WebSocketServer = require('ws').Server({'clientTracking': true});
+const WebSocketServer = require('ws').Server;
 //  pumpActuator and Scheduler are Objects from the custom classes.
 let pumpActuator = require('./pumpActuator');
 let Scheduler = require('./scheduler');
 
 exports.listen = function (server) {
     const wss = new WebSocketServer({
-        server: server
+        server: server,
+        clientTracking: true
     });
 
     console.info('WebSocket server started...');
