@@ -110,7 +110,7 @@ console.log(`The number of ws clients is ${wss.clients.size}`);
                 console.log("WebSocket is ready and sending time update to Web Page.");
                 ws.send(message);
             } else {
-                console.log("Killing a defective websocket.");
+                console.log("Killing a defective websocket (by the scheduler).");
  //               this.emit('close');  //  Terminate the server instance.
                 scheduler.removeListener('timeDisplayUpdate', () => {console.log(`Removed listener from scheduler`);});
                 ws.terminate();
