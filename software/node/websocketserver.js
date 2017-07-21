@@ -24,6 +24,7 @@ let pumpActuator = require('./pumpActuator');
 let Scheduler = require('./scheduler');
 
 exports.listen = function (server) {
+    console.log(`Creating new WebSocketServer`);
     const wss = new WebSocketServer({
         server: server,
         clientTracking: true
