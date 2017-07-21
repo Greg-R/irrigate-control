@@ -110,7 +110,7 @@ exports.listen = function (server) {
                 ws.send(message);
             } else {
                 console.log("Killing a defective websocket.");
-                this.emit('close');  //  Terminate the server instance.
+ //               this.emit('close');  //  Terminate the server instance.
                 ws.terminate();
             }
         });
