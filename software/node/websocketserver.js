@@ -43,7 +43,7 @@ exports.listen = function (server) {
         scheduler.removeAllListeners('timeDisplayUpdate');
         pumpObject.removeAllListeners('pumpStatusMessage');
         //  Start the time updater function:
-        scheduler.timeDisplayUpdate();
+        let timeDisplay = scheduler.timeDisplayUpdate();
 
         let url = ws.upgradeReq.url;
         console.info(url);
@@ -94,7 +94,7 @@ exports.listen = function (server) {
                 ws.send(message);
             } else {
                 console.log("Clearing timeDisplayUpdate interval.");
-                clearInterval(scheduler.timeDisplayUpdate);
+                clearInterval(timeDisplay);
                 ws.terminate();
             }
         });

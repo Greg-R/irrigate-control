@@ -37,8 +37,6 @@ module.exports = class Scheduler extends EventEmitter {
         this.start = "";
         this.stop = "";
         this.midTime = "";
-        //  timeIntervalObject; this can be cancelled with clearInterval()
-        this.timeDisplayUpdate;
     }
 
     scheduleObserver() {
@@ -98,6 +96,7 @@ module.exports = class Scheduler extends EventEmitter {
     //  This is important in the case of when a server gets time from a real time clock.
     timeDisplayUpdate(active) {
         console.log(`Time display update function started.`);
+        //  This returns a Timer object which can be cleared with clearInterval().
         return setInterval(() => {
             let serverTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
             let jsonTimeUpdate = `{"messageType":"serverTime", "serverTime":"${serverTime}"}`;
