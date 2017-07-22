@@ -100,6 +100,7 @@ module.exports = class Scheduler extends EventEmitter {
         return setInterval(() => {
             let serverTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
             let jsonTimeUpdate = `{"messageType":"serverTime", "serverTime":"${serverTime}"}`;
+            console.log(`Emitting time Display Update from setInterval`);
             this.emit('timeDisplayUpdate', jsonTimeUpdate);
         }, 1 * 1000); //  Every 1 second.
     }
