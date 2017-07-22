@@ -23,13 +23,10 @@ const WebSocketServer = require('ws').Server;
 let pumpActuator = require('./pumpActuator');
 let Scheduler = require('./scheduler');
 
-//  Note the use of let here.  The Objects will be destroyed if the wss is destroyed.
 let pumpObject = new pumpActuator();
 pumpObject.setMaxListeners(1);
 let scheduler = new Scheduler();
 scheduler.setMaxListeners(1);
-//  Start the time updater function:
-scheduler.timeDisplayUpdate();
 
 exports.listen = function (server) {
     console.log(`Creating new WebSocketServer`);
@@ -45,6 +42,8 @@ exports.listen = function (server) {
         scheduler.removeAllListeners('schedule');
         scheduler.removeAllListeners('timeDisplayUpdate');
         pumpObject.removeAllListeners('pumpStatusMessage');
+        //  Start the time updater function:
+        scheduler.timeDisplayUpdate();
 
         let url = ws.upgradeReq.url;
         console.info(url);
