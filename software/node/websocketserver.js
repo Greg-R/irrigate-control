@@ -93,7 +93,8 @@ exports.listen = function (server) {
                 console.log("WebSocket is ready and sending time update to Web Page.");
                 ws.send(message);
             } else {
-                console.log("Killing a defective websocket (by the scheduler).");
+                console.log("Clearing timeDisplayUpdate interval.");
+                clearInterval(scheduler.timeDisplayUpdate);
                 ws.terminate();
             }
         });
