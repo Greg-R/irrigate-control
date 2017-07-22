@@ -36,7 +36,7 @@ exports.listen = function (server) {
 
     console.info('WebSocket server started...');
     wss.on('connection', (ws) => {
-
+debugger;
         //  The following prevents multiple listeners from being attached.
         scheduler.removeAllListeners('scheduleControl');
         scheduler.removeAllListeners('schedule');
