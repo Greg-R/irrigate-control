@@ -36,7 +36,7 @@ exports.listen = function (server) {
 
     console.info('WebSocket server started...');
     wss.on('connection', (ws) => {
-debugger;
+        debugger;
         //  The following prevents multiple listeners from being attached.
         scheduler.removeAllListeners('scheduleControl');
         scheduler.removeAllListeners('schedule');
@@ -110,6 +110,12 @@ debugger;
                 console.log("Killing a defective websocket.");
                 ws.terminate();
             }
+        });
+
+        //  Clear the time update setInterval timer when the WebSocket closes.
+        ws.on('close', () => {
+            clearInterval(timeDisplay);
+            console.log(`WebSocket is closed.`)
         });
     });
 

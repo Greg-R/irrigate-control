@@ -94,13 +94,12 @@ module.exports = class Scheduler extends EventEmitter {
     //  This function sends a JSON object with the current server time to the HTML client.
     //  This allows the actual server time to be displayed, rather than the local time of the client.
     //  This is important in the case of when a server gets time from a real time clock.
-    timeDisplayUpdate(active) {
+    timeDisplayUpdate() {
         console.log(`Time display update function started.`);
         //  This returns a Timer object which can be cleared with clearInterval().
         return setInterval(() => {
             let serverTime = moment().format("dddd, MMMM Do YYYY, h:mm:ss A");
             let jsonTimeUpdate = `{"messageType":"serverTime", "serverTime":"${serverTime}"}`;
-            console.log(`Emitting time Display Update from setInterval`);
             this.emit('timeDisplayUpdate', jsonTimeUpdate);
         }, 1 * 1000); //  Every 1 second.
     }
