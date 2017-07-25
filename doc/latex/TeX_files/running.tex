@@ -16,6 +16,8 @@
 
 \chapter{Running the Project}
 
+\section{Cloning from Git and Installing Node Modules}
+
 The project must be cloned to the BBGW and the NPM modules installed.
 
 After ssh into the BBGW, typically you will be in directory /home/debian.
@@ -32,9 +34,11 @@ The project will be pulled from the git repository.  The node modules need to
 be installed in the directory from which the server will be launched.
 The above should install the modules into a directory ``node\_modules''.
 
+\section{Running the Irrigation Server}
+
 Now it is time to run the server!
 
-First, determine the IP address:
+First, determine the IP address of the BBGW:
 
 \begin{verbatim}
 ip addr
@@ -92,6 +96,34 @@ zone1 and zone2 is divided in half based on the start and stop times.
 
 The manual control buttons will still function during automated irrigation if 
 it is desired to terminate watering early.
+
+\section{Important Note on Closing the Web Browser}
+
+It is important to properly close the web browser!
+
+In order for WebSocket to properly close the connection, the ``tab'' from
+which the irrigation web page is run must be closed.  If it is the only tab being used,
+the create a new empty tab, and then close the irrigation tab.
+
+If the entire brower is killed with the irrigation web page running, it is likely
+that the WebSocket will not terminate correctly.  This has been observed to crash
+the server.
+
+Future updates will attempt to make this more robust.  It is believed that the periodic
+time updates being sent via WebSocket from the server to the web browser make the
+connection more fragile.  If this becomes a problem, comment out the line
+
+\begin{verbatim}
+        let timeDisplay = scheduler.timeDisplayUpdate();
+\end{verbatim}
+
+In the file websocketserver.js.
+
+The computer local time can be used rather than the time broadcast from the server.
+The disadvantage of this is that the time scheduling is done via the system time
+of the server.  As long as this time is accurate, the irrigation will be timed accurately.
+
+
 
 
 
