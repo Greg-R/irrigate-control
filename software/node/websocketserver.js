@@ -93,7 +93,7 @@ exports.listen = function (server) {
             if (ws.readyState === 1) {
                 console.log("WebSocket is ready and sending time update to Web Page.");
                 ws.send(message, (error) => {
-                    console.low(`Websocket error on send`);
+                    console.log(`Websocket error on send`);
                 });
             } else {
                 console.log("Clearing timeDisplayUpdate interval.");
