@@ -36,7 +36,6 @@ exports.listen = function (server) {
 
     console.info('WebSocket server started...');
     wss.on('connection', (ws) => {
-        debugger;
         //  The following prevents multiple listeners from being attached.
         scheduler.removeAllListeners('scheduleControl');
         scheduler.removeAllListeners('schedule');
@@ -78,7 +77,9 @@ exports.listen = function (server) {
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {
                 console.log("WebSocket is ready and sending schedule to Web Page.");
-                ws.send(message);
+                ws.send(message, (error) => {
+                    console.log(`WebSocket error on send.`);
+                });
             } else {
                 console.log("Killing a defective websocket.");
                 ws.terminate();
@@ -91,7 +92,9 @@ exports.listen = function (server) {
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {
                 console.log("WebSocket is ready and sending time update to Web Page.");
-                ws.send(message);
+                ws.send(message, (error) => {
+                    console.low(`Websocket error on send`);
+                });
             } else {
                 console.log("Clearing timeDisplayUpdate interval.");
                 clearInterval(timeDisplay);
@@ -115,7 +118,7 @@ exports.listen = function (server) {
         //  Clear the time update setInterval timer when the WebSocket closes.
         ws.on('close', () => {
             clearInterval(timeDisplay);
-            console.log(`WebSocket is closed.`)
+            console.log(`WebSocket is closed.`);
         });
     });
 
