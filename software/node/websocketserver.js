@@ -91,9 +91,11 @@ exports.listen = function (server) {
             //    console.log(`Time update message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {
-                console.log("WebSocket is ready and sending time update to Web Page.");
                 ws.send(message, (error) => {
-                    console.log(`Websocket error on send`);
+                    console.log(`WebSocket is ready and sending time update to Web Page.`);
+                    if (error) {
+                        console.log(`Websocket error on send ${error}`);
+                    }
                 });
             } else {
                 console.log("Clearing timeDisplayUpdate interval.");
