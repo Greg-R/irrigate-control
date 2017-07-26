@@ -76,9 +76,11 @@ exports.listen = function (server) {
             console.log(`Status message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {
-                console.log("WebSocket is ready and sending schedule to Web Page.");
                 ws.send(message, (error) => {
-                    console.log(`WebSocket error on send.`);
+                    console.log("WebSocket is ready and sending schedule to Web Page.");
+                    if (error) {
+                        console.log(`Websocket error on send ${error}`);
+                    }
                 });
             } else {
                 console.log("Killing a defective websocket.");
@@ -109,10 +111,15 @@ exports.listen = function (server) {
             console.log(`Status message received by websocketserver and is: ${message}`);
             //  Send status message if the WebSocket is ready.  Terminate defective WebSockets.
             if (ws.readyState === 1) {
-                console.log("WebSocket is ready and sending status to Web Page.");
-                ws.send(message);
+                ws.send(message, (error) => {
+                    console.log(`WebSocket is ready and sending time update to Web Page.`);
+                    if (error) {
+                        console.log(`Websocket error on send ${error}`);
+                    }
+                });
             } else {
-                console.log("Killing a defective websocket.");
+                console.log("Clearing timeDisplayUpdate interval.");
+                clearInterval(timeDisplay);
                 ws.terminate();
             }
         });
